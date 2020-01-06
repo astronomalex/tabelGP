@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Smena} from './smena.model';
+import {SmenListService} from './smen-list.service';
 
 @Component({
   selector: 'app-smen-list',
@@ -6,10 +8,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./smen-list.component.css']
 })
 export class SmenListComponent implements OnInit {
+  smens: Smena[];
 
-  constructor() { }
+  constructor(private slService: SmenListService) { }
 
   ngOnInit() {
+    this.smens = this.slService.getSmens();
   }
 
+  onGetSmen(dateSmen: Date) {
+
+  }
 }
