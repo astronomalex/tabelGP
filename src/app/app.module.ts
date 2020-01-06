@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SmenListComponent } from './smen-list/smen-list.component';
-import { WorkerListComponent } from './worker-list/worker-list.component';
+import { SmenListComponent } from './tabel/smen-list/smen-list.component';
+import { WorkerListComponent } from './workers/worker-list/worker-list.component';
 
 @NgModule({
   declarations: [
