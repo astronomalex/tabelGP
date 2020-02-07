@@ -5,14 +5,9 @@
 </div>
 <div class="row">
   <div class="col-xs-12">
-    <ul class="list-group">
-      <a
-        *ngFor="let smena of smens"
-        (click)="onGetSmen(smena.dateSmen)"
-        class="list-group-item">
-        <p>Дата: {{ smena.dateSmen|date }}. №Смены: {{ smena.numSmen}}. Машина: {{ smena.mashine }}</p>
-      </a>
-    </ul>
-
+    <app-smena-item
+    *ngFor="let smenaEl of smens; let i=index"
+    [smena]="smenaEl"
+    [index]="i"></app-smena-item>
   </div>
 </div>

@@ -7,7 +7,7 @@ import {SmenEditComponent} from './tabel/smen-list/smen-edit/smen-edit.component
 
 const routes: Routes = [
   {path: '', redirectTo: '/smen-list', pathMatch: 'full'},
-  {path: '/smen-list', component: SmenListComponent, children: [
+  {path: 'smen-list', component: SmenListComponent, children: [
       {path: 'new', component: SmenEditComponent}
     ] }
   ]

@@ -7,18 +7,18 @@ import {WorkerTime} from './workers-time.model';
 })
 export class SmenListService {
 
-  private smenList: {[key: string]: Smena} = {['01012020']: new Smena('01012020', 'WPS', '1', [
-      new WorkerTime('8609', 11.5, 0, 0, 0, 0),
-      new WorkerTime('3527', 11.5, 0, 0, 0, 0)])
-  },
-    {['01012020']: new Smena('01012020', 'WPS', '1', [
-      new WorkerTime('8609', 11.5, 0, 0, 0, 0),
-      new WorkerTime('3527', 11.5, 0, 0, 0, 0)])
-};
-
-smensKey['05012020'] = new Smena('05012020', 'HTF-1', '1', [
-    new WorkerTime('8609', 11.5, 0, 0, 0, 0),
-    new WorkerTime('3527', 5.5, 0, 0, 0, 0)]);
+//   private smenList: {[key: string]: Smena} = {['01012020']: new Smena('01012020', 'WPS', '1', [
+//       new WorkerTime('8609', 11.5, 0, 0, 0, 0),
+//       new WorkerTime('3527', 11.5, 0, 0, 0, 0)])
+//   },
+//     {['01012020']: new Smena('01012020', 'WPS', '1', [
+//       new WorkerTime('8609', 11.5, 0, 0, 0, 0),
+//       new WorkerTime('3527', 11.5, 0, 0, 0, 0)])
+// };
+//
+//   smensKey['05012020'] = new Smena('05012020', 'HTF-1', '1', [
+//     new WorkerTime('8609', 11.5, 0, 0, 0, 0),
+//     new WorkerTime('3527', 5.5, 0, 0, 0, 0)]);
 
   private smens: Smena[] = [
     new Smena('01012020', 'WPS', '1', [
@@ -31,14 +31,21 @@ smensKey['05012020'] = new Smena('05012020', 'HTF-1', '1', [
     ])
   ];
 
-constructor(); {
+  constructor() {
   }
 
-getSmens(); {
+  getSmens() {
+    console.log(this.smens);
     return this.smens;
   }
 
-getSmena(dateSmen: string); {
-    return this.smens[dateSmen];
+  getSmenByDate(dateSm: string) {
+    let res: Smena[] = [];
+    for (let smena of this.getSmens()) {
+      if (smena.dateSmen === dateSm) {
+        res.push(smena);
+      }
+    }
+    return res.slice();
   }
 }
