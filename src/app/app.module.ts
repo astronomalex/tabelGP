@@ -7,6 +7,7 @@ import { SmenListComponent } from './tabel/smen-list/smen-list.component';
 import { WorkerListComponent } from './workers/worker-list/worker-list.component';
 import { SmenEditComponent } from './tabel/smen-list/smen-edit/smen-edit.component';
 import {SmenaItemComponent} from './tabel/smen-list/smena-item/smena-item.component';
+import { SmenListStartComponent } from './tabel/smen-list/smen-list-start/smen-list-start.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import {SmenaItemComponent} from './tabel/smen-list/smena-item/smena-item.compon
     SmenListComponent,
     WorkerListComponent,
     SmenEditComponent,
-    SmenaItemComponent
+    SmenaItemComponent,
+    SmenListStartComponent
   ],
   imports: [
     BrowserModule,

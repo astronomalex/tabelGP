@@ -16,7 +16,4 @@ export class SmenListComponent implements OnInit {
     this.smens = this.slService.getSmens();
   }
 
-  onGetSmen(dateSmen: string) {
-    return
-  }
 }

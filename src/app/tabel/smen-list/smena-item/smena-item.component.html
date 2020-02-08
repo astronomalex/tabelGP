@@ -1,6 +1,7 @@
 <a
-
-  (click)="onGetSmen(smena.dateSmen)"
+  [routerLink]="[index]"
+  routerLinkActive="active]"
+  style="cursor: pointer"
   class="list-group-item">
   <p>Дата: {{ smena.dateSmen|date }}. №Смены: {{ smena.numSmen}}. Машина: {{ smena.mashine }}</p>
 </a>
