@@ -48,4 +48,8 @@ export class SmenListService {
     }
     return res.slice();
   }
+
+  getSmenById(id: number) {
+    return this.smens[id];
+  }
 }

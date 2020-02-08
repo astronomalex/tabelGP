@@ -11,13 +11,6 @@ export class SmenaItemComponent implements OnInit {
   @Input()smena: Smena;
   @Input()index: number;
 
-  constructor(smenListService: SmenListService) {
-  }
-
   ngOnInit(): void {
-  }
-
-  onGetSmen(dateSmen: string) {
-
   }
 }
