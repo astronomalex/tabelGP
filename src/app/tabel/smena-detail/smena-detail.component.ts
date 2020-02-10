@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Smena} from '../smena.model';
+import {Smena} from '../smen-list/smena.model';
 import {ActivatedRoute, Params} from '@angular/router';
-import {SmenListService} from '../smen-list.service';
+import {SmenListService} from '../smen-list/smen-list.service';
 
 @Component({
   selector: 'app-smena-detail',

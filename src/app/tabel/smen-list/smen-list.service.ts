@@ -21,11 +21,11 @@ export class SmenListService {
 //     new WorkerTime('3527', 5.5, 0, 0, 0, 0)]);
 
   private smens: Smena[] = [
-    new Smena('01012020', 'WPS', '1', [
+    new Smena(new Date(2020, 2, 3).toDateString(), 'WPS', '1', [
       new WorkerTime('8609', 11.5, 0, 0, 0, 0),
       new WorkerTime('3527', 11.5, 0, 0, 0, 0)
     ]),
-    new Smena('05012020', 'HTF-1', '1', [
+    new Smena(new Date(2020, 0, 23).toDateString(), 'HTF-1', '1', [
       new WorkerTime('8609', 11.5, 0, 0, 0, 0),
       new WorkerTime('3527', 5.5, 0, 0, 0, 0)
     ])
@@ -39,15 +39,15 @@ export class SmenListService {
     return this.smens;
   }
 
-  getSmenByDate(dateSm: string) {
-    let res: Smena[] = [];
-    for (let smena of this.getSmens()) {
-      if (smena.dateSmen === dateSm) {
-        res.push(smena);
-      }
-    }
-    return res.slice();
-  }
+  // getSmenByDate(dateSm: string) {
+  //   let res: Smena[] = [];
+  //   for (let smena of this.getSmens()) {
+  //     if (smena.dateSmen === dateSm) {
+  //       res.push(smena);
+  //     }
+  //   }
+  //   return res.slice();
+  // }
 
   getSmenById(id: number) {
     return this.smens[id];
