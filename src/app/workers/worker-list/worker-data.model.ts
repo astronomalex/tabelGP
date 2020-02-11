@@ -1,4 +1,4 @@
-export class WorkerModel {
+export class WorkerData {
   public name: string;
   public surname: string;
   public patronymic: string;

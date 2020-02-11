@@ -1,6 +1,7 @@
-<p>SmenaDetailComponent works!</p>
 <div class="row">
   <div class="col-xs-12">
-    <p>{{ smena.dateSmen }}</p>
+    <h4>Дата: {{ smena.dateSmen }}</h4>
+    <p>Работники:</p>
+    <p *ngFor="let wrk of workers">{{ wrk.surname }} {{ wrk.name }} {{ wrk.patronymic }}</p>
   </div>
 </div>

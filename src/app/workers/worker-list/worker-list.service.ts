@@ -1,14 +1,23 @@
 import { Injectable } from '@angular/core';
-import {WorkerModel} from './worker.model';
+import {WorkerData} from './worker-data.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WorkerListService {
-  private workers: WorkerModel[] = [
-    new WorkerModel('8609','Щитков','Александр', 'Николаевич', '5'),
-    new WorkerModel('3527', 'Кретова', 'Ольга', 'Николаевна', '2')
+  private workers: WorkerData[] = [
+    new WorkerData('8609','Щитков','Александр', 'Николаевич', '5'),
+    new WorkerData('3527', 'Кретова', 'Ольга', 'Николаевна', '2')
   ]
 
   constructor() { }
+
+  getWorkerByTN(tabelNum: string) {
+    for (let wrk of this.workers) {
+      if (wrk.tabelNum === tabelNum) {
+        return wrk;
+      }
+      return null;
+    }
+  }
 }
