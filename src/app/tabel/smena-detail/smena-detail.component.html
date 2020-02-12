@@ -1,7 +1,20 @@
 <div class="row">
   <div class="col-xs-12">
     <h4>Дата: {{ smena.dateSmen }}</h4>
+    <p>Номер смены: {{ smena.numSmen }}   Машина: {{ smena.mashine}}</p>
     <p>Работники:</p>
-    <p *ngFor="let wrk of workers">{{ wrk.surname }} {{ wrk.name }} {{ wrk.patronymic }}</p>
+    <p *ngFor="let wrk of workers; let i = index">
+      {{ wrk.surname }} {{ wrk.name }} {{ wrk.patronymic }} {{wrk.tabelNum}}
+      <br>
+      Сдельно: {{ smena.workersTime[i].sdelTime }}
+      <br>
+      Ночное время: {{ smena.workersTime[i].nightTime }}
+      <br>
+      Простой 2/3 среднего: {{ smena.workersTime[i].prostTime }}
+      <br>
+      Работа по приказу: {{ smena.workersTime[i].prikTime }}
+      <br>
+      Работа по среднему: {{ smena.workersTime[i].srednTime }}
+    </p>
   </div>
 </div>

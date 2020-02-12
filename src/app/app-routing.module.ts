@@ -12,7 +12,8 @@ const routes: Routes = [
   {path: 'smen-list', component: TabelComponent, children: [
       {path: '', component: SmenListStartComponent},
       {path: 'new', component: SmenEditComponent},
-      {path: ':id', component: SmenaDetailComponent}
+      {path: ':id', component: SmenaDetailComponent},
+      {path: ':id/edit', component: SmenEditComponent}
     ] }
   ]
 ;

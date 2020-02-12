@@ -10,6 +10,7 @@ import {SmenaItemComponent} from './tabel/smen-list/smena-item/smena-item.compon
 import { SmenListStartComponent } from './tabel/smen-list/smen-list-start/smen-list-start.component';
 import {SmenaDetailComponent} from './tabel/smena-detail/smena-detail.component';
 import {TabelComponent} from './tabel/tabel.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import {TabelComponent} from './tabel/tabel.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
