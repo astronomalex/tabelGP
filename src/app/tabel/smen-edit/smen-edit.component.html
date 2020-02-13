@@ -55,53 +55,74 @@
             *ngFor="let wrk of getControls(); let i = index"
             [formGroupName]="i"
             style="margin-top: 10px">
-            <div class="col-xs-2">
-              <input
-                class="form-control"
-                formControlName="tbNum"
-                type="text">
+            <div class="row">
+              <label>Табельный номер</label>
+              <div class="col-xs-2">
+                <input
+                  class="form-control"
+                  formControlName="tbNum"
+                  type="text">
+              </div>
             </div>
-            <div class="col-xs-1">
-              <input
-                class="form-control"
-                formControlName="grade"
-                type="text">
+            <div class="row">
+              <label>Разряд</label>
+              <div class="col-xs-2">
+                <input
+                  class="form-control"
+                  formControlName="grade"
+                  type="text">
+              </div>
             </div>
-            <div class="col-xs-1">
-              <input
-                class="form-control"
-                formControlName="sdelTime"
-                type="text">
+            <div class="row">
+              <label>Сдельно</label>
+              <div class="col-xs-2">
+                <input
+                  class="form-control"
+                  formControlName="sdelTime"
+                  type="text">
+              </div>
             </div>
-            <div class="col-xs-1">
-              <input
-                class="form-control"
-                formControlName="nightTime"
-                type="text">
+            <div class="row">
+              <label>Ночное время</label>
+              <div class="col-xs-2">
+                <input
+                  class="form-control"
+                  formControlName="nightTime"
+                  type="text">
+              </div>
             </div>
-            <div class="col-xs-1">
-              <input
-                class="form-control"
-                formControlName="prostTime"
-                type="text">
+            <div class="row">
+              <label>Простой</label>
+              <div class="col-xs-2">
+                <input
+                  class="form-control"
+                  formControlName="prostTime"
+                  type="text">
+              </div>
             </div>
-            <div class="col-xs-1">
-              <input
-                class="form-control"
-                formControlName="prikTime"
-                type="text">
+            <div class="row">
+              <label>По приказу</label>
+              <div class="col-xs-2">
+                <input
+                  class="form-control"
+                  formControlName="prikTime"
+                  type="text">
+              </div>
             </div>
-            <div class="col-xs-1">
-              <input
-                class="form-control"
-                formControlName="srednTime"
-                type="text">
+            <div class="row">
+              <label>По среднему</label>
+              <div class="col-xs-2">
+                <input
+                  class="form-control"
+                  formControlName="srednTime"
+                  type="text">
+              </div>
             </div>
             <div class="col-xs-2">
               <button
                 class="btn btn-danger"
                 (click)="onDeleteWorkTime(i)"
-                type="button">X</button>
+                type="button">Удалить</button>
             </div>
           </div>
           <hr>
