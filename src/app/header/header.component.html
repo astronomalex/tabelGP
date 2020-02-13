@@ -1,0 +1,21 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a href="#" class="navbar-brand">Табель</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li routerLinkActive="active"></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown" appDropdown >
+        <a
+          style="cursor: pointer;"
+          class="dropdown-toggle" role="button">Управление базой</a>
+        <ul class="dropdown-menu">
+          <li><a style="cursor: pointer;" (click)="onSaveData()">Сохранить</a></li>
+          <li><a style="cursor: pointer;" (click)="onFetchData()">Загрузить</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>

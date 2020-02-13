@@ -71,4 +71,9 @@ export class SmenListService {
     this.smens.splice(index, 1);
     this.smensCahnged.next(this.smens.slice());
   }
+
+  setSmens(smens: Smena[]) {
+    this.smens = smens;
+    this.smensCahnged.next(smens.slice());
+  }
 }
