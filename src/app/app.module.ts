@@ -11,19 +11,25 @@ import { SmenListStartComponent } from './tabel/smen-list/smen-list-start/smen-l
 import {SmenaDetailComponent} from './tabel/smena-detail/smena-detail.component';
 import {TabelComponent} from './tabel/tabel.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import { HeaderComponent } from './header/header.component';
+import {DropdownDirective} from './shared/dropdown.directive';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    SmenListComponent,
-    WorkerListComponent,
-    SmenEditComponent,
-    SmenaItemComponent,
-    SmenListStartComponent,
-    SmenaDetailComponent,
-    TabelComponent
-  ],
+    declarations: [
+        AppComponent,
+        SmenListComponent,
+        WorkerListComponent,
+        SmenEditComponent,
+        SmenaItemComponent,
+        SmenListStartComponent,
+        SmenaDetailComponent,
+        TabelComponent,
+        HeaderComponent,
+        DropdownDirective
+    ],
   imports: [
+    HttpClientModule,
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule
