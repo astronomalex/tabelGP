@@ -19,12 +19,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onFetchData() {
-    this.dataStorageSevice.fetchSmens();
+    this.dataStorageSevice.fetchSmens().subscribe();
   }
 
   ngOnInit() {
   }
 
   ngOnDestroy(): void {
+    this.userSubs.unsubscribe();
   }
 }

@@ -4,6 +4,7 @@ import {SmenEditComponent} from './tabel/smen-edit/smen-edit.component';
 import {SmenListStartComponent} from './tabel/smen-list/smen-list-start/smen-list-start.component';
 import {SmenaDetailComponent} from './tabel/smena-detail/smena-detail.component';
 import {TabelComponent} from './tabel/tabel.component';
+import {SmenListResolverService} from './tabel/smen-list-resolver.service';
 
 
 
@@ -12,8 +13,8 @@ const routes: Routes = [
   {path: 'smen-list', component: TabelComponent, children: [
       {path: '', component: SmenListStartComponent},
       {path: 'new', component: SmenEditComponent},
-      {path: ':id', component: SmenaDetailComponent},
-      {path: ':id/edit', component: SmenEditComponent}
+      {path: ':id', component: SmenaDetailComponent, resolve: [SmenListResolverService]},
+      {path: ':id/edit', component: SmenEditComponent, resolve: [SmenListResolverService]}
     ] }
   ]
 ;

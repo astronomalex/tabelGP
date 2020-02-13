@@ -36,6 +36,7 @@ export class DataStorageService {
         }),
         tap(smens => {
           this.smenListService.setSmens(smens);
+          console.log(smens);
         })
       );
   }
