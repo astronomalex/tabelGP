@@ -14,6 +14,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import { HeaderComponent } from './header/header.component';
 import {DropdownDirective} from './shared/dropdown.directive';
 import {HttpClientModule} from '@angular/common/http';
+import { WorkerDataEditComponent } from './workers/worker-data-edit/worker-data-edit.component';
 
 @NgModule({
     declarations: [
@@ -26,7 +27,8 @@ import {HttpClientModule} from '@angular/common/http';
         SmenaDetailComponent,
         TabelComponent,
         HeaderComponent,
-        DropdownDirective
+        DropdownDirective,
+        WorkerDataEditComponent
     ],
   imports: [
     HttpClientModule,
