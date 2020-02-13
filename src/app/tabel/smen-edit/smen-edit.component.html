@@ -1,5 +1,120 @@
 <div class="row">
   <div class="col-xs-12">
-    <form [formGroup]=""></form>
+    <form [formGroup]="smenForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-xs-12">
+          <button
+            [disabled]="!smenForm.valid"
+            type="submit"
+            class="btn btn-success">Сохранить</button>
+          <button
+          (click)="onCancel()"
+          type="button"
+          class="btn btn-danger">Отмена</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="dateSmen">Дата</label>
+            <input
+              type="text"
+              id="dateSmen"
+              formControlName="dateSmen"
+              class="form-control">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="mashine">Машина</label>
+            <input
+              type="text"
+              id="mashine"
+              formControlName="mashine"
+              class="form-control">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="numSmen">Номер смены</label>
+            <input
+              type="text"
+              id="numSmen"
+              formControlName="numSmen"
+              class="form-control">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12" formArrayName="workersTime">
+          <div class="row"
+            *ngFor="let wrk of getControls(); let i = index"
+            [formGroupName]="i"
+            style="margin-top: 10px">
+            <div class="col-xs-2">
+              <input
+                class="form-control"
+                formControlName="tbNum"
+                type="text">
+            </div>
+            <div class="col-xs-1">
+              <input
+                class="form-control"
+                formControlName="grade"
+                type="text">
+            </div>
+            <div class="col-xs-1">
+              <input
+                class="form-control"
+                formControlName="sdelTime"
+                type="text">
+            </div>
+            <div class="col-xs-1">
+              <input
+                class="form-control"
+                formControlName="nightTime"
+                type="text">
+            </div>
+            <div class="col-xs-1">
+              <input
+                class="form-control"
+                formControlName="prostTime"
+                type="text">
+            </div>
+            <div class="col-xs-1">
+              <input
+                class="form-control"
+                formControlName="prikTime"
+                type="text">
+            </div>
+            <div class="col-xs-1">
+              <input
+                class="form-control"
+                formControlName="srednTime"
+                type="text">
+            </div>
+            <div class="col-xs-2">
+              <button
+                class="btn btn-danger"
+                (click)="onDeleteWorkTime(i)"
+                type="button">X</button>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-xs-12">
+              <button
+                class="btn btn-success"
+                type="button"
+                (click)="onAddWorkerTime()">Добавить рабочего</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
 </div>

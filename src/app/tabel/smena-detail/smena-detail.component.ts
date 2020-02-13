@@ -1,6 +1,6 @@
 import {AfterContentInit, AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {Smena} from '../smen-list/smena.model';
-import {ActivatedRoute, Params} from '@angular/router';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import {SmenListService} from '../smen-list/smen-list.service';
 import {WorkerData} from '../../workers/worker-list/worker-data.model';
 import {WorkerListService} from '../../workers/worker-list/worker-list.service';
@@ -21,7 +21,8 @@ export class SmenaDetailComponent implements OnInit, OnDestroy, AfterContentInit
   constructor(
     private route: ActivatedRoute,
     private smenListService: SmenListService,
-    private workerListService: WorkerListService
+    private workerListService: WorkerListService,
+    private router: Router
   ) {
   }
 
@@ -51,6 +52,15 @@ export class SmenaDetailComponent implements OnInit, OnDestroy, AfterContentInit
 
   ngOnDestroy(): void {
 
+  }
+
+  onEditSmena() {
+    this.router.navigate(['edit'], {relativeTo: this.route});
+  }
+
+  onDeleteSmena() {
+    this.smenListService.deleteSmena(this.id);
+    this.router.navigate(['smen-list']);
   }
 
 

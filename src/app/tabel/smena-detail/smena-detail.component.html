@@ -17,4 +17,10 @@
       Работа по среднему: {{ smena.workersTime[i].srednTime }}
     </p>
   </div>
+  <button
+    (click)="onEditSmena()"
+    class="btn btn-success">Редактировать смену</button>
+  <button
+    class="btn btn-danger"
+    (click)="onDeleteSmena()">Удалить смену</button>
 </div>
