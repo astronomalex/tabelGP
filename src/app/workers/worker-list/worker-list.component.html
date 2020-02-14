@@ -1,1 +1,15 @@
-<p>worker-list works!</p>
+<div class="row">
+  <div class="col-xs-12">
+    <button class="btn btn-success" (click)="onNewWorker()">Добавить данные работника</button>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <app-worker-item
+    *ngFor="let wrk of workers; let i = index"
+    [wrk]="wrk"
+    [index]="i"
+    >
+    </app-worker-item>
+  </div>
+</div>

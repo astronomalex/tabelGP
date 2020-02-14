@@ -42,15 +42,6 @@ export class SmenListService {
     return this.smens;
   }
 
-  // getSmenByDate(dateSm: string) {
-  //   let res: Smena[] = [];
-  //   for (let smena of this.getSmens()) {
-  //     if (smena.dateSmen === dateSm) {
-  //       res.push(smena);
-  //     }
-  //   }
-  //   return res.slice();
-  // }
 
   getSmenById(id: number) {
     console.log(this.smens[id].dateSmen);
@@ -76,4 +67,15 @@ export class SmenListService {
     this.smens = smens;
     this.smensCahnged.next(smens.slice());
   }
+
+  // getSmenByDate(dateSm: string) {
+  //   let res: Smena[] = [];
+  //   for (let smena of this.getSmens()) {
+  //     if (smena.dateSmen === dateSm) {
+  //       res.push(smena);
+  //     }
+  //   }
+  //   return res.slice();
+  // }
+
 }

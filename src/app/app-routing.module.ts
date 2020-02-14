@@ -5,6 +5,11 @@ import {SmenListStartComponent} from './tabel/smen-list/smen-list-start/smen-lis
 import {SmenaDetailComponent} from './tabel/smena-detail/smena-detail.component';
 import {TabelComponent} from './tabel/tabel.component';
 import {SmenListResolverService} from './tabel/smen-list-resolver.service';
+import {WorkerListComponent} from './workers/worker-list/worker-list.component';
+import {WorkerListStartComponent} from './workers/worker-list/worker-list-start/worker-list-start.component';
+import {WorkersComponent} from './workers/workers.component';
+import {WorkerDetailComponent} from './workers/worker-detail/worker-detail.component';
+import {WorkerDataEditComponent} from './workers/worker-data-edit/worker-data-edit.component';
 
 
 
@@ -15,7 +20,13 @@ const routes: Routes = [
       {path: 'new', component: SmenEditComponent},
       {path: ':id', component: SmenaDetailComponent, resolve: [SmenListResolverService]},
       {path: ':id/edit', component: SmenEditComponent, resolve: [SmenListResolverService]}
-    ] }
+    ] },
+  {path: 'worker-list', component: WorkersComponent, children: [
+      {path: '', component: WorkerListStartComponent},
+      {path: 'new', component: WorkerDataEditComponent},
+      {path: ':id', component: WorkerDetailComponent},
+      {path: ':id/edit', component: WorkerDataEditComponent}
+    ]}
   ]
 ;
 

@@ -24,9 +24,30 @@ export class WorkerListService {
     return null;
   }
 
-  addWorker(tbNum: string, surname: string, name: string, patronymic: string, grade: string) {
-    const wrk = new WorkerData(tbNum, surname, name, patronymic, grade);
-    this.workers.push(wrk);
+  getWorkers() {
+    return this.workers;
+  }
 
+  getWorkerById(id: number) {
+    return this.workers[id];
+  }
+
+  addWorker(wrk: WorkerData) {
+    this.workers.push(wrk);
+    this.workersChanged.next(this.workers.slice());
+  }
+
+  updateWorker(index: number, newWrk: WorkerData) {
+    this.workers[index] = newWrk;
+    this.workersChanged.next(this.workers.slice());
+  }
+
+  setWorkers(workers: WorkerData[]) {
+    this.workers = workers;
+    this.workersChanged.next(this.workers.slice());
+  }
+
+  deleteWorker(id: number) {
+    this.workers.splice(id, 1);
   }
 }

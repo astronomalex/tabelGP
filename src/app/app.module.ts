@@ -15,6 +15,10 @@ import { HeaderComponent } from './header/header.component';
 import {DropdownDirective} from './shared/dropdown.directive';
 import {HttpClientModule} from '@angular/common/http';
 import { WorkerDataEditComponent } from './workers/worker-data-edit/worker-data-edit.component';
+import { WorkerListStartComponent } from './workers/worker-list/worker-list-start/worker-list-start.component';
+import { WorkerDetailComponent } from './workers/worker-detail/worker-detail.component';
+import { WorkersComponent } from './workers/workers.component';
+import { WorkerItemComponent } from './workers/worker-list/worker-item/worker-item.component';
 
 @NgModule({
     declarations: [
@@ -28,7 +32,11 @@ import { WorkerDataEditComponent } from './workers/worker-data-edit/worker-data-
         TabelComponent,
         HeaderComponent,
         DropdownDirective,
-        WorkerDataEditComponent
+        WorkerDataEditComponent,
+        WorkerListStartComponent,
+        WorkerDetailComponent,
+        WorkersComponent,
+        WorkerItemComponent
     ],
   imports: [
     HttpClientModule,
