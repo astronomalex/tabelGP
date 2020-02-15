@@ -13,7 +13,7 @@ export class DataStorageService {
     private smenListService: SmenListService
   ) {}
 
-  storeSmens() {
+  storeData() {
     const smens = this.smenListService.getSmens();
     this.http.put('https://ng-tabelgp.firebaseio.com/smens.json', smens)
       .subscribe(response => {
@@ -21,7 +21,7 @@ export class DataStorageService {
       });
   }
 
-  fetchSmens() {
+  fetchData() {
     return this.http
       .get<Smena[]>(
         'https://ng-tabelgp.firebaseio.com/smens.json'

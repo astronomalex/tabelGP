@@ -1,1 +1,13 @@
-<p>worker-detail works!</p>
+<div class="row">
+  <div class="col-xs-12">
+    <p>Табельный номер: {{ wrk.tabelNum }}   Разряд: {{ wrk.grade }}</p>
+    <p>Фамлия: <b>{{ wrk.surname }}</b> <br>Имя: <b>{{ wrk.name }}</b> <br>Отчество: <b>{{ wrk.patronymic }}</b></p>
+
+  </div>
+  <button
+    (click)="onEditWorkerData()"
+    class="btn btn-success">Редактировать данные</button>
+  <button
+    class="btn btn-danger"
+    (click)="onDeleteWorkerData()">Удалить данные</button>
+</div>

@@ -1,1 +1,80 @@
-<p>worker-data-edit works!</p>
+<div class="row">
+  <div class="col-xs-12">
+    <form [formGroup]="workerForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-xs-12">
+          <button
+            [disabled]="!workerForm.valid"
+            type="submit"
+            class="btn btn-success">
+            Сохранить
+          </button>
+          <button
+            (click)="onCancel()"
+            class="btn btn-danger"
+            type="button">Отмена</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="tabelNum">Табельный номер</label>
+            <input
+              type="text"
+              id="tabelNum"
+              formControlName="tabelNum"
+              class="form-control">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="grade">Разряд</label>
+            <input
+              type="text"
+              id="grade"
+              formControlName="grade"
+              class="form-control">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="surname">Фамилия</label>
+            <input
+              type="text"
+              id="surname"
+              formControlName="surname"
+              class="form-control">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="name">Имя</label>
+            <input
+              type="text"
+              id="name"
+              formControlName="name"
+              class="form-control">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="patronymic">Отчество</label>
+            <input
+              type="text"
+              id="patronymic"
+              formControlName="patronymic"
+              class="form-control">
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
