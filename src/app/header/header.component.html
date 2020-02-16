@@ -5,7 +5,9 @@
     </div>
     <ul class="nav navbar-nav">
       <li routerLinkActive="active">
-        <a routerLink="/worker-list">Табельные номера рабочих></a></li>
+        <a routerLink="/smen-list">Список смен</a></li>
+      <li routerLinkActive="active">
+        <a routerLink="/worker-list">Табельные номера рабочих</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li class="dropdown" appDropdown >
@@ -15,6 +17,10 @@
         <ul class="dropdown-menu">
           <li><a style="cursor: pointer;" (click)="onSaveData()">Сохранить</a></li>
           <li><a style="cursor: pointer;" (click)="onFetchData()">Загрузить</a></li>
+          <li><a style="cursor: pointer;" (click)="onSaveWorkers()">Сохранить данные работников</a></li>
+          <li><a style="cursor: pointer;" (click)="onFetchWorkers()">Загрузить данные работников</a></li>
+          <li><a style="cursor: pointer;" (click)="onSaveSmens()">Сохранить смены</a></li>
+          <li><a style="cursor: pointer;" (click)="onFetchSmens()">Загрузить смены</a></li>
         </ul>
       </li>
     </ul>

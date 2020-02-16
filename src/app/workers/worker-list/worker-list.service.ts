@@ -8,10 +8,12 @@ import {Subject} from 'rxjs';
 export class WorkerListService {
   workersChanged = new Subject<WorkerData[]>();
 
-  private workers: WorkerData[] = [
-    new WorkerData('8609', 'Щитков', 'Александр', 'Николаевич', '5'),
-    new WorkerData('3527', 'Кретова', 'Ольга', 'Николаевна', '2')
-  ];
+  private workers: WorkerData[] = [];
+
+  // private workers: WorkerData[] = [
+  //   new WorkerData('8609', 'Щитков', 'Александр', 'Николаевич', '5'),
+  //   new WorkerData('3527', 'Кретова', 'Ольга', 'Николаевна', '2')
+  // ];
 
   constructor() { }
 

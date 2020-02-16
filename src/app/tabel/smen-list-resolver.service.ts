@@ -16,7 +16,7 @@ export class SmenListResolverService implements Resolve<Smena[]> {
     const smens = this.smenListService.getSmens();
 
     if (smens.length === 0) {
-      return this.dataStorageSevice.fetchData();
+      return this.dataStorageSevice.fetchSmens();
     } else {
       return smens;
     }

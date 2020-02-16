@@ -15,11 +15,27 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) { }
 
   onSaveData() {
-    this.dataStorageSevice.storeData();
+    this.dataStorageSevice.storeSmens();
+    this.dataStorageSevice.storeWorkers();
   }
 
   onFetchData() {
-    this.dataStorageSevice.fetchData().subscribe();
+    this.dataStorageSevice.fetchSmens().subscribe();
+    this.dataStorageSevice.fetchWorkers().subscribe();
+  }
+  onSaveWorkers() {
+    this.dataStorageSevice.storeWorkers();
+  }
+
+  onFetchWorkers() {
+    this.dataStorageSevice.fetchWorkers().subscribe();
+  }
+  onSaveSmens() {
+    this.dataStorageSevice.storeSmens();
+  }
+
+  onFetchSmens() {
+    this.dataStorageSevice.fetchSmens().subscribe();
   }
 
   ngOnInit() {
