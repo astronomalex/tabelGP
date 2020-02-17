@@ -23,7 +23,14 @@
               type="text"
               id="tabelNum"
               formControlName="tabelNum"
-              class="form-control">
+              class="form-control"
+              >
+            <span *ngIf="!workerForm.get('tabelNum').valid && workerForm.get('tabelNum').touched"
+            class="help-block">
+              <span *ngIf="workerForm.get('tabelNum').errors['tabelNumExist']">Работник с таким табельным номером уже есть в списке!</span>
+              <span *ngIf="workerForm.get('tabelNum').errors['required']">Это поле обязательно к заполнению!</span>
+              <span *ngIf="workerForm.get('tabelNum').errors['pattern']">Табельный номер состоит из четырех цифр</span>
+            </span>
           </div>
         </div>
       </div>
@@ -48,6 +55,10 @@
               id="surname"
               formControlName="surname"
               class="form-control">
+            <span *ngIf="!workerForm.get('surname').valid && workerForm.get('surname').touched"
+                  class="help-block">
+              <span *ngIf="workerForm.get('surname').errors['required']">Это поле обязательно к заполнению!</span>
+            </span>
           </div>
         </div>
       </div>
@@ -60,6 +71,10 @@
               id="name"
               formControlName="name"
               class="form-control">
+            <span *ngIf="!workerForm.get('name').valid && workerForm.get('name').touched"
+                  class="help-block">
+              <span *ngIf="workerForm.get('name').errors['required']">Это поле обязательно к заполнению!</span>
+            </span>
           </div>
         </div>
       </div>

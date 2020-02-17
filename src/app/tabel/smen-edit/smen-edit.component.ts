@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {WorkerTime} from '../../workers/worker-list/workers-time.model';
 import {SmenListService} from '../smen-list/smen-list.service';
 
 @Component({
@@ -73,12 +72,12 @@ export class SmenEditComponent implements OnInit {
           workersTime.push(
             new FormGroup({
               'tbNum': new FormControl(wrk.tbNum, [Validators.required, Validators.pattern(/^\d\d\d\d$/)]),
-              'grade': new FormControl(wrk.grade, Validators.required),
-              'sdelTime': new FormControl(wrk.sdelTime),
-              'nightTime': new FormControl(wrk.nightTime),
-              'prostTime': new FormControl(wrk.prostTime),
-              'prikTime': new FormControl(wrk.prikTime),
-              'srednTime': new FormControl(wrk.srednTime)
+              'grade': new FormControl(wrk.grade, [Validators.required]),
+              'sdelTime': new FormControl(wrk.sdelTime, [Validators.required]),
+              'nightTime': new FormControl(wrk.nightTime, [Validators.max(11.5)]),
+              'prostTime': new FormControl(wrk.prostTime, [Validators.max(11.5)]),
+              'prikTime': new FormControl(wrk.prikTime, [Validators.max(11.5)]),
+              'srednTime': new FormControl(wrk.srednTime, [Validators.max(11.5)])
             })
           );
         }

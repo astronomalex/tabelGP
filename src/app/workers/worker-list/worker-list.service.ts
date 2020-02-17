@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {WorkerData} from './worker-data.model';
 import {Subject} from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -51,5 +52,6 @@ export class WorkerListService {
 
   deleteWorker(id: number) {
     this.workers.splice(id, 1);
+    this.workersChanged.next(this.workers.slice());
   }
 }

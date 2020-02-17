@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {WorkerListService} from '../worker-list/worker-list.service';
 
@@ -24,9 +24,15 @@ export class WorkerDataEditComponent implements OnInit {
       (params: Params) => {
         this.id = params['id'];
         this.editMode = params['id'] != null;
+        if (this.editMode && this.workerListService.getWorkers().length < this.id) {
+          this.router.navigate(['worker-list']);
+        }
       }
     );
-    this.initForm();
+
+      this.initForm();
+
+
   }
 
   initForm() {
@@ -44,13 +50,23 @@ export class WorkerDataEditComponent implements OnInit {
       name = workerData.name;
       patronymic = workerData.patronymic;
     }
-    this.workerForm = new FormGroup({
-      'tabelNum': new FormControl(tbNum, Validators.required),
-      'grade': new FormControl(grade),
-      'surname': new FormControl(surname, Validators.required),
-      'name': new FormControl(name, Validators.required),
-      'patronymic': new FormControl(patronymic)
-    });
+    if (this.editMode) {
+      this.workerForm = new FormGroup({
+        'tabelNum': new FormControl({value: tbNum, disabled: true}),
+        'grade': new FormControl(grade),
+        'surname': new FormControl(surname, Validators.required),
+        'name': new FormControl(name, Validators.required),
+        'patronymic': new FormControl(patronymic)
+      });
+    } else {
+      this.workerForm = new FormGroup({
+        'tabelNum': new FormControl(tbNum, [Validators.required, this.tabelNumValidator(), Validators.pattern(/^\d\d\d\d$/)]),
+        'grade': new FormControl(grade),
+        'surname': new FormControl(surname, Validators.required),
+        'name': new FormControl(name, Validators.required),
+        'patronymic': new FormControl(patronymic)
+      });
+    }
   }
 
   onSubmit() {
@@ -64,6 +80,14 @@ export class WorkerDataEditComponent implements OnInit {
 
   onCancel() {
     this.router.navigate(['..'], {relativeTo: this.route});
+  }
+
+  tabelNumValidator(): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: boolean} | null => {
+      const valid = !this.workerListService.getWorkerByTN(control.value);
+      console.log(this.workerForm);
+      return (valid || this.editMode) ? null : {tabelNumExist: true};
+    };
   }
 
 }

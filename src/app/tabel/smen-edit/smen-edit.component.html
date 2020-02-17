@@ -62,6 +62,11 @@
                   class="form-control"
                   formControlName="tbNum"
                   type="text">
+                <span *ngIf="!wrk.get('tbNum').valid && wrk.get('tbNum').touched"
+                      class="help-block">
+                  <span *ngIf="wrk.get('tbNum').errors['required']">Это поле обязательно к заполнению!</span>
+                  <span *ngIf="wrk.get('tbNum').errors['pattern']">Табельный номер состоит из четырех цифр</span>
+                </span>
               </div>
             </div>
             <div class="row">
