@@ -50,23 +50,24 @@ export class WorkerDataEditComponent implements OnInit {
       name = workerData.name;
       patronymic = workerData.patronymic;
     }
-    if (this.editMode) {
-      this.workerForm = new FormGroup({
-        'tabelNum': new FormControl({value: tbNum, disabled: true}),
-        'grade': new FormControl(grade),
-        'surname': new FormControl(surname, Validators.required),
-        'name': new FormControl(name, Validators.required),
-        'patronymic': new FormControl(patronymic)
-      });
-    } else {
-      this.workerForm = new FormGroup({
-        'tabelNum': new FormControl(tbNum, [Validators.required, this.tabelNumValidator(), Validators.pattern(/^\d\d\d\d$/)]),
-        'grade': new FormControl(grade),
-        'surname': new FormControl(surname, Validators.required),
-        'name': new FormControl(name, Validators.required),
-        'patronymic': new FormControl(patronymic)
-      });
-    }
+    this.workerForm = new FormGroup({
+      'tabelNum': new FormControl(tbNum, [Validators.required, this.tabelNumValidator(), Validators.pattern(/^\d\d\d\d$/)]),
+      'grade': new FormControl(grade, [Validators.min(1), Validators.max(6)]),
+      'surname': new FormControl(surname, Validators.required),
+      'name': new FormControl(name, Validators.required),
+      'patronymic': new FormControl(patronymic)
+    });
+    // if (this.editMode) {
+    //   });
+    // } else {
+    //   this.workerForm = new FormGroup({
+    //     'tabelNum': new FormControl(tbNum, [Validators.required, this.tabelNumValidator(), Validators.pattern(/^\d\d\d\d$/)]),
+    //     'grade': new FormControl(grade),
+    //     'surname': new FormControl(surname, Validators.required),
+    //     'name': new FormControl(name, Validators.required),
+    //     'patronymic': new FormControl(patronymic)
+    //   });
+    // }
   }
 
   onSubmit() {
@@ -84,10 +85,22 @@ export class WorkerDataEditComponent implements OnInit {
 
   tabelNumValidator(): ValidatorFn {
     return (control: AbstractControl): {[key: string]: boolean} | null => {
-      const valid = !this.workerListService.getWorkerByTN(control.value);
-      console.log(this.workerForm);
-      return (valid || this.editMode) ? null : {tabelNumExist: true};
-    };
+      if (!this.workerListService.getWorkerByTN(control.value)) {
+        return null;
+      } else {
+        if (this.workerListService.getWorkerByTN(control.value) === this.workerListService.getWorkerById(this.id)) {
+          return null;
+        } else {
+          return {tabelNumExist: true};
+        }
+      }
+    //   const valid = !(
+    //     this.workerListService.getWorkerByTN(control.value) &&
+    //     (this.workerListService.getWorkerByTN(control.value) !== this.workerListService.getWorkerById(this.id))
+    //   );
+    //   console.log(this.workerForm);
+    //   return (valid) ? null : {tabelNumExist: true};
+     };
   }
 
 }

@@ -43,6 +43,10 @@
               id="grade"
               formControlName="grade"
               class="form-control">
+            <span *ngIf="!workerForm.get('grade').valid && workerForm.get('grade').touched"
+                  class="help-block">
+              <span>Разряд от 1 до 6.</span>
+            </span>
           </div>
         </div>
       </div>
