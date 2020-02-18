@@ -46,12 +46,12 @@ export class SmenEditComponent implements OnInit {
     (<FormArray> this.smenForm.get('workersTime')).push(
       new FormGroup({
         'tbNum': new FormControl(null, [Validators.required, Validators.pattern(/^\d\d\d\d$/)]),
-        'grade': new FormControl(null, Validators.required),
-        'sdelTime': new FormControl(null),
-        'nightTime': new FormControl(null),
-        'prostTime': new FormControl(null),
-        'prikTime': new FormControl(null),
-        'srednTime': new FormControl(null)
+        'grade': new FormControl(null, [Validators.required, Validators.min(1), Validators.max(6)]),
+        'sdelTime': new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
+        'nightTime': new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
+        'prostTime': new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
+        'prikTime': new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
+        'srednTime': new FormControl(null, [Validators.min(0), Validators.max(11.5)])
       })
     );
   }
