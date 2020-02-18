@@ -1,6 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {DataStorageService} from '../shared/data-storage.service';
+import {SmenListService} from '../tabel/smen-list/smen-list.service';
+import {WorkerListService} from '../workers/worker-list/worker-list.service';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +13,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private userSubs: Subscription;
 
   constructor(
-    private dataStorageSevice: DataStorageService
+    private dataStorageSevice: DataStorageService,
+    private smenListService: SmenListService,
+    private workerListService: WorkerListService
   ) { }
 
   onSaveData() {

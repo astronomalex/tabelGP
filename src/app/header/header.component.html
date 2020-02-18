@@ -15,12 +15,13 @@
           style="cursor: pointer;"
           class="dropdown-toggle" role="button">Управление базой</a>
         <ul class="dropdown-menu">
-          <li><a style="cursor: pointer;" (click)="onSaveData()">Сохранить</a></li>
+          <li><a style="cursor: pointer;" (click)="onSaveData()" *ngIf="(workerListService.getWorkers().length > 0) &&
+          (smenListService.getSmens().length > 0)">Сохранить</a></li>
           <li><a style="cursor: pointer;" (click)="onFetchData()">Загрузить</a></li>
-          <li><a style="cursor: pointer;" (click)="onSaveWorkers()">Сохранить данные работников</a></li>
-          <li><a style="cursor: pointer;" (click)="onFetchWorkers()">Загрузить данные работников</a></li>
-          <li><a style="cursor: pointer;" (click)="onSaveSmens()">Сохранить смены</a></li>
-          <li><a style="cursor: pointer;" (click)="onFetchSmens()">Загрузить смены</a></li>
+<!--          <li><a style="cursor: pointer;" (click)="onSaveWorkers()" *ngIf="workerListService.getWorkers().length > 0">Сохранить данные работников</a></li>-->
+<!--          <li><a style="cursor: pointer;" (click)="onFetchWorkers()">Загрузить данные работников</a></li>-->
+<!--          <li><a style="cursor: pointer;" (click)="onSaveSmens()" *ngIf="smenListService.getSmens().length > 0">Сохранить смены</a></li>-->
+<!--          <li><a style="cursor: pointer;" (click)="onFetchSmens()">Загрузить смены</a></li>-->
         </ul>
       </li>
     </ul>

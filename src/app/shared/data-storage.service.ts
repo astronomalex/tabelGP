@@ -18,10 +18,12 @@ export class DataStorageService {
 
   storeSmens() {
     const smens = this.smenListService.getSmens();
-    this.http.put('https://ng-tabelgp.firebaseio.com/smens.json', smens)
-      .subscribe(response => {
-        console.log(response);
-      });
+    if (smens.length > 0) {
+      this.http.put('https://ng-tabelgp.firebaseio.com/smens.json', smens)
+        .subscribe(response => {
+          console.log(response);
+        });
+    }
   }
 
   fetchSmens() {
@@ -46,10 +48,12 @@ export class DataStorageService {
 
   storeWorkers() {
     const workers = this.workerListService.getWorkers();
-    this.http.put('https://ng-tabelgp.firebaseio.com/workers.json', workers)
-      .subscribe(response => {
-        console.log(response);
-      });
+    if (workers.length > 0) {
+      this.http.put('https://ng-tabelgp.firebaseio.com/workers.json', workers)
+        .subscribe(response => {
+          console.log(response);
+        });
+    }
   }
 
   fetchWorkers() {
