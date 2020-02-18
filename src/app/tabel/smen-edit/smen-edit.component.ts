@@ -73,7 +73,7 @@ export class SmenEditComponent implements OnInit {
             new FormGroup({
               'tbNum': new FormControl(wrk.tbNum, [Validators.required, Validators.pattern(/^\d\d\d\d$/)]),
               'grade': new FormControl(wrk.grade, [Validators.required]),
-              'sdelTime': new FormControl(wrk.sdelTime, [Validators.required]),
+              'sdelTime': new FormControl(wrk.sdelTime, [Validators.max(11.5)]),
               'nightTime': new FormControl(wrk.nightTime, [Validators.max(11.5)]),
               'prostTime': new FormControl(wrk.prostTime, [Validators.max(11.5)]),
               'prikTime': new FormControl(wrk.prikTime, [Validators.max(11.5)]),
