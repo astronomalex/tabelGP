@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {DataStorageService} from './shared/data-storage.service';
+import {AuthService} from './auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -8,11 +9,10 @@ import {DataStorageService} from './shared/data-storage.service';
 })
 export class AppComponent implements OnInit {
   title = 'my-tabel-app';
-  constructor(private dataStorageSevice: DataStorageService) {
+  constructor(private authService: AuthService) {
   }
 
   ngOnInit(): void {
-    this.dataStorageSevice.fetchWorkers();
-    this.dataStorageSevice.fetchSmens();
+    this.authService.autoLogin();
   }
 }
