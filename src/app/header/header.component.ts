@@ -12,7 +12,7 @@ import {AuthService} from '../auth/auth.service';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   private userSubs: Subscription;
-  isAuthenticated: false;
+  isAuthenticated = false;
 
   constructor(
     private dataStorageSevice: DataStorageService,
@@ -45,14 +45,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.dataStorageSevice.fetchSmens().subscribe();
   }
 
+  onLogout() {
+    this.authService.logout();
+  }
+
   ngOnInit() {
-    this.userSubs = this.authService.user.subscribe(
-      user => {
-        this.isAuthenticated = !!user;
-        console.log(!user);
-        console.log(!!user);
-      }
-    )
+    this.authService.user.subscribe(user => {
+      this.isAuthenticated = !user ? false : true;
+    });
   }
 
   ngOnDestroy(): void {
