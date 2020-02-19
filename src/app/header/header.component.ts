@@ -3,6 +3,7 @@ import {Subscription} from 'rxjs';
 import {DataStorageService} from '../shared/data-storage.service';
 import {SmenListService} from '../tabel/smen-list/smen-list.service';
 import {WorkerListService} from '../workers/worker-list/worker-list.service';
+import {AuthService} from '../auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -11,11 +12,13 @@ import {WorkerListService} from '../workers/worker-list/worker-list.service';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   private userSubs: Subscription;
+  isAuthenticated: false;
 
   constructor(
     private dataStorageSevice: DataStorageService,
     private smenListService: SmenListService,
-    private workerListService: WorkerListService
+    private workerListService: WorkerListService,
+    private authService: AuthService
   ) { }
 
   onSaveData() {
@@ -43,6 +46,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.userSubs = this.authService.user.subscribe(
+      user => {
+        this.isAuthenticated = !!user;
+        console.log(!user);
+        console.log(!!user);
+      }
+    )
   }
 
   ngOnDestroy(): void {

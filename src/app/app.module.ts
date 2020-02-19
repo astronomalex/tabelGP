@@ -19,25 +19,27 @@ import { WorkerListStartComponent } from './workers/worker-list/worker-list-star
 import { WorkerDetailComponent } from './workers/worker-detail/worker-detail.component';
 import { WorkersComponent } from './workers/workers.component';
 import { WorkerItemComponent } from './workers/worker-list/worker-item/worker-item.component';
+import { AuthComponent } from './auth/auth.component';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        SmenListComponent,
-        WorkerListComponent,
-        SmenEditComponent,
-        SmenaItemComponent,
-        SmenListStartComponent,
-        SmenaDetailComponent,
-        TabelComponent,
-        HeaderComponent,
-        DropdownDirective,
-        WorkerDataEditComponent,
-        WorkerListStartComponent,
-        WorkerDetailComponent,
-        WorkersComponent,
-        WorkerItemComponent
-    ],
+  declarations: [
+    AppComponent,
+    SmenListComponent,
+    WorkerListComponent,
+    SmenEditComponent,
+    SmenaItemComponent,
+    SmenListStartComponent,
+    SmenaDetailComponent,
+    TabelComponent,
+    HeaderComponent,
+    DropdownDirective,
+    WorkerDataEditComponent,
+    WorkerListStartComponent,
+    WorkerDetailComponent,
+    WorkersComponent,
+    WorkerItemComponent,
+    AuthComponent
+  ],
   imports: [
     HttpClientModule,
     BrowserModule,
