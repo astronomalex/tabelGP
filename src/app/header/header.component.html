@@ -4,13 +4,18 @@
       <a href="#" class="navbar-brand">Табель</a>
     </div>
     <ul class="nav navbar-nav">
-      <li routerLinkActive="active">
+      <li routerLinkActive="active" *ngIf="isAuthenticated">
         <a routerLink="/smen-list">Список смен</a></li>
-      <li routerLinkActive="active">
+      <li routerLinkActive="active" *ngIf="isAuthenticated">
         <a routerLink="/worker-list">Табельные номера рабочих</a></li>
+      <li routerLinkActive="active" *ngIf="!isAuthenticated">
+        <a routerLink="/auth">Вход или регистрация</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li class="dropdown" appDropdown >
+      <li *ngIf="isAuthenticated">
+        <a style="cursor: pointer" (click)="onLogout()"></a>
+      </li>
+      <li class="dropdown" appDropdown *ngIf="isAuthenticated">
         <a
           style="cursor: pointer;"
           class="dropdown-toggle" role="button">Управление базой</a>
