@@ -27,7 +27,6 @@ import {SmenListService} from './tabel/smen-list/smen-list.service';
 import {WorkerListService} from './workers/worker-list/worker-list.service';
 import {AuthInterceptorService} from './auth/auth-interceptor.service';
 import {WorkerSelectDialogListComponent} from './tabel/smen-edit/worker-select-dialog/worker-select-dialog-list-component';
-import {WorkerSelectDialogItemComponent} from './tabel/smen-edit/worker-select-dialog/worker-select-dialog-item/worker-select-dialog-item.component';
 
 @NgModule({
   declarations: [
@@ -50,8 +49,7 @@ import {WorkerSelectDialogItemComponent} from './tabel/smen-edit/worker-select-d
     PlaceholderDirective,
     LoadingSpinnerComponent,
     AlertComponent,
-    WorkerSelectDialogListComponent,
-    WorkerSelectDialogItemComponent
+    WorkerSelectDialogListComponent
   ],
   imports: [
     HttpClientModule,
@@ -62,8 +60,7 @@ import {WorkerSelectDialogItemComponent} from './tabel/smen-edit/worker-select-d
   ],
   entryComponents: [
     AlertComponent,
-    WorkerSelectDialogListComponent,
-    WorkerSelectDialogItemComponent
+    WorkerSelectDialogListComponent
   ],
   providers: [
     SmenListService,
