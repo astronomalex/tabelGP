@@ -1,20 +1,7 @@
 <div class="row">
   <div class="col-xs-12">
     <form [formGroup]="workerForm" (ngSubmit)="onSubmit()">
-      <div class="row">
-        <div class="col-xs-12">
-          <button
-            [disabled]="!workerForm.valid"
-            type="submit"
-            class="btn btn-success">
-            Сохранить
-          </button>
-          <button
-            (click)="onCancel()"
-            class="btn btn-danger"
-            type="button">Отмена</button>
-        </div>
-      </div>
+
       <div class="row">
         <div class="col-xs-12">
           <div class="form-group">
@@ -93,6 +80,20 @@
               formControlName="patronymic"
               class="form-control">
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <button
+            [disabled]="!workerForm.valid"
+            type="submit"
+            class="btn btn-success">
+            Сохранить
+          </button>
+          <button
+            (click)="onCancel()"
+            class="btn btn-danger"
+            type="button">Отмена</button>
         </div>
       </div>
     </form>

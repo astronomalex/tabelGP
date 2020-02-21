@@ -3,18 +3,6 @@
     <form [formGroup]="smenForm" (ngSubmit)="onSubmit()">
       <div class="row">
         <div class="col-xs-12">
-          <button
-            [disabled]="!smenForm.valid"
-            type="submit"
-            class="btn btn-success">Сохранить</button>
-          <button
-          (click)="onCancel()"
-          type="button"
-          class="btn btn-danger">Отмена</button>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
           <div class="form-group">
             <label for="dateSmen">Дата</label>
             <input
@@ -57,7 +45,7 @@
             style="margin-top: 10px">
             <div class="row">
               <label>Табельный номер</label>
-              <div class="col-xs-2">
+              <div class="col-xs-4 col-md-2">
                 <input
                   class="form-control"
                   formControlName="tbNum"
@@ -71,7 +59,7 @@
             </div>
             <div class="row">
               <label>Разряд</label>
-              <div class="col-xs-2">
+              <div class="col-xs-4 col-md-2">
                 <input
                   class="form-control"
                   formControlName="grade"
@@ -82,7 +70,7 @@
             </div>
             <div class="row">
               <label>Сдельно</label>
-              <div class="col-xs-2">
+              <div class="col-xs-4 col-md-2">
                 <input
                   class="form-control"
                   formControlName="sdelTime"
@@ -91,7 +79,7 @@
             </div>
             <div class="row">
               <label>Ночное время</label>
-              <div class="col-xs-2">
+              <div class="col-xs-4 col-md-2">
                 <input
                   class="form-control"
                   formControlName="nightTime"
@@ -100,7 +88,7 @@
             </div>
             <div class="row">
               <label>Простой</label>
-              <div class="col-xs-2">
+              <div class="col-xs-4 col-md-2">
                 <input
                   class="form-control"
                   formControlName="prostTime"
@@ -109,7 +97,7 @@
             </div>
             <div class="row">
               <label>По приказу</label>
-              <div class="col-xs-2">
+              <div class="col-xs-4 col-md-2">
                 <input
                   class="form-control"
                   formControlName="prikTime"
@@ -118,29 +106,41 @@
             </div>
             <div class="row">
               <label>По среднему</label>
-              <div class="col-xs-2">
+              <div class="col-xs-4 col-md-2">
                 <input
                   class="form-control"
                   formControlName="srednTime"
                   type="text">
               </div>
             </div>
-            <div class="col-xs-2">
+            <div class="col-xs-4 col-md-2">
               <button
                 class="btn btn-danger"
                 (click)="onDeleteWorkTime(i)"
                 type="button">Удалить</button>
             </div>
           </div>
+          <button
+            class="btn btn-success"
+            type="button"
+            (click)="onAddWorkerTime()">Добавить рабочего</button>
           <hr>
           <div class="row">
             <div class="col-xs-12">
-              <button
-                class="btn btn-success"
-                type="button"
-                (click)="onAddWorkerTime()">Добавить рабочего</button>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <button
+            [disabled]="!smenForm.valid"
+            type="submit"
+            class="btn btn-success">Сохранить</button>
+          <button
+            (click)="onCancel()"
+            type="button"
+            class="btn btn-danger">Отмена</button>
         </div>
       </div>
     </form>
