@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ComponentFactoryResolver, OnInit, ViewChild} from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {SmenListService} from '../smen-list/smen-list.service';
+import {PlaceholderDirective} from '../../shared/placeholder/placeholder.directive';
+import {WorkerSelectDialogListComponent} from './worker-select-dialog/worker-select-dialog-list-component';
+import {Subscription} from 'rxjs';
+import {WorkerData} from '../../workers/worker-list/worker-data.model';
 
 @Component({
   selector: 'app-smen-edit',
@@ -12,11 +16,17 @@ export class SmenEditComponent implements OnInit {
   id: number;
   editMode = false;
   smenForm: FormGroup;
+  @ViewChild(PlaceholderDirective, {static: false}) dialogHost: PlaceholderDirective;
+
+  private closeSub: Subscription;
+  private selectSub: Subscription;
+  private selectedWorker: WorkerData = null;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private smenListService: SmenListService
+    private smenListService: SmenListService,
+    private componentFactoryResolver: ComponentFactoryResolver
   ) { }
 
   ngOnInit() {
@@ -45,7 +55,7 @@ export class SmenEditComponent implements OnInit {
   onAddWorkerTime() {
     (<FormArray> this.smenForm.get('workersTime')).push(
       new FormGroup({
-        'tbNum': new FormControl(null, [Validators.required, Validators.pattern(/^\d\d\d\d$/)]),
+        'tbNum': new FormControl(this.selectedWorker ? this.selectedWorker.tabelNum: null , [Validators.required, Validators.pattern(/^\d\d\d\d$/)]),
         'grade': new FormControl(null, [Validators.required, Validators.min(1), Validators.max(6)]),
         'sdelTime': new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
         'nightTime': new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
@@ -54,6 +64,7 @@ export class SmenEditComponent implements OnInit {
         'srednTime': new FormControl(null, [Validators.min(0), Validators.max(11.5)])
       })
     );
+    this.showWorkerSelectDialog();
   }
 
   private initForm() {
@@ -80,6 +91,7 @@ export class SmenEditComponent implements OnInit {
               'srednTime': new FormControl(wrk.srednTime, [Validators.min(0), Validators.max(11.5)])
             })
           );
+          this.selectedWorker = null;
         }
       }
     }
@@ -98,6 +110,29 @@ export class SmenEditComponent implements OnInit {
 
   onDeleteWorkTime(index: number) {
     (<FormArray> this.smenForm.get('workersTime')).removeAt(index);
+  }
+
+  showWorkerSelectDialog() {
+    const dialogCmpFactoty = this.componentFactoryResolver.resolveComponentFactory(WorkerSelectDialogListComponent);
+    const hostViewContainerRef = this.dialogHost.viewContainerRef;
+    hostViewContainerRef.clear();
+    const componentRef = hostViewContainerRef.createComponent(dialogCmpFactoty);
+
+    this.closeSub = componentRef.instance.close.subscribe(
+      () => {
+        this.closeSub.unsubscribe();
+        this.selectSub.unsubscribe();
+        hostViewContainerRef.clear();
+      }
+    );
+
+    this.selectSub = componentRef.instance.selectedWorker.subscribe(
+      (wrkr: WorkerData) => {
+        this.selectSub.unsubscribe();
+        this.closeSub.unsubscribe();
+        this.selectedWorker = wrkr;
+      }
+    );
   }
 
 }
