@@ -31,20 +31,27 @@ export class WorkerSelectDialogListComponent implements OnInit, OnDestroy {
     this.close.emit();
   }
 
+  onSelect(index: number) {
+    this.selectedWorker.emit(this.workerListService.getWorkerById(index));
+  }
+
   showWorkerList() {
-    const dialogCmpFactory = this.componentFactoryResolver.resolveComponentFactory(WorkerSelectDialogItemComponent);
-    const hostViewContainerRef = this.workerItem.viewContainerRef;
-    hostViewContainerRef.clear();
-    const componentRef = hostViewContainerRef.createComponent(dialogCmpFactory);
-    this.select = componentRef.instance.select.subscribe(
-      (wrkr: WorkerData) => {
-        this.select.unsubscribe();
-        this.selectedWorker.emit(wrkr);
-      }
-    );
+    // for (let wrk of this.workerListService.getWorkers()) {
+    //   const dialogCmpFactory = this.componentFactoryResolver.resolveComponentFactory(WorkerSelectDialogItemComponent);
+    //   const hostViewContainerRef = this.workerItem.viewContainerRef;
+    //   hostViewContainerRef.clear();
+    //   const componentRef = hostViewContainerRef.createComponent(dialogCmpFactory);
+    //   componentRef.instance.wrkr = wrk;
+    //     this.select = componentRef.instance.select.subscribe(
+    //       (wrkr: WorkerData) => {
+    //         this.select.unsubscribe();
+    //         this.selectedWorker.emit(wrkr);
+    //       }
+    //     );
+    // }
   }
 
   ngOnDestroy(): void {
-    this.select.unsubscribe();
+
   }
 }

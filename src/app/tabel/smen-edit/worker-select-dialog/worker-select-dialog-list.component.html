@@ -4,11 +4,14 @@
   <div class="col-xs-12">
     <div class="dialog-box">
       <div class="row" *ngFor="let wrkr of workerListService.getWorkers(); let i = index">
-          <div class="col-xs-12">
-            <app-select-dialog-item [wrkr]="wrkr" [index]="i"></app-select-dialog-item>
-          </div>
+        <a
+          class="list-group-item"
+          (click)="onSelect(i)"
+          style="cursor: pointer"
+        >
+          {{wrkr.surname}} {{wrkr.tabelNum}}
+        </a>
       </div>
-
     </div>
   </div>
 </div>

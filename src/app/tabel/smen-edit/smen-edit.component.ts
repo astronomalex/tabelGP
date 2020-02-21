@@ -53,18 +53,8 @@ export class SmenEditComponent implements OnInit {
   }
 
   onAddWorkerTime() {
-    (<FormArray> this.smenForm.get('workersTime')).push(
-      new FormGroup({
-        'tbNum': new FormControl(this.selectedWorker ? this.selectedWorker.tabelNum: null , [Validators.required, Validators.pattern(/^\d\d\d\d$/)]),
-        'grade': new FormControl(null, [Validators.required, Validators.min(1), Validators.max(6)]),
-        'sdelTime': new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
-        'nightTime': new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
-        'prostTime': new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
-        'prikTime': new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
-        'srednTime': new FormControl(null, [Validators.min(0), Validators.max(11.5)])
-      })
-    );
     this.showWorkerSelectDialog();
+
   }
 
   private initForm() {
@@ -131,6 +121,19 @@ export class SmenEditComponent implements OnInit {
         this.selectSub.unsubscribe();
         this.closeSub.unsubscribe();
         this.selectedWorker = wrkr;
+
+        hostViewContainerRef.clear();
+        (<FormArray> this.smenForm.get('workersTime')).push(
+          new FormGroup({
+            'tbNum': new FormControl(wrkr.tabelNum , [Validators.required, Validators.pattern(/^\d\d\d\d$/)]),
+            'grade': new FormControl(null, [Validators.required, Validators.min(1), Validators.max(6)]),
+            'sdelTime': new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
+            'nightTime': new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
+            'prostTime': new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
+            'prikTime': new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
+            'srednTime': new FormControl(null, [Validators.min(0), Validators.max(11.5)])
+          })
+        );
       }
     );
   }
