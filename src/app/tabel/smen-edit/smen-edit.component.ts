@@ -1,4 +1,4 @@
-import {Component, ComponentFactoryResolver, OnInit, ViewChild} from '@angular/core';
+import {Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {SmenListService} from '../smen-list/smen-list.service';
@@ -12,7 +12,7 @@ import {WorkerData} from '../../workers/worker-list/worker-data.model';
   templateUrl: './smen-edit.component.html',
   styleUrls: ['./smen-edit.component.css']
 })
-export class SmenEditComponent implements OnInit {
+export class SmenEditComponent implements OnInit, OnDestroy {
   id: number;
   editMode = false;
   smenForm: FormGroup;
@@ -136,6 +136,10 @@ export class SmenEditComponent implements OnInit {
         );
       }
     );
+  }
+  ngOnDestroy(): void {
+    this.closeSub.unsubscribe();
+    this.selectSub.unsubscribe();
   }
 
 }
