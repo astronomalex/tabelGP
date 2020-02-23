@@ -48,11 +48,14 @@
               <label>Табельный номер</label>
               <div class="col-xs-4 col-md-2">
                 <input
+                  #tbN
                   class="form-control"
                   formControlName="tbNum"
                   type="number">
+                <span *ngIf="this.workerListService.getWorkerByTN(tbN.value)"> {{this.workerListService.getWorkerByTN(tbN.value).surname}}</span>
                 <span *ngIf="!wrk.get('tbNum').valid && wrk.get('tbNum').touched"
                       class="help-block">
+                  <span *ngIf="wrk.get('tbNum').errors['tabelNumNotExist']">Данного номера нет в базе табельных номеров!</span>
                   <span *ngIf="wrk.get('tbNum').errors['required']">Это поле обязательно к заполнению!</span>
                   <span *ngIf="wrk.get('tbNum').errors['pattern']">Табельный номер состоит из четырех цифр</span>
                 </span>
