@@ -17,10 +17,40 @@ export interface AuthResponseData {
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
+  private _emailUser: string = null;
   user = new BehaviorSubject<User>(null);
   private tokenExpirationTimer: any;
 
   constructor(private http: HttpClient, private router: Router) {
+  }
+
+  get emailUser() {
+    return this._emailUser;
+  }
+
+  set emailUser(newEmail) {
+    const nameUser: string = null;
+    if (newEmail.indexOf('@')) {
+      newEmail = newEmail.slice(
+        0,
+        newEmail.slice().indexOf('@')
+        ) + newEmail.slice(
+        newEmail.slice().indexOf('@') + 1,
+        newEmail.length
+        )
+      ;
+    }
+    if (newEmail.indexOf('.')) {
+      newEmail = newEmail.slice(
+        0,
+        newEmail.slice().indexOf('.')
+        ) + newEmail.slice(
+        newEmail.slice().indexOf('.') + 1,
+        newEmail.length
+        )
+      ;
+    }
+    this._emailUser = newEmail;
   }
 
   signup(email: string, password: string) {
@@ -53,14 +83,15 @@ export class AuthService {
         returnSecureToken: true
       }
     ).pipe(catchError(this.handleError), tap(resData => {
+      this._emailUser = resData.email;
         this.handleAuthentication(
           resData.email,
           resData.localId,
           resData.idToken,
           +resData.expiresIn
         );
-      })
-    );
+      }
+    ));
   }
 
   autoLogin() {
@@ -73,6 +104,7 @@ export class AuthService {
     if (!userData) {
       return;
     }
+    this.emailUser = userData.email;
 
     const loadedUser = new User(
       userData.email,
@@ -89,6 +121,7 @@ export class AuthService {
   }
 
   logout() {
+    this._emailUser = null;
     this.user.next(null);
     this.router.navigate(['/auth']);
     localStorage.removeItem('userData');
