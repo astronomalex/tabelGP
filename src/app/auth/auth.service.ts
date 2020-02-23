@@ -83,7 +83,7 @@ export class AuthService {
         returnSecureToken: true
       }
     ).pipe(catchError(this.handleError), tap(resData => {
-      this._emailUser = resData.email;
+      this.emailUser = resData.email;
         this.handleAuthentication(
           resData.email,
           resData.localId,
