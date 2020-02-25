@@ -16,9 +16,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     private dataStorageSevice: DataStorageService,
-    private smenListService: SmenListService,
-    private workerListService: WorkerListService,
-    private authService: AuthService
+    public smenListService: SmenListService,
+    public workerListService: WorkerListService,
+    public authService: AuthService
   ) { }
 
   onSaveData() {

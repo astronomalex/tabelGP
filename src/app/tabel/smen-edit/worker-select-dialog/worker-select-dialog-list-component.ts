@@ -14,7 +14,7 @@ export class WorkerSelectDialogListComponent implements OnInit, OnDestroy {
   @ViewChild(PlaceholderDirective, {static: false}) workerItem: PlaceholderDirective;
 
   constructor(
-    private workerListService: WorkerListService
+    public workerListService: WorkerListService
   ) {
   }
 

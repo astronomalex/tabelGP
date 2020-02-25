@@ -28,7 +28,7 @@ export class SmenEditComponent implements OnInit, OnDestroy {
     private router: Router,
     private smenListService: SmenListService,
     private componentFactoryResolver: ComponentFactoryResolver,
-    private workerListService: WorkerListService
+    public workerListService: WorkerListService
   ) { }
 
   ngOnInit() {
