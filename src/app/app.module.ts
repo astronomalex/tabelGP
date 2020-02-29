@@ -27,6 +27,8 @@ import {SmenListService} from './tabel/smen-list/smen-list.service';
 import {WorkerListService} from './workers/worker-list/worker-list.service';
 import {AuthInterceptorService} from './auth/auth-interceptor.service';
 import {WorkerSelectDialogListComponent} from './tabel/smen-edit/worker-select-dialog/worker-select-dialog-list-component';
+import { StoreModule } from '@ngrx/store';
+import { tabelReducer } from './tabel/store/tabel.reducer';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,8 @@ import {WorkerSelectDialogListComponent} from './tabel/smen-edit/worker-select-d
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    StoreModule.forRoot({tabel: tabelReducer})
   ],
   entryComponents: [
     AlertComponent,

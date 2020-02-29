@@ -6,6 +6,9 @@ import {map, tap} from 'rxjs/operators';
 import {WorkerListService} from '../workers/worker-list/worker-list.service';
 import {WorkerData} from '../workers/worker-list/worker-data.model';
 import {AuthService} from '../auth/auth.service';
+import {Store} from '@ngrx/store';
+import * as TabelActions from '../tabel/store/tabel.actions';
+import * as fromTabel from '../tabel/store/tabel.reducer';
 
 @Injectable({
   providedIn: 'root'
@@ -15,13 +18,14 @@ export class DataStorageService {
     private http: HttpClient,
     private smenListService: SmenListService,
     private workerListService: WorkerListService,
-    private authService: AuthService
+    private authService: AuthService,
+    private store: Store<fromTabel.AppState>
   ) {}
 
   storeSmens() {
-    if (this.authService.emailUser) {
-      console.log(this.authService.emailUser);
-      const url: string = 'https://ng-tabelgp.firebaseio.com/' + this.authService.emailUser + '_smens.json';
+    if (this.authService.locId) {
+      console.log(this.authService.locId);
+      const url: string = 'https://ng-tabelgp.firebaseio.com/' + this.authService.locId + '_smens.json';
       const smens = this.smenListService.getSmens();
       if (smens.length > 0) {
         this.http.put(url, smens)
@@ -35,7 +39,7 @@ export class DataStorageService {
 
   fetchSmens() {
     if (this.authService.emailUser) {
-      const url: string = 'https://ng-tabelgp.firebaseio.com/' + this.authService.emailUser + '_smens.json';
+      const url: string = 'https://ng-tabelgp.firebaseio.com/' + this.authService.locId + '_smens.json';
       return this.http
         .get<Smena[]>(
           url
@@ -50,6 +54,7 @@ export class DataStorageService {
           }),
           tap(smens => {
             this.smenListService.setSmens(smens);
+            this.store.dispatch(new TabelActions.AddSmens(smens));
             console.log(smens);
           })
         );

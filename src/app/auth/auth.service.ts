@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 
 import {User} from './user.model';
 import {environment} from '../../environments/environment';
+import {DataStorageService} from '../shared/data-storage.service';
 
 export interface AuthResponseData {
   kind: string;
@@ -20,39 +21,44 @@ export interface AuthResponseData {
 @Injectable({providedIn: 'root'})
 export class AuthService {
   private _emailUser: string = null;
+  public locId: string = null;
   user = new BehaviorSubject<User>(null);
   private tokenExpirationTimer: any;
 
-  constructor(private http: HttpClient, private router: Router) {
-  }
+  constructor(
+    private http: HttpClient,
+    private router: Router
+    // private dataStorageService:  DataStorageService
+  ) {}
 
   get emailUser() {
     return this._emailUser;
   }
 
   set emailUser(newEmail) {
-    const nameUser: string = null;
-    if (newEmail.indexOf('@')) {
-      newEmail = newEmail.slice(
-        0,
-        newEmail.slice().indexOf('@')
-        ) + newEmail.slice(
-        newEmail.slice().indexOf('@') + 1,
-        newEmail.length
-        )
-      ;
-    }
-    if (newEmail.indexOf('.')) {
-      newEmail = newEmail.slice(
-        0,
-        newEmail.slice().indexOf('.')
-        ) + newEmail.slice(
-        newEmail.slice().indexOf('.') + 1,
-        newEmail.length
-        )
-      ;
-    }
+    // const nameUser: string = null;
+    // if (newEmail.indexOf('@')) {
+    //   newEmail = newEmail.slice(
+    //     0,
+    //     newEmail.slice().indexOf('@')
+    //     ) + newEmail.slice(
+    //     newEmail.slice().indexOf('@') + 1,
+    //     newEmail.length
+    //     )
+    //   ;
+    // }
+    // if (newEmail.indexOf('.')) {
+    //   newEmail = newEmail.slice(
+    //     0,
+    //     newEmail.slice().indexOf('.')
+    //     ) + newEmail.slice(
+    //     newEmail.slice().indexOf('.') + 1,
+    //     newEmail.length
+    //     )
+    //   ;
+    // }
     this._emailUser = newEmail;
+
   }
 
   signup(email: string, password: string) {
@@ -72,6 +78,9 @@ export class AuthService {
           resData.idToken,
           +resData.expiresIn
         );
+        console.log(resData.localId);
+        // this.dataStorageService.fetchWorkers();
+        // this.dataStorageService.fetchSmens();
       })
     );
   }
@@ -86,6 +95,9 @@ export class AuthService {
       }
     ).pipe(catchError(this.handleError), tap(resData => {
       this.emailUser = resData.email;
+      this.locId = resData.localId;
+      // this.dataStorageService.fetchWorkers();
+      // this.dataStorageService.fetchSmens();
         this.handleAuthentication(
           resData.email,
           resData.localId,
@@ -107,6 +119,7 @@ export class AuthService {
       return;
     }
     this.emailUser = userData.email;
+    this.locId = userData.id;
 
     const loadedUser = new User(
       userData.email,
@@ -118,6 +131,8 @@ export class AuthService {
       this.user.next(loadedUser);
       const expirationDuration =
         new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
+      // this.dataStorageService.fetchWorkers();
+      // this.dataStorageService.fetchSmens();
       this.autoLogout(expirationDuration);
     }
   }

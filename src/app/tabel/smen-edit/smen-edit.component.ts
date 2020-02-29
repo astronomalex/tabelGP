@@ -7,6 +7,9 @@ import {WorkerSelectDialogListComponent} from './worker-select-dialog/worker-sel
 import {Subscription} from 'rxjs';
 import {WorkerData} from '../../workers/worker-list/worker-data.model';
 import {WorkerListService} from '../../workers/worker-list/worker-list.service';
+import { Store } from '@ngrx/store';
+import * as TabelActions from '../store/tabel.actions';
+import * as fromTabel from '../store/tabel.reducer';
 
 @Component({
   selector: 'app-smen-edit',
@@ -28,7 +31,8 @@ export class SmenEditComponent implements OnInit, OnDestroy {
     private router: Router,
     private smenListService: SmenListService,
     private componentFactoryResolver: ComponentFactoryResolver,
-    public workerListService: WorkerListService
+    public workerListService: WorkerListService,
+    private store: Store<fromTabel.AppState>
   ) { }
 
   ngOnInit() {
@@ -50,6 +54,7 @@ export class SmenEditComponent implements OnInit, OnDestroy {
       this.smenListService.updateSmena(this.id, this.smenForm.value);
     } else {
       this.smenListService.addSmena(this.smenForm.value);
+      this.store.dispatch(new TabelActions.AddSmena(this.smenForm.value));
     }
     this.onCancel();
   }
