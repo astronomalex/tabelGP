@@ -1,9 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {SmenListService} from '../../tabel/smen-list/smen-list.service';
 import {WorkerListService} from './worker-list.service';
 import {WorkerData} from './worker-data.model';
 import {ActivatedRoute, Router} from '@angular/router';
+import * as fromTabel from '../../tabel/store/tabel.reducer';
+import {Store} from '@ngrx/store';
 
 @Component({
   selector: 'app-worker-list',
@@ -12,25 +14,27 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class WorkerListComponent implements OnInit, OnDestroy {
   subscription: Subscription;
-  workers: WorkerData[];
+  workers: Observable<{workers: WorkerData[]}>;
 
   constructor(
       private smenListService: SmenListService,
       private workerListService: WorkerListService,
       private router: Router,
-      private route: ActivatedRoute
+      private route: ActivatedRoute,
+      private store: Store<fromTabel.AppState>
     ) { }
 
   ngOnInit() {
-    this.subscription = this.workerListService.workersChanged.subscribe(
-      (workers: WorkerData[]) => {
-        this.workers = workers;
-    });
-    this.workers = this.workerListService.getWorkers();
+    this.workers = this.store.select('tabel');
+    // this.subscription = this.workerListService.workersChanged.subscribe(
+    //   (workers: WorkerData[]) => {
+    //     this.workers = workers;
+    // });
+    // this.workers = this.workerListService.getWorkers();
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    // this.subscription.unsubscribe();
   }
 
   onNewWorker() {

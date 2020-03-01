@@ -29,11 +29,12 @@ export class SmenListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.subscription = this.slService.smensCahnged.subscribe(
-      (smens: Smena[]) => {
-        this.smens = this.store.select('tabel');
-      }
-    );
+    this.smens = this.store.select('tabel');
+    // this.subscription = this.slService.smensCahnged.subscribe(
+    //   (smens: Smena[]) => {
+
+    //   }
+    // );
 
     // if (this.authService.locId) {
     //   this.dataStorageService.fetchWorkers();
@@ -48,7 +49,7 @@ export class SmenListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    // this.subscription.unsubscribe();
   }
 
 }

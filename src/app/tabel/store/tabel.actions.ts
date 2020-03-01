@@ -1,20 +1,22 @@
 import {Action} from '@ngrx/store';
 import { WorkerTime } from 'src/app/workers/worker-list/workers-time.model';
 import { Smena } from '../smen-list/smena.model';
+import {WorkerData} from '../../workers/worker-list/worker-data.model';
 
-export const ADD_WORKERTIME = 'ADD_WORKERTIME';
-export const DELETE_WORKERTIME = 'DELETE_WORKER';
+export const SET_WORKERS = 'SET_WORKERS';
+export const ADD_WORKERDATA = 'ADD_WORKERDATA';
+export const DELETE_WORKERDATA = 'DELETE_WORKERDATA';
 export const ADD_SMENA = 'ADD_SMENA';
 export const ADD_SMENS = 'ADD_SMENS';
 
-export class AddWorkerTime implements Action {
-  readonly type = ADD_WORKERTIME;
+export class AddWorkerData implements Action {
+  readonly type = ADD_WORKERDATA;
 
-  constructor(public payload: WorkerTime) {}
+  constructor(public payload: WorkerData) {}
 }
 
-export class DeleteWorkerTime implements Action {
-  readonly type = DELETE_WORKERTIME;
+export class DeleteWorkerData implements Action {
+  readonly type = DELETE_WORKERDATA;
 
   constructor(public payload: {index: number}) {}
 }
@@ -31,8 +33,15 @@ export class AddSmens implements Action {
   constructor(public payload: Smena[]) {}
 }
 
+export class SetWorkers implements Action {
+  readonly type = SET_WORKERS;
+
+  constructor(public payload: WorkerData[]) {}
+}
+
 export type TabelActions =
-  | AddWorkerTime
-  | DeleteWorkerTime
+  | AddWorkerData
+  | DeleteWorkerData
   | AddSmena
-  | AddSmens;
+  | AddSmens
+  | SetWorkers;

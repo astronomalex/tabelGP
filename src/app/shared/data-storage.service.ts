@@ -86,7 +86,8 @@ export class DataStorageService {
           });
         }),
         tap(workers => {
-          this.workerListService.setWorkers(workers);
+          this.store.dispatch(new TabelActions.SetWorkers(workers));
+          // this.workerListService.setWorkers(workers);
           console.log(workers);
         })
       );
