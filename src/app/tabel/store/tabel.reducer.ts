@@ -7,7 +7,7 @@ import {WorkerData} from '../../workers/worker-list/worker-data.model';
 export interface State {
   smens: Smena[];
   workers: WorkerData[];
-  editedWorkerData: Smena;
+  editedWorkerData: WorkerData;
   editedWorkerDataIndex: number;
 }
 

@@ -1,7 +1,6 @@
 <div class="row">
   <div class="col-xs-12">
-    <form [formGroup]="workerForm" (ngSubmit)="onSubmit()">
-
+    <form [formGroup]="workerForm" (ngSubmit)="onSubmit(f)" #f="ngForm">
       <div class="row">
         <div class="col-xs-12">
           <div class="form-group">
