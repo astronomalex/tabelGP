@@ -4,7 +4,7 @@ import {SmenListService} from '../../tabel/smen-list/smen-list.service';
 import {WorkerListService} from './worker-list.service';
 import {WorkerData} from './worker-data.model';
 import {ActivatedRoute, Router} from '@angular/router';
-import * as fromTabel from '../../tabel/store/tabel.reducer';
+import * as fromApp from '../../store/app.reducer';
 import {Store} from '@ngrx/store';
 
 @Component({
@@ -21,7 +21,7 @@ export class WorkerListComponent implements OnInit, OnDestroy {
       private workerListService: WorkerListService,
       private router: Router,
       private route: ActivatedRoute,
-      private store: Store<fromTabel.AppState>
+      private store: Store<fromApp.AppState>
     ) { }
 
   ngOnInit() {

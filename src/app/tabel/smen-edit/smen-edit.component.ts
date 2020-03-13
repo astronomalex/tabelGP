@@ -1,15 +1,16 @@
 import {Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {AbstractControl, FormArray, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {ActivatedRoute, Params, Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+import { Store } from '@ngrx/store';
+
 import {SmenListService} from '../smen-list/smen-list.service';
 import {PlaceholderDirective} from '../../shared/placeholder/placeholder.directive';
-import {WorkerSelectDialogListComponent} from './worker-select-dialog/worker-select-dialog-list-component';
-import {Subscription} from 'rxjs';
-import {WorkerData} from '../../workers/worker-list/worker-data.model';
 import {WorkerListService} from '../../workers/worker-list/worker-list.service';
-import { Store } from '@ngrx/store';
+import {WorkerSelectDialogListComponent} from './worker-select-dialog/worker-select-dialog-list-component';
+import {WorkerData} from '../../workers/worker-list/worker-data.model';
 import * as TabelActions from '../store/tabel.actions';
-import * as fromTabel from '../store/tabel.reducer';
+import * as fromApp from '../../store/app.reducer';
 
 @Component({
   selector: 'app-smen-edit',
@@ -32,7 +33,7 @@ export class SmenEditComponent implements OnInit, OnDestroy {
     private smenListService: SmenListService,
     private componentFactoryResolver: ComponentFactoryResolver,
     public workerListService: WorkerListService,
-    private store: Store<fromTabel.AppState>
+    private store: Store<fromApp.AppState>
   ) { }
 
   ngOnInit() {

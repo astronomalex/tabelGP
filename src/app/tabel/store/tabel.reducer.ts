@@ -11,10 +11,6 @@ export interface State {
   editedWorkerDataIndex: number;
 }
 
-export interface AppState {
-  tabel: State;
-}
-
 const initialState: State = {
   smens: [
     new Smena(new Date(2020, 2, 3).toLocaleDateString(), 'WPS', '1', [
@@ -45,51 +41,6 @@ export function tabelReducer(
       return {
         ...state,
         smens: action.payload
-      };
-    case TabelActions.ADD_WORKERDATA:
-      return {
-        ...state,
-        workers: [...state.workers, action.payload]
-      };
-    case TabelActions.UPDATE_WORKERDATA:
-      const workerData = state.workers[state.editedWorkerDataIndex];
-      const  updatedWorkerData = {
-        ...workerData,
-        ...action.payload
-      };
-      const updatedWorkers = [...state.workers];
-      updatedWorkers[state.editedWorkerDataIndex] = updatedWorkerData;
-      return {
-        ...state,
-        workers: updatedWorkers,
-        editedWorkerDataIndex: -1,
-        editedWorkerData: null
-      };
-    case TabelActions.DELETE_WORKERDATA:
-      return {
-        ...state,
-        workers: state.workers.filter((wrk, wrkIndex) => {
-          return wrkIndex !== state.editedWorkerDataIndex;
-        }),
-        editedWorkerDataIndex: -1,
-        editedWorkerData: null
-      };
-    case TabelActions.START_EDIT_WORKERDATA:
-      return {
-        ...state,
-        editedWorkerDataIndex: action.payload,
-        editedWorkerData: { ...state.workers[action.payload] }
-      };
-    case TabelActions.STOP_EDIT_WORKERDATA:
-      return {
-        ...state,
-        editedWorkerDataIndex: -1,
-        editedWorkerData: null,
-      };
-    case TabelActions.SET_WORKERS:
-      return {
-        ...state,
-        workers: action.payload
       };
     default:
       return state;

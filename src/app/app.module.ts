@@ -29,6 +29,8 @@ import {AuthInterceptorService} from './auth/auth-interceptor.service';
 import {WorkerSelectDialogListComponent} from './tabel/smen-edit/worker-select-dialog/worker-select-dialog-list-component';
 import { StoreModule } from '@ngrx/store';
 import { tabelReducer } from './tabel/store/tabel.reducer';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {environment} from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -59,7 +61,8 @@ import { tabelReducer } from './tabel/store/tabel.reducer';
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    StoreModule.forRoot({tabel: tabelReducer})
+    StoreModule.forRoot({tabel: tabelReducer}),
+    StoreDevtoolsModule.instrument({logOnly: environment.production})
   ],
   entryComponents: [
     AlertComponent,

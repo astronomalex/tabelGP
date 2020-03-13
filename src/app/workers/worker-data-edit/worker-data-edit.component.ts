@@ -1,12 +1,14 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, NgForm, ValidatorFn, Validators} from '@angular/forms';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {WorkerListService} from '../worker-list/worker-list.service';
-import * as fromTabel from '../../tabel/store/tabel.reducer';
-import * as TabelActions from '../../tabel/store/tabel.actions';
 import {Store} from '@ngrx/store';
-import {WorkerData} from '../worker-list/worker-data.model';
 import {Subscription} from 'rxjs';
+
+import * as WorkersActions from '../store/workers.actions';
+import * as TabelActions from '../../tabel/store/tabel.actions';
+import * as fromApp from '../../store/app.reducer';
+import {WorkerListService} from '../worker-list/worker-list.service';
+import {WorkerData} from '../worker-list/worker-data.model';
 
 @Component({
   selector: 'app-worker-data-edit',
@@ -25,7 +27,7 @@ export class WorkerDataEditComponent implements OnInit {
     private route: ActivatedRoute,
     private workerListService: WorkerListService,
     private router: Router,
-    private store: Store<fromTabel.AppState>
+    private store: Store<fromApp.AppState>
   ) { }
 
   ngOnInit() {
@@ -101,10 +103,10 @@ export class WorkerDataEditComponent implements OnInit {
     const newWorkerData = new WorkerData(value.tbNum, value.surname, value.name, value.patronymic, value.grade);
     if (this.editMode) {
       // this.workerListService.updateWorker(this.id, this.workerForm.value);
-      this.store.dispatch(new TabelActions.UpdateWorkerData(newWorkerData));
+      this.store.dispatch(new WorkersActions.UpdateWorkerData(newWorkerData));
     } else {
       // this.workerListService.addWorker(this.workerForm.value);
-      this.store.dispatch(new TabelActions.AddWorkerData(newWorkerData));
+      this.store.dispatch(new WorkersActions.AddWorkerData(newWorkerData));
       this.editMode = false;
       form.reset();
     }

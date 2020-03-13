@@ -8,7 +8,8 @@ import {WorkerData} from '../workers/worker-list/worker-data.model';
 import {AuthService} from '../auth/auth.service';
 import {Store} from '@ngrx/store';
 import * as TabelActions from '../tabel/store/tabel.actions';
-import * as fromTabel from '../tabel/store/tabel.reducer';
+import * as fromApp from '../store/app.reducer';
+import * as WorkersActions from '../workers/store/workers.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class DataStorageService {
     private smenListService: SmenListService,
     private workerListService: WorkerListService,
     private authService: AuthService,
-    private store: Store<fromTabel.AppState>
+    private store: Store<fromApp.AppState>
   ) {}
 
   storeSmens() {
@@ -86,7 +87,7 @@ export class DataStorageService {
           });
         }),
         tap(workers => {
-          this.store.dispatch(new TabelActions.SetWorkers(workers));
+          this.store.dispatch(new WorkersActions.SetWorkers(workers));
           // this.workerListService.setWorkers(workers);
           console.log(workers);
         })

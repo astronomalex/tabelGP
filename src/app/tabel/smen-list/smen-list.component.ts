@@ -7,7 +7,7 @@ import {DataStorageService} from '../../shared/data-storage.service';
 import {AuthService} from '../../auth/auth.service';
 import { Store } from '@ngrx/store';
 import * as TabelActions from '../store/tabel.actions';
-import * as fromTabel from '../store/tabel.reducer';
+import * as fromApp from '../../store/app.reducer';
 
 @Component({
   selector: 'app-smen-list',
@@ -25,7 +25,7 @@ export class SmenListComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private dataStorageService: DataStorageService,
     private authService: AuthService,
-    private store: Store<fromTabel.AppState>
+    private store: Store<fromApp.AppState>
   ) { }
 
   ngOnInit() {
