@@ -3,12 +3,14 @@ import * as AuthActions from './auth.actions';
 
 export interface State {
   user: User;
+  locId: string;
   authError: string;
   loading: boolean;
 }
 
 const initialState = {
   user: null,
+  locId: null,
   authError: null,
   loading: false
 };
@@ -29,6 +31,7 @@ export function authReducer(
         ...state,
         authError: null,
         user: user,
+        locId: action.payload.userId,
         loading: false
       };
     case AuthActions.LOGOUT:

@@ -40,7 +40,25 @@ export function tabelReducer(
     case TabelActions.ADD_SMENS:
       return {
         ...state,
-        smens: action.payload
+        smens: [...state.smens, ...action.payload]
+      };
+    case TabelActions.SET_SMENS:
+      return {
+        ...state,
+        smens: [...action.payload]
+      };
+    case TabelActions.UPDATE_SMENA:
+      const updatedSmena = {
+        ...state.smens[action.payload.index],
+        ...action.payload.newSmena
+      };
+
+      const updatedSmens = [...state.smens];
+      updatedSmens[action.payload.index] = updatedSmena;
+
+      return {
+        ...state,
+        smens: updatedSmens
       };
     default:
       return state;
