@@ -6,7 +6,7 @@
 <div class="row">
   <div class="col-xs-12">
     <app-worker-item
-    *ngFor="let wrk of (workers | async).workers; let i = index"
+    *ngFor="let wrk of workers; let i = index"
     [wrk]="wrk"
     [index]="i"
     >

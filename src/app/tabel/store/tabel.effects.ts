@@ -3,14 +3,14 @@ import {Actions, Effect, ofType} from '@ngrx/effects';
 import {HttpClient} from '@angular/common/http';
 import {Store} from '@ngrx/store';
 
-import * as fromApp from '../store/tabel.reducer';
+import * as fromApp from '../../store/app.reducer';
 import * as TabelActions from './tabel.actions';
 import {map, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 import {Smena} from '../smen-list/smena.model';
 
 
 @Injectable()
-export class TabelEffect {
+export class TabelEffects {
   @Effect()
   fetchSmens = this.actions$.pipe(
     ofType(TabelActions.FETCH_SMENS),
@@ -28,7 +28,7 @@ export class TabelEffect {
           });
         }),
         tap(smens => {
-          this.store.dispatch(new TabelActions.AddSmens(smens));
+          this.store.dispatch(new TabelActions.SetSmens(smens));
           console.log(smens);
         })
       );
@@ -70,8 +70,8 @@ export class TabelEffect {
     ofType(TabelActions.STORE_SMENS),
     withLatestFrom(this.store.select('tabel')),
     withLatestFrom(this.store.select('auth')),
-    switchMap(([actionData, tabelState, authState]) => {
-      const url: string = 'https://ng-tabelgp.firebaseio.com/' + authState.locId + '_smens.json';
+    switchMap(([[actionData, tabelState], authState]) => {
+      const url = 'https://ng-tabelgp.firebaseio.com/' + authState.locId + '_smens.json';
       return this.http.put(url, tabelState.smens);
     })
   );
@@ -95,6 +95,6 @@ export class TabelEffect {
   constructor(
     private actions$: Actions,
     private http: HttpClient,
-    private store: Store<fromApp.State>
+    private store: Store<fromApp.AppState>
   ) {}
 }

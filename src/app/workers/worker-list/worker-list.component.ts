@@ -6,6 +6,7 @@ import {WorkerData} from './worker-data.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as fromApp from '../../store/app.reducer';
 import {Store} from '@ngrx/store';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-worker-list',
@@ -14,7 +15,7 @@ import {Store} from '@ngrx/store';
 })
 export class WorkerListComponent implements OnInit, OnDestroy {
   subscription: Subscription;
-  workers: Observable<{workers: WorkerData[]}>;
+  workers: WorkerData[];
 
   constructor(
       private smenListService: SmenListService,
@@ -25,7 +26,13 @@ export class WorkerListComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit() {
-    this.workers = this.store.select('tabel');
+    this.subscription = this.store.select('tabel').pipe(
+      map(workersState => workersState.workers)
+    ).subscribe(
+      workers => {
+        this.workers = workers;
+      }
+    );
     // this.subscription = this.workerListService.workersChanged.subscribe(
     //   (workers: WorkerData[]) => {
     //     this.workers = workers;
@@ -34,7 +41,7 @@ export class WorkerListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // this.subscription.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
   onNewWorker() {

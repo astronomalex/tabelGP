@@ -3,7 +3,6 @@ import {Smena} from './smena.model';
 import {SmenListService} from './smen-list.service';
 import {Subscription, Observable} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
-import {DataStorageService} from '../../shared/data-storage.service';
 import {AuthService} from '../../auth/auth.service';
 import { Store } from '@ngrx/store';
 import * as TabelActions from '../store/tabel.actions';
@@ -23,7 +22,6 @@ export class SmenListComponent implements OnInit, OnDestroy {
     private slService: SmenListService,
     private router: Router,
     private route: ActivatedRoute,
-    private dataStorageService: DataStorageService,
     private authService: AuthService,
     private store: Store<fromApp.AppState>
   ) { }

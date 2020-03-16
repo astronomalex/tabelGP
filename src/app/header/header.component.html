@@ -1,7 +1,7 @@
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a href="#" class="navbar-brand">Табель <br>{{authService.emailUser}}</a>
+      <a href="#" class="navbar-brand">Табель <br>{{userEmail}}</a>
     </div>
     <ul class="nav navbar-nav">
       <li routerLinkActive="active" *ngIf="isAuthenticated">
@@ -20,8 +20,8 @@
           style="cursor: pointer;"
           class="dropdown-toggle" role="button">Управление базой</a>
         <ul class="dropdown-menu">
-          <li><a style="cursor: pointer;" (click)="onSaveData()" *ngIf="(workerListService.getWorkers().length > 0) &&
-          (smenListService.getSmens().length > 0)">Сохранить</a></li>
+          <li><a style="cursor: pointer;" (click)="onSaveData()" *ngIf="(workersLength > 0) &&
+          (smenListLength > 0)">Сохранить</a></li>
           <li><a style="cursor: pointer;" (click)="onFetchData()">Загрузить</a></li>
 <!--          <li><a style="cursor: pointer;" (click)="onSaveWorkers()" *ngIf="workerListService.getWorkers().length > 0">Сохранить данные работников</a></li>-->
 <!--          <li><a style="cursor: pointer;" (click)="onFetchWorkers()">Загрузить данные работников</a></li>-->

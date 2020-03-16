@@ -28,9 +28,14 @@ import {WorkerListService} from './workers/worker-list/worker-list.service';
 import {AuthInterceptorService} from './auth/auth-interceptor.service';
 import {WorkerSelectDialogListComponent} from './tabel/smen-edit/worker-select-dialog/worker-select-dialog-list-component';
 import { StoreModule } from '@ngrx/store';
-import { tabelReducer } from './tabel/store/tabel.reducer';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
+
+import * as fromApp from './store/app.reducer';
+import {EffectsModule} from '@ngrx/effects';
+import {AuthEffects} from './auth/store/auth.effect';
+import {WorkersEffects} from './workers/store/workers.effects';
+import {TabelEffects} from './tabel/store/tabel.effects';
 
 @NgModule({
   declarations: [
@@ -61,7 +66,8 @@ import {environment} from '../environments/environment';
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    StoreModule.forRoot({tabel: tabelReducer}),
+    EffectsModule.forRoot([AuthEffects, WorkersEffects, TabelEffects]),
+    StoreModule.forRoot(fromApp.appReducer),
     StoreDevtoolsModule.instrument({logOnly: environment.production})
   ],
   entryComponents: [

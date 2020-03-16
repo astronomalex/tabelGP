@@ -7,6 +7,8 @@ export const UPDATE_WORKERDATA = '[Workers] Update WorkerData';
 export const DELETE_WORKERDATA = '[Workers] Delete WorkerData';
 export const START_EDIT_WORKERDATA = '[Workers] Start Edit WorkerData';
 export const STOP_EDIT_WORKERDATA = '[Workers] Stop Edit WorkerData';
+export const FETCH_WORKERS = '[Workers] Fetch Workers';
+export const STORE_WORKERS = '[Workers] Store Workers';
 
 export class AddWorkerData implements Action {
   readonly type = ADD_WORKERDATA;
@@ -41,10 +43,21 @@ export class StopEditWorkerData implements Action {
   readonly type = STOP_EDIT_WORKERDATA;
 }
 
+export class FetchWorkers implements Action {
+  readonly type = FETCH_WORKERS;
+}
+
+export class StoreWorkers implements Action {
+  readonly type = STORE_WORKERS;
+}
+
+
 export type WorkersActions =
   | SetWorkers
   | AddWorkerData
   | UpdateWorkerData
   | DeleteWorkerData
   | StartEditWorkerData
-  | StopEditWorkerData;
+  | StopEditWorkerData
+  | FetchWorkers
+  | StoreWorkers;
