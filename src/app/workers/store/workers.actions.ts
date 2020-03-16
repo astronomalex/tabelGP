@@ -30,7 +30,7 @@ export class SetWorkers implements Action {
 export class DeleteWorkerData implements Action {
   readonly type = DELETE_WORKERDATA;
 
-  constructor(public payload: {index: number}) {}
+  constructor(public payload: number) {}
 }
 
 export class StartEditWorkerData implements Action {

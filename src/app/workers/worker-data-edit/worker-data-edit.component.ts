@@ -31,7 +31,7 @@ export class WorkerDataEditComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.subscription = this.store.select('tabel').subscribe(
+    this.subscription = this.store.select('workers').subscribe(
       stateData => {
         if (stateData.editedWorkerDataIndex > -1) {
           this.editMode = true;

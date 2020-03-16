@@ -26,7 +26,7 @@ export class WorkerListComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit() {
-    this.subscription = this.store.select('tabel').pipe(
+    this.subscription = this.store.select('workers').pipe(
       map(workersState => workersState.workers)
     ).subscribe(
       workers => {
