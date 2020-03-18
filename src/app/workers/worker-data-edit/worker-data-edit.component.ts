@@ -57,10 +57,7 @@ export class WorkerDataEditComponent implements OnInit {
     //     }
     //   }
     // );
-
-      // this.initForm();
-
-
+    this.initForm();
   }
 
   initForm() {
@@ -71,12 +68,12 @@ export class WorkerDataEditComponent implements OnInit {
     let patronymic = '';
 
     if (this.editMode) {
-      // const workerData = this.workerListService.getWorkerById(this.id);
-      // tbNum = workerData.tabelNum;
-      // grade = workerData.grade;
-      // surname = workerData.surname;
-      // name = workerData.name;
-      // patronymic = workerData.patronymic;
+      const workerData = this.store.select('workers').;
+      tbNum = workerData.tabelNum;
+      grade = workerData.grade;
+      surname = workerData.surname;
+      name = workerData.name;
+      patronymic = workerData.patronymic;
     }
     this.workerForm = new FormGroup({
       'tabelNum': new FormControl(tbNum, [Validators.required, this.tabelNumValidator(), Validators.pattern(/^\d\d\d\d$/)]),
