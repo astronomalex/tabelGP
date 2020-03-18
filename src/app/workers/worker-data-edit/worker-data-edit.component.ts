@@ -33,7 +33,7 @@ export class WorkerDataEditComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.params.subscribe(
     (params: Params) => {
-      this.id = params['id'];
+      this.id = +params['id'];
       this.editMode = params['id'] != null;
       // if (this.editMode && this.workerListService.getWorkers().length < this.id) {
       //   this.router.navigate(['worker-list']);
