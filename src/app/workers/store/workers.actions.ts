@@ -19,7 +19,7 @@ export class AddWorkerData implements Action {
 export class UpdateWorkerData implements Action {
   readonly type = UPDATE_WORKERDATA;
 
-  constructor(public payload: WorkerData) {}
+  constructor(public payload: {index: number, newWorkerData: WorkerData}) {}
 }
 export class SetWorkers implements Action {
   readonly type = SET_WORKERS;

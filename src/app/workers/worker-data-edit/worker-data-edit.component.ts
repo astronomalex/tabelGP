@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, NgForm, ValidatorFn, Validators} from '@angular/forms';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {Store} from '@ngrx/store';
@@ -9,19 +9,19 @@ import * as TabelActions from '../../tabel/store/tabel.actions';
 import * as fromApp from '../../store/app.reducer';
 import {WorkerListService} from '../worker-list/worker-list.service';
 import {WorkerData} from '../worker-list/worker-data.model';
+import {map, withLatestFrom} from 'rxjs/operators';
 
 @Component({
   selector: 'app-worker-data-edit',
   templateUrl: './worker-data-edit.component.html',
   styleUrls: ['./worker-data-edit.component.css']
 })
-export class WorkerDataEditComponent implements OnInit {
-  @ViewChild('f', {static: false}) wDForm: NgForm;
+export class WorkerDataEditComponent implements OnInit, OnDestroy {
+  // @ViewChild('f', {static: false}) wDForm: NgForm;
   workerForm: FormGroup;
   editMode = false;
   id: number;
-  editedItem: WorkerData;
-  subscription: Subscription;
+  storeSub: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,36 +31,18 @@ export class WorkerDataEditComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.subscription = this.store.select('workers').subscribe(
-      stateData => {
-        if (stateData.editedWorkerDataIndex > -1) {
-          this.editMode = true;
-          this.editedItem = stateData.editedWorkerData;
-          this.wDForm.setValue({
-            tabelNum: this.editedItem.tabelNum,
-            grade: this.editedItem.grade,
-            surname: this.editedItem.surname,
-            name: this.editedItem.name,
-            patronymic: this.editedItem.patronymic
-          });
-        } else {
-          this.editMode = false;
-        }
+    this.route.params.subscribe(
+    (params: Params) => {
+      this.id = params['id'];
+      this.editMode = params['id'] != null;
+      // if (this.editMode && this.workerListService.getWorkers().length < this.id) {
+      //   this.router.navigate(['worker-list']);
+      this.initForm();
       }
     );
-    // this.route.params.subscribe(
-    //   (params: Params) => {
-    //     this.id = params['id'];
-    //     this.editMode = params['id'] != null;
-    //     if (this.editMode && this.workerListService.getWorkers().length < this.id) {
-    //       this.router.navigate(['worker-list']);
-    //     }
-    //   }
-    // );
-    this.initForm();
   }
 
-  initForm() {
+  private initForm() {
     let tbNum = '';
     let grade = '';
     let surname = '';
@@ -68,12 +50,22 @@ export class WorkerDataEditComponent implements OnInit {
     let patronymic = '';
 
     if (this.editMode) {
-      const workerData = this.store.select('workers').;
-      tbNum = workerData.tabelNum;
-      grade = workerData.grade;
-      surname = workerData.surname;
-      name = workerData.name;
-      patronymic = workerData.patronymic;
+      this.storeSub = this.store.select('workers')
+        .pipe(
+          map(
+            workersState => {
+              return workersState.workers.find((wrk, index) => {
+                return index === this.id;
+              });
+            }
+          )
+        ).subscribe(wrk => {
+          tbNum = wrk.tabelNum;
+          grade = wrk.grade;
+          surname = wrk.surname;
+          name = wrk.name;
+          patronymic = wrk.patronymic;
+        });
     }
     this.workerForm = new FormGroup({
       'tabelNum': new FormControl(tbNum, [Validators.required, this.tabelNumValidator(), Validators.pattern(/^\d\d\d\d$/)]),
@@ -82,30 +74,20 @@ export class WorkerDataEditComponent implements OnInit {
       'name': new FormControl(name, Validators.required),
       'patronymic': new FormControl(patronymic)
     });
-    // if (this.editMode) {
-    //   });
-    // } else {
-    //   this.workerForm = new FormGroup({
-    //     'tabelNum': new FormControl(tbNum, [Validators.required, this.tabelNumValidator(), Validators.pattern(/^\d\d\d\d$/)]),
-    //     'grade': new FormControl(grade),
-    //     'surname': new FormControl(surname, Validators.required),
-    //     'name': new FormControl(name, Validators.required),
-    //     'patronymic': new FormControl(patronymic)
-    //   });
-    // }
   }
 
-  onSubmit(form: NgForm) {
-    const value = form.value;
-    const newWorkerData = new WorkerData(value.tbNum, value.surname, value.name, value.patronymic, value.grade);
+  onSubmit() {
+    // const value = form.value;
+    // const newWorkerData = new WorkerData(value.tbNum, value.surname, value.name, value.patronymic, value.grade);
     if (this.editMode) {
       // this.workerListService.updateWorker(this.id, this.workerForm.value);
-      this.store.dispatch(new WorkersActions.UpdateWorkerData(newWorkerData));
+      this.store.dispatch(new WorkersActions.UpdateWorkerData({
+        index: this.id,
+        newWorkerData: this.workerForm.value
+      }));
     } else {
       // this.workerListService.addWorker(this.workerForm.value);
-      this.store.dispatch(new WorkersActions.AddWorkerData(newWorkerData));
-      this.editMode = false;
-      form.reset();
+      this.store.dispatch(new WorkersActions.AddWorkerData(this.workerForm.value));
     }
     this.onCancel();
   }
@@ -115,23 +97,47 @@ export class WorkerDataEditComponent implements OnInit {
   }
 
   tabelNumValidator(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: boolean} | null => {
-      if (!this.workerListService.getWorkerByTN(control.value)) {
+    let workerCont: WorkerData = null;
+    let workerData: WorkerData = null;
+
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+      this.store.select('workers').pipe(
+        map(workersState => {
+          return [
+            workersState.workers.find((wrk, index) => {
+              return index === this.id;
+            }),
+            workersState.workers.find((wrk, index) => {
+              return index === control.value;
+            })
+          ];
+        })
+      ).subscribe(([wrk, wrkContr]) => {
+        workerData = wrk;
+        workerCont = wrkContr;
+      });
+
+
+      //   const valid = !(
+      //     this.workerListService.getWorkerByTN(control.value) &&
+      //     (this.workerListService.getWorkerByTN(control.value) !== this.workerListService.getWorkerById(this.id))
+      //   );
+      //   console.log(this.workerForm);
+      //   return (valid) ? null : {tabelNumExist: true};
+      if (!workerData) {
         return null;
       } else {
-        if (this.workerListService.getWorkerByTN(control.value) === this.workerListService.getWorkerById(this.id)) {
+        if (workerCont === workerData) {
           return null;
         } else {
           return {tabelNumExist: true};
         }
       }
-    //   const valid = !(
-    //     this.workerListService.getWorkerByTN(control.value) &&
-    //     (this.workerListService.getWorkerByTN(control.value) !== this.workerListService.getWorkerById(this.id))
-    //   );
-    //   console.log(this.workerForm);
-    //   return (valid) ? null : {tabelNumExist: true};
-     };
+    };
   }
 
+  ngOnDestroy(): void {
+    this.storeSub.unsubscribe();
+  }
 }
+
