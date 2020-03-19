@@ -1,17 +1,12 @@
 import {WorkerData} from '../worker-list/worker-data.model';
 import * as WorkersActions from './workers.actions';
-import * as TabelActions from '../../tabel/store/tabel.actions';
 
 export interface State {
   workers: WorkerData[];
-  editedWorkerData: WorkerData;
-  editedWorkerDataIndex: number;
 }
 
 const initialState: State = {
-  workers: [],
-  editedWorkerData: null,
-  editedWorkerDataIndex: -1
+  workers: []
 };
 
 export function workersReducer(
@@ -25,39 +20,23 @@ export function workersReducer(
         workers: [...state.workers, action.payload]
       };
     case WorkersActions.UPDATE_WORKERDATA:
-      const workerData = state.workers[state.editedWorkerDataIndex];
-      const  updatedWorkerData = {
-        ...workerData,
-        ...action.payload
+      // const workerData = state.workers[state.editedWorkerDataIndex];
+      const updatedWorkerData = {
+        ...state.workers[action.payload.index],
+        ...action.payload.newWorkerData
       };
       const updatedWorkers = [...state.workers];
-      updatedWorkers[state.editedWorkerDataIndex] = updatedWorkerData;
+      updatedWorkers[action.payload.index] = updatedWorkerData;
       return {
         ...state,
-        workers: updatedWorkers,
-        editedWorkerDataIndex: -1,
-        editedWorkerData: null
+        workers: updatedWorkers
       };
     case WorkersActions.DELETE_WORKERDATA:
       return {
         ...state,
         workers: state.workers.filter((wrk, wrkIndex) => {
-          return wrkIndex !== state.editedWorkerDataIndex;
-        }),
-        editedWorkerDataIndex: -1,
-        editedWorkerData: null
-      };
-    case WorkersActions.START_EDIT_WORKERDATA:
-      return {
-        ...state,
-        editedWorkerDataIndex: action.payload,
-        editedWorkerData: { ...state.workers[action.payload] }
-      };
-    case WorkersActions.STOP_EDIT_WORKERDATA:
-      return {
-        ...state,
-        editedWorkerDataIndex: -1,
-        editedWorkerData: null,
+          return wrkIndex !== action.payload;
+        })
       };
     case WorkersActions.SET_WORKERS:
       return {

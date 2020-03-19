@@ -96,48 +96,57 @@ export class WorkerDataEditComponent implements OnInit, OnDestroy {
     this.router.navigate(['..'], {relativeTo: this.route});
   }
 
-  tabelNumValidator(): ValidatorFn {
-    let workerCont: WorkerData = null;
-    let workerData: WorkerData = null;
-
-    return (control: AbstractControl): { [key: string]: boolean } | null => {
-      this.store.select('workers').pipe(
-        map(workersState => {
-          return [
-            workersState.workers.find((wrk, index) => {
-              return wrk.tabelNum === control.value;
-            }),
-            workersState.workers.find((wrk, index) => {
-              return index === control.value;
-            })
-          ];
-        })
-      ).subscribe(([wrk, wrkContr]) => {
-        workerData = wrk;
-        workerCont = wrkContr;
-      });
-
-
-      //   const valid = !(
-      //     this.workerListService.getWorkerByTN(control.value) &&
-      //     (this.workerListService.getWorkerByTN(control.value) !== this.workerListService.getWorkerById(this.id))
-      //   );
-      //   console.log(this.workerForm);
-      //   return (valid) ? null : {tabelNumExist: true};
-      if (!workerData) {
-        return null;
-      } else {
-        if (workerCont === workerData) {
-          return null;
-        } else {
-          return {tabelNumExist: true};
-        }
-      }
-    };
-  }
 
   ngOnDestroy(): void {
-    this.storeSub.unsubscribe();
+    if (this.storeSub) {
+      this.storeSub.unsubscribe();
+    }
+  }
+
+  tabelNumValidator(): ValidatorFn {
+    let notValid = true;
+
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+      if (this.editMode) {
+        this.store.select('workers').pipe(
+          map(workersState => {
+            return workersState.workers.filter(
+              (elem, index, array) => {
+                return index === this.id;
+              }
+            );
+          })
+        ).subscribe((wrkers) => {
+          notValid = !wrkers.find(
+            (wr, i) => {
+              return wr.tabelNum === control.value;
+            }
+          );
+          console.log('notValid: ' + notValid);
+        });
+
+      } else {
+        this.store.select('workers').pipe(
+          map(workersState => {
+            return workersState.workers;
+              }
+            )
+          ).subscribe((wrkers) => {
+          notValid = !wrkers.find(
+            (wr, i) => {
+              return wr.tabelNum === control.value;
+            }
+          );
+          console.log('notValid: ' + notValid);
+        });
+
+      }
+      if (!notValid) {
+        return null;
+      } else {
+        return {tabelNumExist: true};
+      }
+    };
   }
 }
 
