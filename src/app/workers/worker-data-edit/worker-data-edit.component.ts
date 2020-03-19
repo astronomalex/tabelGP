@@ -105,7 +105,7 @@ export class WorkerDataEditComponent implements OnInit, OnDestroy {
         map(workersState => {
           return [
             workersState.workers.find((wrk, index) => {
-              return index === this.id;
+              return wrk.tabelNum === control.value;
             }),
             workersState.workers.find((wrk, index) => {
               return index === control.value;
