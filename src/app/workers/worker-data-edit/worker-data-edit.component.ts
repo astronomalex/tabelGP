@@ -3,13 +3,11 @@ import {AbstractControl, FormControl, FormGroup, NgForm, ValidatorFn, Validators
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {Store} from '@ngrx/store';
 import {Subscription} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 import * as WorkersActions from '../store/workers.actions';
-import * as TabelActions from '../../tabel/store/tabel.actions';
 import * as fromApp from '../../store/app.reducer';
-import {WorkerListService} from '../worker-list/worker-list.service';
-import {WorkerData} from '../worker-list/worker-data.model';
-import {map, withLatestFrom} from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-worker-data-edit',
@@ -25,7 +23,6 @@ export class WorkerDataEditComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private workerListService: WorkerListService,
     private router: Router,
     private store: Store<fromApp.AppState>
   ) { }
@@ -33,8 +30,8 @@ export class WorkerDataEditComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.params.subscribe(
     (params: Params) => {
-      this.id = +params['id'];
-      this.editMode = params['id'] != null;
+      this.id = +params.id;
+      this.editMode = params.id != null;
       // if (this.editMode && this.workerListService.getWorkers().length < this.id) {
       //   this.router.navigate(['worker-list']);
       this.initForm();
@@ -68,11 +65,11 @@ export class WorkerDataEditComponent implements OnInit, OnDestroy {
         });
     }
     this.workerForm = new FormGroup({
-      'tabelNum': new FormControl(tbNum, [Validators.required, this.tabelNumValidator(), Validators.pattern(/^\d\d\d\d$/)]),
-      'grade': new FormControl(grade, [Validators.min(1), Validators.max(6)]),
-      'surname': new FormControl(surname, Validators.required),
-      'name': new FormControl(name, Validators.required),
-      'patronymic': new FormControl(patronymic)
+      tabelNum: new FormControl(tbNum, [Validators.required, this.tabelNumValidator(), Validators.pattern(/^\d\d\d\d$/)]),
+      grade: new FormControl(grade, [Validators.min(1), Validators.max(6)]),
+      surname: new FormControl(surname, Validators.required),
+      name: new FormControl(name, Validators.required),
+      patronymic: new FormControl(patronymic)
     });
   }
 
@@ -112,12 +109,12 @@ export class WorkerDataEditComponent implements OnInit, OnDestroy {
           map(workersState => {
             return workersState.workers.filter(
               (elem, index, array) => {
-                return index === this.id;
+                return index !== this.id;
               }
             );
           })
         ).subscribe((wrkers) => {
-          notValid = !wrkers.find(
+          notValid = !!wrkers.find(
             (wr, i) => {
               return wr.tabelNum === control.value;
             }
@@ -128,11 +125,11 @@ export class WorkerDataEditComponent implements OnInit, OnDestroy {
       } else {
         this.store.select('workers').pipe(
           map(workersState => {
-            return workersState.workers;
+            return workersState.workers.slice();
               }
             )
           ).subscribe((wrkers) => {
-          notValid = !wrkers.find(
+          notValid = !!wrkers.find(
             (wr, i) => {
               return wr.tabelNum === control.value;
             }

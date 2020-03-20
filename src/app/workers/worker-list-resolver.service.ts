@@ -26,7 +26,7 @@ export class WorkerListResolverService implements Resolve<WorkerData[]> {
         }
       ),
       switchMap(workers => {
-        if (workers.length) {
+        if (workers.length === 0) {
           this.store.dispatch(new WorkersActions.FetchWorkers());
           return this.actions$.pipe(
             ofType(WorkersActions.SET_WORKERS),

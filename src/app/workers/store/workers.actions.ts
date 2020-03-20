@@ -5,8 +5,6 @@ export const SET_WORKERS = '[Workers] Set Workers';
 export const ADD_WORKERDATA = '[Workers] Add WorkerData';
 export const UPDATE_WORKERDATA = '[Workers] Update WorkerData';
 export const DELETE_WORKERDATA = '[Workers] Delete WorkerData';
-export const START_EDIT_WORKERDATA = '[Workers] Start Edit WorkerData';
-export const STOP_EDIT_WORKERDATA = '[Workers] Stop Edit WorkerData';
 export const FETCH_WORKERS = '[Workers] Fetch Workers';
 export const STORE_WORKERS = '[Workers] Store Workers';
 
@@ -33,16 +31,6 @@ export class DeleteWorkerData implements Action {
   constructor(public payload: number) {}
 }
 
-export class StartEditWorkerData implements Action {
-  readonly type = START_EDIT_WORKERDATA;
-
-  constructor(public payload: number) {}
-}
-
-export class StopEditWorkerData implements Action {
-  readonly type = STOP_EDIT_WORKERDATA;
-}
-
 export class FetchWorkers implements Action {
   readonly type = FETCH_WORKERS;
 }
@@ -57,7 +45,5 @@ export type WorkersActions =
   | AddWorkerData
   | UpdateWorkerData
   | DeleteWorkerData
-  | StartEditWorkerData
-  | StopEditWorkerData
   | FetchWorkers
   | StoreWorkers;
