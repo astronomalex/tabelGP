@@ -33,7 +33,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onFetchData() {
     this.store.dispatch(new WorkerActions.FetchWorkers());
-    // this.store.dispatch(new TabelActions.FetchSmens());
+    this.store.dispatch(new TabelActions.FetchSmens());
     // this.dataStorageSevice.fetchSmens().subscribe();
     // this.dataStorageSevice.fetchWorkers().subscribe();
   }

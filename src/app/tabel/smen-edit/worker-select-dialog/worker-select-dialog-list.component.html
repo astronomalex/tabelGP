@@ -3,7 +3,7 @@
 <div class="row">
   <div class="col-xs-12">
     <div class="dialog-box">
-      <div class="row" *ngFor="let wrkr of workerListService.getWorkers(); let i = index">
+      <div class="row" *ngFor="let wrkr of workers; let i = index">
         <a
           class="list-group-item"
           (click)="onSelect(i)"

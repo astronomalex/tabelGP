@@ -16,8 +16,7 @@ export class TabelEffects {
     ofType(TabelActions.FETCH_SMENS),
     withLatestFrom(this.store.select('auth')),
     switchMap(([actionData, authState]) => {
-      const url: string = 'https://ng-tabelgp.firebaseio.com/'
-        + authState.locId + '_smens.json';
+      const url: string = 'https://ng-tabelgp.firebaseio.com/' + authState.locId + '_smens.json';
       return this.http.get<Smena[]>(url).pipe(
         map(smens => {
           return smens.map(smena => {
@@ -27,9 +26,10 @@ export class TabelEffects {
             };
           });
         }),
-        tap(smens => {
-          this.store.dispatch(new TabelActions.SetSmens(smens));
+        map(smens => {
+          // this.store.dispatch(new TabelActions.SetSmens(smens));
           console.log(smens);
+          return new TabelActions.SetSmens(smens);
         })
       );
       }

@@ -17,7 +17,7 @@ export class WorkerDetailComponent implements OnInit, OnDestroy {
   id: number;
   wrk: WorkerData;
   subscription: Subscription;
-  workers: Observable<{workers: WorkerData[]}>
+  workers: Observable<{workers: WorkerData[]}>;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,7 +29,7 @@ export class WorkerDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.route.params.pipe(map(params => {
-        return +params['id'];
+        return +params.id;
       }), switchMap(id => {
         this.id = id;
         return this.store.select('workers');

@@ -26,7 +26,7 @@ export class SmenListResolverService implements Resolve<Smena[]> {
         }
       ),
       switchMap(smens => {
-        if (smens.length) {
+        if (smens.length === 0) {
           this.store.dispatch(new TabelActions.FetchSmens());
           return this.actions$.pipe(
             ofType(TabelActions.SET_SMENS),

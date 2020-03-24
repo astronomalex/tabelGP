@@ -27,6 +27,7 @@ export class SmenListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    // this.store.dispatch(new TabelActions.FetchSmens());
     this.smens = this.store.select('tabel');
     // this.subscription = this.slService.smensCahnged.subscribe(
     //   (smens: Smena[]) => {

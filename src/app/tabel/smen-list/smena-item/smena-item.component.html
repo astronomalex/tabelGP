@@ -1,6 +1,7 @@
 <a
   [routerLink]="[index]"
   routerLinkActive="active"
+  (click)="onItemClick(index)"
   style="cursor: pointer"
   class="list-group-item clearfix">
   <p>Дата: {{ smena.dateSmen }}. №Смены: {{ smena.numSmen}}. Машина: {{ smena.mashine }}</p>

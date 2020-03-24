@@ -1,77 +1,97 @@
-import {AfterContentInit, AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Params, Router} from '@angular/router';
-import {map, switchMap, withLatestFrom} from 'rxjs/operators';
-import {Store} from '@ngrx/store';
+import {Component, OnDestroy} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {takeUntil} from 'rxjs/operators';
+import {select, Store} from '@ngrx/store';
 
 import {Smena} from '../smen-list/smena.model';
-import {SmenListService} from '../smen-list/smen-list.service';
 import {WorkerData} from '../../workers/worker-list/worker-data.model';
-import {WorkerListService} from '../../workers/worker-list/worker-list.service';
 import {WorkerTime} from '../../workers/worker-list/workers-time.model';
 import * as fromApp from '../../store/app.reducer';
+import * as TabelActions from '../store/tabel.actions';
+import {getSelectedSmena, getSelectedSmenaWorkersData} from '../selectors/app.selector';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-smena-detail',
   templateUrl: './smena-detail.component.html',
   styleUrls: ['./smena-detail.component.css']
 })
-export class SmenaDetailComponent implements OnInit, OnDestroy {
+export class SmenaDetailComponent implements OnDestroy {
   smena: Smena;
   id: number;
   workersTabelNums: string[];
   workers: WorkerData[] = [];
   wrkTime: WorkerTime;
+  public selectedWorkers: WorkerData[];
+  public selectedSmena$ = this.store.pipe(select(getSelectedSmena));
+  private ngUnsubscribe$ = new Subject();
+  public selectedWorkers$ = this.store.pipe(select(getSelectedSmenaWorkersData)).pipe(
+    takeUntil(this.ngUnsubscribe$)
+  ).subscribe(
+    item => this.selectedWorkers = item
+  );
 
   constructor(
     private route: ActivatedRoute,
-    private smenListService: SmenListService,
-    private workerListService: WorkerListService,
     private store: Store<fromApp.AppState>,
     private router: Router
   ) {
   }
 
-  ngOnInit(): void {
-    this.route.params.pipe(
-      map(
-        params => {
-          return +params.id;
-        }),
-      switchMap(id => {
-        this.id = id;
-        return this.store.select('tabel');
-      }),
-      map(tabelState => {
-        return tabelState.smens.find(
-          (smena, index) => {
-            return index === this.id;
-          });
-        }
-      ),
-      withLatestFrom(this.store.select('workers')),
-      map(([smena, workersState]) => {
-        return ([smena, workersState.workers]);
-      })
-    ).subscribe(([smena, workers]) => {
-      this.smena = smena;
-      this.workers = workers;
-      for (const workerTime of this.smena.workersTime) {
-        console.log(workerTime);
-        // this.workersTabelNums.push(workerTime.tbNum);
-        this.workers.push(
-          this.store.select('workers')
-      })
-        );
-        this.workers.push(this.workerListService.getWorkerByTN(workerTime.tbNum));
-    });
-    // this.smena = this.smenListService.getSmenById(this.id);
-
-          //
-          // }
-  }
+  // ngOnInit(): void {
+  //   this.route.params.pipe(
+  //     map(
+  //       params => {
+  //         return +params.id;
+  //       }),
+  //     switchMap(id => {
+  //       this.id = id;
+  //       return this.store.select('tabel');
+  //     }),
+  //     map(tabelState => {
+  //       return tabelState.smens.find(
+  //         (smena, index) => {
+  //           return index === this.id;
+  //         });
+  //       }
+  //     )
+  //   ).subscribe(smena => {
+  //     this.smena = smena;
+  //     for (const workerTime of this.smena.workersTime) {
+  //           console.log(workerTime);
+  //           this.workersTabelNums.push(workerTime.tbNum);
+  //         }
+  //   });
+  //     // map((smena) => {
+  //     //   this.smena = smena;
+  //     //   for (const workerTime of this.smena.workersTime) {
+  //     //     console.log(workerTime);
+  //     //     // this.workersTabelNums.push(workerTime.tbNum);
+  //     //     return this.store.select('workers');
+  //     //   }
+  //     //   ),
+  //
+  //
+  //
+  //
+  //
+  //   //         map(wokersState => {
+  //   //           this.workers = wokersState.workers;
+  //   //         })
+  //   //       );
+  //   //     });
+  //   //   })
+  //   // ).subscribe(
+  //   // // this.workers.push(this.workerListService.getWorkerByTN(workerTime.tbNum));
+  //   //     // this.smena = this.smenListService.getSmenById(this.id);
+  //   //
+  //   //       //
+  //   //       // }
+  // }
 
   ngOnDestroy(): void {
-
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   onEditSmena() {
@@ -79,7 +99,8 @@ export class SmenaDetailComponent implements OnInit, OnDestroy {
   }
 
   onDeleteSmena() {
-    this.smenListService.deleteSmena(this.id);
+    // this.smenListService.deleteSmena(this.id);
+    this.store.dispatch(new TabelActions.DeleteSmena(this.id));
     this.router.navigate(['smen-list']);
   }
 

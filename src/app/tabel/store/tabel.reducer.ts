@@ -1,6 +1,6 @@
 import * as TabelActions from './tabel.actions';
-import { Smena } from '../smen-list/smena.model';
-import { WorkerTime } from 'src/app/workers/worker-list/workers-time.model';
+import {Smena} from '../smen-list/smena.model';
+import {WorkerTime} from 'src/app/workers/worker-list/workers-time.model';
 import {WorkerData} from '../../workers/worker-list/worker-data.model';
 
 
@@ -9,22 +9,25 @@ export interface State {
   workers: WorkerData[];
   editedWorkerData: WorkerData;
   editedWorkerDataIndex: number;
+  selectedSmenaId: number;
 }
 
 const initialState: State = {
-  smens: [
-    new Smena(new Date(2020, 2, 3).toLocaleDateString(), 'WPS', '1', [
-      new WorkerTime('8609', '5', 11.5, 0, 0, 0, 0),
-      new WorkerTime('3527', '2', 8, 0, 0, 0, 0)
-    ]),
-    new Smena(new Date(2020, 0, 23).toLocaleDateString(), 'HTF-1', '1', [
-      new WorkerTime('8609', '5', 11.5, 0, 0, 0, 0),
-      new WorkerTime('3527', '2', 5.5, 0, 0, 0, 0)
-    ])
-  ],
+  // smens: [
+  //   new Smena(new Date(2020, 2, 3).toLocaleDateString(), 'WPS', '1', [
+  //     new WorkerTime('8609', '5', 11.5, 0, 0, 0, 0),
+  //     new WorkerTime('3527', '2', 8, 0, 0, 0, 0)
+  //   ]),
+  //   new Smena(new Date(2020, 0, 23).toLocaleDateString(), 'HTF-1', '1', [
+  //     new WorkerTime('8609', '5', 11.5, 0, 0, 0, 0),
+  //     new WorkerTime('3527', '2', 5.5, 0, 0, 0, 0)
+  //   ])
+  // ],
+  smens: [],
   workers: [],
   editedWorkerData: null,
-  editedWorkerDataIndex: -1
+  editedWorkerDataIndex: -1,
+  selectedSmenaId: null
 };
 
 export function tabelReducer(
@@ -59,6 +62,16 @@ export function tabelReducer(
       return {
         ...state,
         smens: updatedSmens
+      };
+    case TabelActions.SELECT_SMENA:
+      return {
+        ...state,
+        selectedSmenaId: action.payload
+      };
+    case TabelActions.UNSELECT_SMENA:
+      return {
+        ...state,
+        selectedSmenaId: null
       };
     default:
       return state;
