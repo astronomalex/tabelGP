@@ -6,6 +6,7 @@ import {WorkerData} from '../../workers/worker-list/worker-data.model';
 
 export interface State {
   smens: Smena[];
+  editedSmena: Smena;
   workers: WorkerData[];
   editedWorkerData: WorkerData;
   editedWorkerDataIndex: number;
@@ -24,6 +25,7 @@ const initialState: State = {
   //   ])
   // ],
   smens: [],
+  editedSmena: null,
   workers: [],
   editedWorkerData: null,
   editedWorkerDataIndex: -1,

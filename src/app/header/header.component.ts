@@ -1,12 +1,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Observable, Subscription} from 'rxjs';
-import {Store} from '@ngrx/store';
-import {map} from 'rxjs/operators';
+import {Observable, Subject, Subscription} from 'rxjs';
+import {select, Store} from '@ngrx/store';
+import {map, takeUntil} from 'rxjs/operators';
 
 import * as fromApp from '../store/app.reducer';
 import * as AuthActions from '../auth/store/auth.actions';
 import * as TabelActions from '../tabel/store/tabel.actions';
 import * as WorkerActions from '../workers/store/workers.actions';
+import {getSmensFromState, getWorkers} from '../tabel/selectors/app.selector';
 
 @Component({
   selector: 'app-header',
@@ -17,8 +18,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private userSubs: Subscription;
   isAuthenticated = false;
   userEmail: string;
-  workersLength: Observable<number>;
-  smenListLength: Observable<number>;
+  workersLength: number;
+  smenListLength: number;
+  private ngUsubscribe$ = new Subject();
 
   constructor(
     private store: Store<fromApp.AppState>
@@ -61,12 +63,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // this.authService.user.subscribe(user => {
     //   this.isAuthenticated = !user ? false : true;
     // });
-    this.smenListLength = this.store.select('tabel').pipe(
-      map(tabelState => tabelState.smens.length)
-    );
-    this.workersLength = this.store.select('workers').pipe(
-      map(workersState => workersState.workers.length)
-    );
+    // this.smenListLength = this.store.select('tabel').pipe(
+    //   map(tabelState => tabelState.smens.length)
+    // );
+    this.store.pipe(select(getWorkers)).pipe(
+      takeUntil(this.ngUsubscribe$)
+    ).subscribe(workerList => this.workersLength = workerList.length);
+    this.store.pipe(select(getSmensFromState)).pipe(
+      takeUntil(this.ngUsubscribe$)
+    ).subscribe(smenList => this.smenListLength = smenList.length);
+    // this.workersLength = this.store.select('workers').pipe(
+    //   map(workersState => workersState.workers.length)
+    // );
     this.userSubs = this.store.select('auth').pipe(
       map(authState => authState.user)
     ).subscribe(user => {
@@ -79,5 +87,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.userSubs.unsubscribe();
+    this.ngUsubscribe$.next();
+    this.ngUsubscribe$.complete();
   }
 }

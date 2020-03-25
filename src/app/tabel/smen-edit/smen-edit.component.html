@@ -53,10 +53,10 @@
                   class="form-control"
                   formControlName="tbNum"
                   type="text">
-                <span *ngIf="this.workerListService.getWorkerByTN(tbN.value)">
-                  {{this.workerListService.getWorkerByTN(tbN.value).surname}}
-                  {{this.workerListService.getWorkerByTN(tbN.value).name[0]}}
-                  {{this.workerListService.getWorkerByTN(tbN.value).patronymic[0]}}
+                <span *ngIf="getWorkerByTN(tbN.value)">
+                  {{getWorkerByTN(tbN.value).surname}}
+                  {{getWorkerByTN(tbN.value).name[0]}}
+                  {{getWorkerByTN(tbN.value).patronymic[0]}}
                 </span>
                 <span *ngIf="!wrk.get('tbNum').valid && wrk.get('tbNum').touched"
                       class="help-block">

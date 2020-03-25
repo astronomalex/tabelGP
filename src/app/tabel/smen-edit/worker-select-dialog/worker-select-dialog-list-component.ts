@@ -38,7 +38,7 @@ export class WorkerSelectDialogListComponent implements OnInit, OnDestroy {
   }
 
   onSelect(index: number) {
-    this.selectedWorker.emit(this.workerListService.getWorkerById(index));
+    this.selectedWorker.emit(this.workers[index]);
   }
 
   ngOnDestroy(): void {
