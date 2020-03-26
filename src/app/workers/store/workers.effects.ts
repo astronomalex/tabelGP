@@ -30,7 +30,7 @@ export class WorkersEffects {
     })
   );
 
-  @Effect()
+  @Effect({dispatch: false})
   storeWorkers = this.actions$.pipe(
     ofType(WorkersActions.STORE_WORKERS),
     withLatestFrom(this.store.select('workers')),

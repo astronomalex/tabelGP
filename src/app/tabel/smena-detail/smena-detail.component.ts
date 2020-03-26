@@ -1,11 +1,10 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {takeUntil} from 'rxjs/operators';
+import {map, takeUntil} from 'rxjs/operators';
 import {select, Store} from '@ngrx/store';
 
 import {Smena} from '../smen-list/smena.model';
 import {WorkerData} from '../../workers/worker-list/worker-data.model';
-import {WorkerTime} from '../../workers/worker-list/workers-time.model';
 import * as fromApp from '../../store/app.reducer';
 import * as TabelActions from '../store/tabel.actions';
 import {getSelectedSmena, getSelectedSmenaWorkersData} from '../selectors/app.selector';
@@ -16,20 +15,13 @@ import {Subject} from 'rxjs';
   templateUrl: './smena-detail.component.html',
   styleUrls: ['./smena-detail.component.css']
 })
-export class SmenaDetailComponent implements OnDestroy {
+export class SmenaDetailComponent implements OnInit, OnDestroy {
   smena: Smena;
   id: number;
-  workersTabelNums: string[];
   workers: WorkerData[] = [];
-  wrkTime: WorkerTime;
+  public selectedSmena: Smena;
   public selectedWorkers: WorkerData[];
-  public selectedSmena$ = this.store.pipe(select(getSelectedSmena));
   private ngUnsubscribe$ = new Subject();
-  public selectedWorkers$ = this.store.pipe(select(getSelectedSmenaWorkersData)).pipe(
-    takeUntil(this.ngUnsubscribe$)
-  ).subscribe(
-    item => this.selectedWorkers = item
-  );
 
   constructor(
     private route: ActivatedRoute,
@@ -38,56 +30,28 @@ export class SmenaDetailComponent implements OnDestroy {
   ) {
   }
 
-  // ngOnInit(): void {
-  //   this.route.params.pipe(
-  //     map(
-  //       params => {
-  //         return +params.id;
-  //       }),
-  //     switchMap(id => {
-  //       this.id = id;
-  //       return this.store.select('tabel');
-  //     }),
-  //     map(tabelState => {
-  //       return tabelState.smens.find(
-  //         (smena, index) => {
-  //           return index === this.id;
-  //         });
-  //       }
-  //     )
-  //   ).subscribe(smena => {
-  //     this.smena = smena;
-  //     for (const workerTime of this.smena.workersTime) {
-  //           console.log(workerTime);
-  //           this.workersTabelNums.push(workerTime.tbNum);
-  //         }
-  //   });
-  //     // map((smena) => {
-  //     //   this.smena = smena;
-  //     //   for (const workerTime of this.smena.workersTime) {
-  //     //     console.log(workerTime);
-  //     //     // this.workersTabelNums.push(workerTime.tbNum);
-  //     //     return this.store.select('workers');
-  //     //   }
-  //     //   ),
-  //
-  //
-  //
-  //
-  //
-  //   //         map(wokersState => {
-  //   //           this.workers = wokersState.workers;
-  //   //         })
-  //   //       );
-  //   //     });
-  //   //   })
-  //   // ).subscribe(
-  //   // // this.workers.push(this.workerListService.getWorkerByTN(workerTime.tbNum));
-  //   //     // this.smena = this.smenListService.getSmenById(this.id);
-  //   //
-  //   //       //
-  //   //       // }
-  // }
+  ngOnInit(): void {
+    console.log(this.selectedWorkers);
+    this.route.params.pipe(
+      map(
+        params => {
+          return +params.id;
+        })
+    ).subscribe(id => {
+      this.id = id;
+      this.store.dispatch(new TabelActions.SelectSmena(id));
+    });
+    this.store.pipe(select(getSelectedSmena)).pipe(
+      takeUntil(this.ngUnsubscribe$)
+    ).subscribe(
+      item => this.selectedSmena = item
+    );
+    this.store.pipe(select(getSelectedSmenaWorkersData)).pipe(
+      takeUntil(this.ngUnsubscribe$)
+    ).subscribe(
+      item => this.selectedWorkers = item
+    );
+  }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe$.next();
@@ -99,7 +63,6 @@ export class SmenaDetailComponent implements OnDestroy {
   }
 
   onDeleteSmena() {
-    // this.smenListService.deleteSmena(this.id);
     this.store.dispatch(new TabelActions.DeleteSmena(this.id));
     this.router.navigate(['smen-list']);
   }

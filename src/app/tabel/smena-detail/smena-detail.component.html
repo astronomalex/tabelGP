@@ -6,21 +6,21 @@
 <!--        {{worker.surname}}-->
 <!--      </div>-->
 <!--    </div>-->
-    <h4>Дата: {{ (selectedSmena$ | async).dateSmen }}</h4>
-    <p>Номер смены: {{ (selectedSmena$ | async).numSmen }}   Машина: {{ (selectedSmena$ | async).mashine}}</p>
+    <h4>Дата: {{ selectedSmena.dateSmen }}</h4>
+    <p>Номер смены: {{ selectedSmena.numSmen }}   Машина: {{ selectedSmena.mashine}}</p>
     <p>Работники:</p>
     <p *ngFor="let wrk of selectedWorkers; let i = index">
       {{ wrk.surname }} {{ wrk.name }} {{ wrk.patronymic }} {{wrk.tabelNum}}
       <br>
-      Сдельно: {{ (selectedSmena$ | async).workersTime[i].sdelTime }}
+      Сдельно: {{ selectedSmena.workersTime[i].sdelTime }}
       <br>
-      Ночное время: {{ (selectedSmena$ | async).workersTime[i].nightTime }}
+      Ночное время: {{ selectedSmena.workersTime[i].nightTime }}
       <br>
-      Простой 2/3 среднего: {{ (selectedSmena$ | async).workersTime[i].prostTime }}
+      Простой 2/3 среднего: {{ selectedSmena.workersTime[i].prostTime }}
       <br>
-      Работа по приказу: {{ (selectedSmena$ | async).workersTime[i].prikTime }}
+      Работа по приказу: {{ selectedSmena.workersTime[i].prikTime }}
       <br>
-      Работа по среднему: {{ (selectedSmena$ | async).workersTime[i].srednTime }}
+      Работа по среднему: {{ selectedSmena.workersTime[i].srednTime }}
     </p>
   </div>
   <button

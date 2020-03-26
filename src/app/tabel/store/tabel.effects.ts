@@ -34,35 +34,7 @@ export class TabelEffects {
       );
       }
     )
-    // switchMap(() => {
-    //   return {
-    //     if (this.store.select('Auth').pipe(
-    //     )) {
-    //     const url: string = 'https://ng-tabelgp.firebaseio.com/' + this.authService.locId + '_smens.json';
-    //     return this.http
-    //       .get<Smena[]>(
-    //         url
-    //       ).pipe(
-    //         map(smens => {
-    //           return smens.map(smena => {
-    //             return {
-    //               ...smena,
-    //               workersTime: smena.workersTime ? smena.workersTime : []
-    //             };
-    //           });
-    //         }),
-    //         tap(smens => {
-    //           this.smenListService.setSmens(smens);
-    //           this.store.dispatch(new TabelActions.AddSmens(smens));
-    //           console.log(smens);
-    //         })
-    //       );
-    //     )
-    //   } else {
-    //     return null;
-    //   }
-    //   }
-   // })
+
   );
 
   @Effect({dispatch: false})

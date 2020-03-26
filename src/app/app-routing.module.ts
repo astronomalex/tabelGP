@@ -17,19 +17,21 @@ import {WorkerListResolverService} from './workers/worker-list-resolver.service'
 
 const routes: Routes = [
   {path: '', redirectTo: '/smen-list', pathMatch: 'full'},
-  {path: 'smen-list', component: TabelComponent, canActivate: [AuthGuard], children: [
-      {path: '', component: SmenListStartComponent, resolve: [SmenListResolverService]},
+  {path: 'smen-list', component: TabelComponent,
+    resolve: [SmenListResolverService, WorkerListResolverService],
+    canActivate: [AuthGuard], children: [
+      {path: '', component: SmenListStartComponent},
       {path: 'new', component: SmenEditComponent},
-      {path: ':id', component: SmenaDetailComponent, resolve: [SmenListResolverService]},
-      // {path: ':id', component: SmenaDetailComponent},
-      {path: ':id/edit', component: SmenEditComponent, resolve: [SmenListResolverService]}
-      // {path: ':id/edit', component: SmenEditComponent}
+      {path: ':id', component: SmenaDetailComponent},
+      {path: ':id/edit', component: SmenEditComponent}
     ] },
-  {path: 'worker-list', component: WorkersComponent, canActivate: [AuthGuard], children: [
-      {path: '', component: WorkerListStartComponent, resolve: [WorkerListResolverService]},
+  {path: 'worker-list', component: WorkersComponent,
+    resolve: [SmenListResolverService, WorkerListResolverService],
+    canActivate: [AuthGuard], children: [
+      {path: '', component: WorkerListStartComponent},
       {path: 'new', component: WorkerDataEditComponent},
-      {path: ':id', component: WorkerDetailComponent, resolve: [WorkerListResolverService]},
-      {path: ':id/edit', component: WorkerDataEditComponent,  resolve: [WorkerListResolverService]}
+      {path: ':id', component: WorkerDetailComponent},
+      {path: ':id/edit', component: WorkerDataEditComponent}
     ]},
   {path: 'auth', component: AuthComponent}
   ]
