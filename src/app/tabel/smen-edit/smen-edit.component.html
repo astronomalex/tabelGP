@@ -6,7 +6,7 @@
         <div class="col-xs-12">
           <div class="form-group">
             <mat-form-field>
-              <mat-label>Дата </mat-label>
+              <mat-label>Дата</mat-label>
               <input
                 required
                 matNativeControl
@@ -17,13 +17,6 @@
               <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
               <mat-datepicker #myDatepicker></mat-datepicker>
             </mat-form-field>
-
-<!--            <label for="dateSmen">Дата</label>-->
-<!--            <input-->
-<!--              type="text"-->
-<!--              id="dateSmen"-->
-<!--              formControlName="dateSmen"-->
-<!--              class="form-control">-->
           </div>
         </div>
       </div>
@@ -40,47 +33,34 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-<!--            <label for="mashine">Машина</label>-->
-<!--            <input-->
-<!--              type="text"-->
-<!--              id="mashine"-->
-<!--              formControlName="mashine"-->
-<!--              class="form-control">-->
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-12">
           <div class="form-group">
-<!--            <label for="numSmen">Номер смены</label>-->
             <mat-form-field>
               <mat-label>Номер смены</mat-label>
               <mat-select
                 formControlName="numSmen"
                 required>
-                  <mat-option value="1">1</mat-option>
-                  <mat-option value="2">2</mat-option>
-                  <mat-option value="3">3</mat-option>
-                  <mat-option value="4">4</mat-option>
+                <mat-option value="1">1</mat-option>
+                <mat-option value="2">2</mat-option>
+                <mat-option value="3">3</mat-option>
+                <mat-option value="4">4</mat-option>
               </mat-select>
             </mat-form-field>
-<!--            <input-->
-<!--              type="text"-->
-<!--              id="numSmen"-->
-<!--              formControlName="numSmen"-->
-<!--              class="form-control">-->
           </div>
         </div>
       </div>
       <div class="col-xs-12">
         <div class="row">
-        <div class="col-xs-12" formArrayName="workersTime">
-          <div class="row"
-               *ngFor="let wrk of getControls(); let i = index"
-               [formGroupName]="i"
-               style="margin-top: 10px">
-            <div class="row">
-              <!--              <label>Табельный номер</label>-->
+          <div class="col-xs-12" formArrayName="workersTime">
+            <div class="row"
+                 *ngFor="let wrk of getControls(); let i = index"
+                 [formGroupName]="i"
+                 style="margin-top: 10px">
+
               <div class="col-xs-4 col-md-2">
                 <mat-form-field class="example-full-width">
                   <mat-label>Табельный номер</mat-label>
@@ -89,25 +69,20 @@
                     formControlName="tbNum"
                     matInput>
                 </mat-form-field>
-                <!--                <input-->
-                <!--                  #tbN-->
-                <!--                  class="form-control"-->
-                <!--                  formControlName="tbNum"-->
-                <!--                  type="text">-->
                 <span *ngIf="getWorkerByTN(tbN.value)">
                   {{getWorkerByTN(tbN.value).surname}}
-                  {{getWorkerByTN(tbN.value).name[0]}}
-                  {{getWorkerByTN(tbN.value).patronymic[0]}}
+                  {{getWorkerByTN(tbN.value).name[0]}}.
+                  {{getWorkerByTN(tbN.value).patronymic[0]}}.
                 </span>
                 <span *ngIf="!wrk.get('tbNum').valid && wrk.get('tbNum').touched"
                       class="help-block">
-                  <span *ngIf="wrk.get('tbNum').errors['tabelNumNotExist']">Данного номера нет в базе табельных номеров!</span>
+                  <span
+                    *ngIf="wrk.get('tbNum').errors['tabelNumNotExist']">Данного номера нет в базе табельных номеров!</span>
                   <span *ngIf="wrk.get('tbNum').errors['required']">Это поле обязательно к заполнению!</span>
                   <span *ngIf="wrk.get('tbNum').errors['pattern']">Табельный номер состоит из четырех цифр</span>
                 </span>
               </div>
-            </div>
-            <div class="row">
+
               <mat-form-field class="example-full-width">
                 <mat-label>Разряд</mat-label>
                 <input
@@ -116,17 +91,8 @@
                   pattern="^[1-6]+$"
                   matInput>
               </mat-form-field>
-              <!--              <label>Разряд</label>-->
-              <!--              <div class="col-xs-4 col-md-2">-->
-              <!--                <input-->
-              <!--                  class="form-control"-->
-              <!--                  formControlName="grade"-->
-              <!--                  type="number"-->
-              <!--                  pattern="^[1-6]+$"-->
-              <!--                >-->
-              <!--              </div>-->
-            </div>
-            <div class="row">
+
+
               <mat-form-field class="example-full-width">
                 <mat-label>Сдельно</mat-label>
                 <input
@@ -134,8 +100,8 @@
                   formControlName="sdelTime"
                   type="number">
               </mat-form-field>
-            </div>
-            <div class="row">
+
+
               <mat-form-field class="example-full-width">
                 <mat-label>Ночное время</mat-label>
                 <input
@@ -143,15 +109,7 @@
                   formControlName="nightTime"
                   type="number">
               </mat-form-field>
-              <!--              <label>Ночное время</label>-->
-              <!--              <div class="col-xs-4 col-md-2">-->
-              <!--                <input-->
-              <!--                  class="form-control"-->
-              <!--                  formControlName="nightTime"-->
-              <!--                  type="number">-->
-              <!--              </div>-->
-            </div>
-            <div class="row">
+
               <mat-form-field class="example-full-width">
                 <mat-label>Простой</mat-label>
                 <input
@@ -159,15 +117,7 @@
                   formControlName="prostTime"
                   type="number">
               </mat-form-field>
-              <!--              <label>Простой</label>-->
-              <!--              <div class="col-xs-4 col-md-2">-->
-              <!--                <input-->
-              <!--                  class="form-control"-->
-              <!--                  formControlName="prostTime"-->
-              <!--                  type="number">-->
-              <!--              </div>-->
-            </div>
-            <div class="row">
+
               <mat-form-field class="example-full-width">
                 <mat-label>По приказу</mat-label>
                 <input
@@ -175,15 +125,8 @@
                   formControlName="prikTime"
                   type="number">
               </mat-form-field>
-              <!--              <label>По приказу</label>-->
-              <!--              <div class="col-xs-4 col-md-2">-->
-              <!--                <input-->
-              <!--                  class="form-control"-->
-              <!--                  formControlName="prikTime"-->
-              <!--                  type="number">-->
-              <!--              </div>-->
-            </div>
-            <div class="row">
+
+
               <mat-form-field class="example-full-width">
                 <mat-label>По среднему</mat-label>
                 <input
@@ -191,32 +134,37 @@
                   formControlName="srednTime"
                   type="number">
               </mat-form-field>
-              <!--              <label>По среднему</label>-->
-              <!--              <div class="col-xs-4 col-md-2">-->
-              <!--                <input-->
-              <!--                  class="form-control"-->
-              <!--                  formControlName="srednTime"-->
-              <!--                  type="number">-->
-              <!--              </div>-->
+
+              <div class="col-xs-4 col-md-2">
+
+
+              </div>
+              <div class="row">
+                <button
+                  class="btn btn-danger"
+                  (click)="onDeleteWorkTime(i)"
+                  type="button">Удалить
+                </button>
+              </div>
+              <div class="row">
+                <br>
+                <hr>
+              </div>
+
             </div>
-            <div class="col-xs-4 col-md-2">
-              <button
-                class="btn btn-danger"
-                (click)="onDeleteWorkTime(i)"
-                type="button">Удалить</button>
-            </div>
-          </div>
-          <button
-            class="btn btn-success"
-            type="button"
-            (click)="onAddWorkerTime()">Добавить рабочего</button>
-          <hr>
-          <div class="row">
-            <div class="col-xs-12">
+
+            <button
+              class="btn btn-success"
+              type="button"
+              (click)="onAddWorkerTime()">Добавить рабочего
+            </button>
+            <hr>
+            <div class="row">
+              <div class="col-xs-12">
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
 
       <div class="row">
@@ -224,11 +172,13 @@
           <button
             [disabled]="!smenForm.valid"
             type="submit"
-            class="btn btn-success">Сохранить</button>
+            class="btn btn-success">Сохранить
+          </button>
           <button
             (click)="onCancel()"
             type="button"
-            class="btn btn-danger">Отмена</button>
+            class="btn btn-danger">Отмена
+          </button>
         </div>
       </div>
     </form>
