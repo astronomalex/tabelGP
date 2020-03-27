@@ -6,7 +6,7 @@
 <!--        {{worker.surname}}-->
 <!--      </div>-->
 <!--    </div>-->
-    <h4>Дата: {{ selectedSmena.dateSmen }}</h4>
+    <h4>Дата: {{ selectedSmena.dateSmen | date}}</h4>
     <p>Номер смены: {{ selectedSmena.numSmen }}   Машина: {{ selectedSmena.mashine}}</p>
     <p>Работники:</p>
     <p *ngFor="let wrk of selectedWorkers; let i = index">

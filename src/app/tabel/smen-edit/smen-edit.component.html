@@ -5,54 +5,95 @@
       <div class="row">
         <div class="col-xs-12">
           <div class="form-group">
-            <label for="dateSmen">Дата</label>
-            <input
-              type="text"
-              id="dateSmen"
-              formControlName="dateSmen"
-              class="form-control">
+            <mat-form-field>
+              <mat-label>Дата </mat-label>
+              <input
+                required
+                matNativeControl
+                matInput
+                [matDatepicker]="myDatepicker"
+                id="dateSmen"
+                formControlName="dateSmen">
+              <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+              <mat-datepicker #myDatepicker></mat-datepicker>
+            </mat-form-field>
+
+<!--            <label for="dateSmen">Дата</label>-->
+<!--            <input-->
+<!--              type="text"-->
+<!--              id="dateSmen"-->
+<!--              formControlName="dateSmen"-->
+<!--              class="form-control">-->
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-12">
           <div class="form-group">
-            <label for="mashine">Машина</label>
-            <input
-              type="text"
-              id="mashine"
-              formControlName="mashine"
-              class="form-control">
+            <mat-form-field>
+              <mat-label>Машина</mat-label>
+              <mat-select
+                required
+                formControlName="mashine">
+                <mat-option *ngFor="let machine of machineList" [value]="machine">
+                  {{machine}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+<!--            <label for="mashine">Машина</label>-->
+<!--            <input-->
+<!--              type="text"-->
+<!--              id="mashine"-->
+<!--              formControlName="mashine"-->
+<!--              class="form-control">-->
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-12">
           <div class="form-group">
-            <label for="numSmen">Номер смены</label>
-            <input
-              type="text"
-              id="numSmen"
-              formControlName="numSmen"
-              class="form-control">
+<!--            <label for="numSmen">Номер смены</label>-->
+            <mat-form-field>
+              <mat-label>Номер смены</mat-label>
+              <mat-select
+                formControlName="numSmen"
+                required>
+                  <mat-option value="1">1</mat-option>
+                  <mat-option value="2">2</mat-option>
+                  <mat-option value="3">3</mat-option>
+                  <mat-option value="4">4</mat-option>
+              </mat-select>
+            </mat-form-field>
+<!--            <input-->
+<!--              type="text"-->
+<!--              id="numSmen"-->
+<!--              formControlName="numSmen"-->
+<!--              class="form-control">-->
           </div>
         </div>
       </div>
-      <div class="row">
+      <div class="col-xs-12">
+        <div class="row">
         <div class="col-xs-12" formArrayName="workersTime">
           <div class="row"
-            *ngFor="let wrk of getControls(); let i = index"
-            [formGroupName]="i"
-            style="margin-top: 10px">
+               *ngFor="let wrk of getControls(); let i = index"
+               [formGroupName]="i"
+               style="margin-top: 10px">
             <div class="row">
-              <label>Табельный номер</label>
+              <!--              <label>Табельный номер</label>-->
               <div class="col-xs-4 col-md-2">
-
-                <input
-                  #tbN
-                  class="form-control"
-                  formControlName="tbNum"
-                  type="text">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Табельный номер</mat-label>
+                  <input
+                    #tbN
+                    formControlName="tbNum"
+                    matInput>
+                </mat-form-field>
+                <!--                <input-->
+                <!--                  #tbN-->
+                <!--                  class="form-control"-->
+                <!--                  formControlName="tbNum"-->
+                <!--                  type="text">-->
                 <span *ngIf="getWorkerByTN(tbN.value)">
                   {{getWorkerByTN(tbN.value).surname}}
                   {{getWorkerByTN(tbN.value).name[0]}}
@@ -67,60 +108,96 @@
               </div>
             </div>
             <div class="row">
-              <label>Разряд</label>
-              <div class="col-xs-4 col-md-2">
+              <mat-form-field class="example-full-width">
+                <mat-label>Разряд</mat-label>
                 <input
-                  class="form-control"
                   formControlName="grade"
                   type="number"
                   pattern="^[1-6]+$"
-                >
-              </div>
+                  matInput>
+              </mat-form-field>
+              <!--              <label>Разряд</label>-->
+              <!--              <div class="col-xs-4 col-md-2">-->
+              <!--                <input-->
+              <!--                  class="form-control"-->
+              <!--                  formControlName="grade"-->
+              <!--                  type="number"-->
+              <!--                  pattern="^[1-6]+$"-->
+              <!--                >-->
+              <!--              </div>-->
             </div>
             <div class="row">
-              <label>Сдельно</label>
-              <div class="col-xs-4 col-md-2">
+              <mat-form-field class="example-full-width">
+                <mat-label>Сдельно</mat-label>
                 <input
-                  class="form-control"
+                  matInput
                   formControlName="sdelTime"
                   type="number">
-              </div>
+              </mat-form-field>
             </div>
             <div class="row">
-              <label>Ночное время</label>
-              <div class="col-xs-4 col-md-2">
+              <mat-form-field class="example-full-width">
+                <mat-label>Ночное время</mat-label>
                 <input
-                  class="form-control"
+                  matInput
                   formControlName="nightTime"
                   type="number">
-              </div>
+              </mat-form-field>
+              <!--              <label>Ночное время</label>-->
+              <!--              <div class="col-xs-4 col-md-2">-->
+              <!--                <input-->
+              <!--                  class="form-control"-->
+              <!--                  formControlName="nightTime"-->
+              <!--                  type="number">-->
+              <!--              </div>-->
             </div>
             <div class="row">
-              <label>Простой</label>
-              <div class="col-xs-4 col-md-2">
+              <mat-form-field class="example-full-width">
+                <mat-label>Простой</mat-label>
                 <input
-                  class="form-control"
+                  matInput
                   formControlName="prostTime"
                   type="number">
-              </div>
+              </mat-form-field>
+              <!--              <label>Простой</label>-->
+              <!--              <div class="col-xs-4 col-md-2">-->
+              <!--                <input-->
+              <!--                  class="form-control"-->
+              <!--                  formControlName="prostTime"-->
+              <!--                  type="number">-->
+              <!--              </div>-->
             </div>
             <div class="row">
-              <label>По приказу</label>
-              <div class="col-xs-4 col-md-2">
+              <mat-form-field class="example-full-width">
+                <mat-label>По приказу</mat-label>
                 <input
-                  class="form-control"
+                  matInput
                   formControlName="prikTime"
                   type="number">
-              </div>
+              </mat-form-field>
+              <!--              <label>По приказу</label>-->
+              <!--              <div class="col-xs-4 col-md-2">-->
+              <!--                <input-->
+              <!--                  class="form-control"-->
+              <!--                  formControlName="prikTime"-->
+              <!--                  type="number">-->
+              <!--              </div>-->
             </div>
             <div class="row">
-              <label>По среднему</label>
-              <div class="col-xs-4 col-md-2">
+              <mat-form-field class="example-full-width">
+                <mat-label>По среднему</mat-label>
                 <input
-                  class="form-control"
+                  matInput
                   formControlName="srednTime"
                   type="number">
-              </div>
+              </mat-form-field>
+              <!--              <label>По среднему</label>-->
+              <!--              <div class="col-xs-4 col-md-2">-->
+              <!--                <input-->
+              <!--                  class="form-control"-->
+              <!--                  formControlName="srednTime"-->
+              <!--                  type="number">-->
+              <!--              </div>-->
             </div>
             <div class="col-xs-4 col-md-2">
               <button
@@ -140,6 +217,8 @@
           </div>
         </div>
       </div>
+      </div>
+
       <div class="row">
         <div class="col-xs-12">
           <button

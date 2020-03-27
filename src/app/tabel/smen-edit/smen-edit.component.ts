@@ -6,12 +6,11 @@ import {select, Store} from '@ngrx/store';
 
 import {SmenListService} from '../smen-list/smen-list.service';
 import {PlaceholderDirective} from '../../shared/placeholder/placeholder.directive';
-import {WorkerListService} from '../../workers/worker-list/worker-list.service';
 import {WorkerSelectDialogListComponent} from './worker-select-dialog/worker-select-dialog-list-component';
 import {WorkerData} from '../../workers/worker-list/worker-data.model';
 import * as TabelActions from '../store/tabel.actions';
 import * as fromApp from '../../store/app.reducer';
-import {getSmensFromState, getWorkers} from '../selectors/app.selector';
+import {getMachineList, getSmensFromState, getWorkers} from '../selectors/app.selector';
 import {takeUntil} from 'rxjs/operators';
 import {Smena} from '../smen-list/smena.model';
 
@@ -26,12 +25,15 @@ export class SmenEditComponent implements OnInit, OnDestroy {
   smenForm: FormGroup;
   @ViewChild(PlaceholderDirective, {static: false}) dialogHost: PlaceholderDirective;
   workerList: WorkerData[];
+  public machineList: string[];
   private ngUnsubscribe$ = new Subject();
-
   workerList$ = this.store.pipe(select(getWorkers)).pipe(
     takeUntil(this.ngUnsubscribe$)
   ).subscribe(workerList => this.workerList = workerList
   );
+  machineList$ = this.store.pipe(select(getMachineList)).pipe(
+    takeUntil(this.ngUnsubscribe$)
+  ).subscribe(list => this.machineList = list);
 
   private closeSub: Subscription;
   private selectSub: Subscription;
@@ -42,7 +44,6 @@ export class SmenEditComponent implements OnInit, OnDestroy {
     private router: Router,
     private smenListService: SmenListService,
     private componentFactoryResolver: ComponentFactoryResolver,
-    public workerListService: WorkerListService,
     private store: Store<fromApp.AppState>
   ) {
   }
@@ -64,9 +65,7 @@ export class SmenEditComponent implements OnInit, OnDestroy {
   onSubmit() {
     if (this.editMode) {
       this.store.dispatch(new TabelActions.UpdateSmena({index: this.id, newSmena: this.smenForm.value}));
-      // this.smenListService.updateSmena(this.id, this.smenForm.value);
     } else {
-      // this.smenListService.addSmena(this.smenForm.value);
       this.store.dispatch(new TabelActions.AddSmena(this.smenForm.value));
     }
     this.onCancel();
@@ -156,7 +155,7 @@ export class SmenEditComponent implements OnInit, OnDestroy {
   }
 
   getWorkerByTN(tabelNum: string) {
-    return this.workerList.find((item, index) => {
+    return this.workerList.find((item) => {
         return item.tabelNum === tabelNum;
       }
     );

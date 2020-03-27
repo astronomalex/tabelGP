@@ -1,6 +1,5 @@
 import * as TabelActions from './tabel.actions';
 import {Smena} from '../smen-list/smena.model';
-import {WorkerTime} from 'src/app/workers/worker-list/workers-time.model';
 import {WorkerData} from '../../workers/worker-list/worker-data.model';
 
 
@@ -11,25 +10,17 @@ export interface State {
   editedWorkerData: WorkerData;
   editedWorkerDataIndex: number;
   selectedSmenaId: number;
+  machineList: string[];
 }
 
 const initialState: State = {
-  // smens: [
-  //   new Smena(new Date(2020, 2, 3).toLocaleDateString(), 'WPS', '1', [
-  //     new WorkerTime('8609', '5', 11.5, 0, 0, 0, 0),
-  //     new WorkerTime('3527', '2', 8, 0, 0, 0, 0)
-  //   ]),
-  //   new Smena(new Date(2020, 0, 23).toLocaleDateString(), 'HTF-1', '1', [
-  //     new WorkerTime('8609', '5', 11.5, 0, 0, 0, 0),
-  //     new WorkerTime('3527', '2', 5.5, 0, 0, 0, 0)
-  //   ])
-  // ],
   smens: [],
   editedSmena: null,
   workers: [],
   editedWorkerData: null,
   editedWorkerDataIndex: -1,
-  selectedSmenaId: null
+  selectedSmenaId: null,
+  machineList: ['Media-100', 'GIETZ-1', 'GIETZ-2', 'WPS-1100', 'ExpertFold-1', 'ExpertFold-2', 'Media-68', 'Elite']
 };
 
 export function tabelReducer(

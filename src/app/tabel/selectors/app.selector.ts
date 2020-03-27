@@ -1,4 +1,4 @@
-import {createFeatureSelector, createSelector, select} from '@ngrx/store';
+import {createFeatureSelector, createSelector} from '@ngrx/store';
 import {AppState} from '../../store/app.reducer';
 import {State} from '../store/tabel.reducer';
 import {WorkerTime} from '../../workers/worker-list/workers-time.model';
@@ -16,7 +16,7 @@ export const getSmensFromState = createSelector(TabelFeature, tabelState => tabe
 export const getEditedSmena = createSelector(TabelFeature, tabelState => tabelState.editedSmena);
 export const getSelectedSmenaWorkersData = createSelector(
   WorkerDataFeature, getSelectedSmenaWorkersTime, (workersState: State, workerTimes: WorkerTime[]) => {
-  return workersState.workers.filter(item => workerTimes.find(workerTime => workerTime.tbNum === item.tabelNum) !== undefined);
-});
+    return workersState.workers.filter(item => workerTimes.find(workerTime => workerTime.tbNum === item.tabelNum) !== undefined);
+  });
 export const getWorkers = createSelector(WorkerDataFeature, (workersState: State) => workersState.workers);
-// export const getEditedSmena = createSelector(getWorkers, (workers) => workers.)
+export const getMachineList = createSelector(TabelFeature, state => state.machineList);

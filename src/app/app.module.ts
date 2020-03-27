@@ -36,6 +36,8 @@ import {EffectsModule} from '@ngrx/effects';
 import {AuthEffects} from './auth/store/auth.effect';
 import {WorkersEffects} from './workers/store/workers.effects';
 import {TabelEffects} from './tabel/store/tabel.effects';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatDatepickerModule, MatFormFieldModule, MatInputModule, MatNativeDateModule, MatSelectModule} from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -68,7 +70,13 @@ import {TabelEffects} from './tabel/store/tabel.effects';
     FormsModule,
     EffectsModule.forRoot([AuthEffects, WorkersEffects, TabelEffects]),
     StoreModule.forRoot(fromApp.appReducer),
-    StoreDevtoolsModule.instrument({logOnly: environment.production})
+    StoreDevtoolsModule.instrument({logOnly: environment.production}),
+    BrowserAnimationsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule
   ],
   entryComponents: [
     AlertComponent,
