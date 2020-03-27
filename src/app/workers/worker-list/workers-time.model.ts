@@ -6,6 +6,8 @@ export class WorkerTime {
     public nightTime: number,
     public prostTime: number,
     public prikTime: number,
-    public srednTime: number
+    public srednTime: number,
+    public pprTime: number,
+    public doublePayTime: number
   ) {}
 }

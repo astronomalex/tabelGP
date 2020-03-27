@@ -121,7 +121,9 @@ export class SmenEditComponent implements OnInit, OnDestroy {
             nightTime: new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
             prostTime: new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
             prikTime: new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
-            srednTime: new FormControl(null, [Validators.min(0), Validators.max(11.5)])
+            srednTime: new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
+            pprTime: new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
+            doublePayTime: new FormControl(null, [Validators.min(0), Validators.max(11.5)])
           })
         );
       }
@@ -186,7 +188,9 @@ export class SmenEditComponent implements OnInit, OnDestroy {
               nightTime: new FormControl(wrk.nightTime, [Validators.min(0), Validators.max(11.5)]),
               prostTime: new FormControl(wrk.prostTime, [Validators.min(0), Validators.max(11.5)]),
               prikTime: new FormControl(wrk.prikTime, [Validators.min(0), Validators.max(11.5)]),
-              srednTime: new FormControl(wrk.srednTime, [Validators.min(0), Validators.max(11.5)])
+              srednTime: new FormControl(wrk.srednTime, [Validators.min(0), Validators.max(11.5)]),
+              pprTime: new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
+              doublePayTime: new FormControl(null, [Validators.min(0), Validators.max(11.5)])
             })
           );
           this.selectedWorker = null;
