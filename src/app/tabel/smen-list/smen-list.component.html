@@ -6,7 +6,7 @@
 <div class="row">
   <div class="col-xs-12">
     <app-smena-item
-    *ngFor="let smenaEl of smens; let i=index"
+    *ngFor="let smenaEl of (smens | async).smens; let i = index"
     [smena]="smenaEl"
     [index]="i"></app-smena-item>
   </div>

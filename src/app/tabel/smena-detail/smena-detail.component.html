@@ -1,20 +1,26 @@
 <div class="row">
   <div class="col-xs-12">
-    <h4>Дата: {{ smena.dateSmen }}</h4>
-    <p>Номер смены: {{ smena.numSmen }}   Машина: {{ smena.mashine}}</p>
+<!--    {{(selectedSmena$ | async).workersTime}}-->
+<!--    <div *ngFor="let worker of selectedWorkers">-->
+<!--      <div>-->
+<!--        {{worker.surname}}-->
+<!--      </div>-->
+<!--    </div>-->
+    <h4>Дата: {{ selectedSmena.dateSmen | date}}</h4>
+    <p>Номер смены: {{ selectedSmena.numSmen }}   Машина: {{ selectedSmena.mashine}}</p>
     <p>Работники:</p>
-    <p *ngFor="let wrk of workers; let i = index">
+    <p *ngFor="let wrk of selectedWorkers; let i = index">
       {{ wrk.surname }} {{ wrk.name }} {{ wrk.patronymic }} {{wrk.tabelNum}}
       <br>
-      Сдельно: {{ smena.workersTime[i].sdelTime }}
+      Сдельно: {{ selectedSmena.workersTime[i].sdelTime }}
       <br>
-      Ночное время: {{ smena.workersTime[i].nightTime }}
+      Ночное время: {{ selectedSmena.workersTime[i].nightTime }}
       <br>
-      Простой 2/3 среднего: {{ smena.workersTime[i].prostTime }}
+      Простой 2/3 среднего: {{ selectedSmena.workersTime[i].prostTime }}
       <br>
-      Работа по приказу: {{ smena.workersTime[i].prikTime }}
+      Работа по приказу: {{ selectedSmena.workersTime[i].prikTime }}
       <br>
-      Работа по среднему: {{ smena.workersTime[i].srednTime }}
+      Работа по среднему: {{ selectedSmena.workersTime[i].srednTime }}
     </p>
   </div>
   <button

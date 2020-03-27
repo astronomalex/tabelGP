@@ -27,6 +27,17 @@ import {SmenListService} from './tabel/smen-list/smen-list.service';
 import {WorkerListService} from './workers/worker-list/worker-list.service';
 import {AuthInterceptorService} from './auth/auth-interceptor.service';
 import {WorkerSelectDialogListComponent} from './tabel/smen-edit/worker-select-dialog/worker-select-dialog-list-component';
+import { StoreModule } from '@ngrx/store';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {environment} from '../environments/environment';
+
+import * as fromApp from './store/app.reducer';
+import {EffectsModule} from '@ngrx/effects';
+import {AuthEffects} from './auth/store/auth.effect';
+import {WorkersEffects} from './workers/store/workers.effects';
+import {TabelEffects} from './tabel/store/tabel.effects';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatDatepickerModule, MatFormFieldModule, MatInputModule, MatNativeDateModule, MatSelectModule} from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -56,7 +67,16 @@ import {WorkerSelectDialogListComponent} from './tabel/smen-edit/worker-select-d
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    EffectsModule.forRoot([AuthEffects, WorkersEffects, TabelEffects]),
+    StoreModule.forRoot(fromApp.appReducer),
+    StoreDevtoolsModule.instrument({logOnly: environment.production}),
+    BrowserAnimationsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule
   ],
   entryComponents: [
     AlertComponent,

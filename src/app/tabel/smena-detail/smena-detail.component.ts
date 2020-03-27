@@ -1,57 +1,61 @@
-import {AfterContentInit, AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {map, takeUntil} from 'rxjs/operators';
+import {select, Store} from '@ngrx/store';
+
 import {Smena} from '../smen-list/smena.model';
-import {ActivatedRoute, Params, Router} from '@angular/router';
-import {SmenListService} from '../smen-list/smen-list.service';
 import {WorkerData} from '../../workers/worker-list/worker-data.model';
-import {WorkerListService} from '../../workers/worker-list/worker-list.service';
-import {WorkerTime} from '../../workers/worker-list/workers-time.model';
+import * as fromApp from '../../store/app.reducer';
+import * as TabelActions from '../store/tabel.actions';
+import {getSelectedSmena, getSelectedSmenaWorkersData} from '../selectors/app.selector';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-smena-detail',
   templateUrl: './smena-detail.component.html',
   styleUrls: ['./smena-detail.component.css']
 })
-export class SmenaDetailComponent implements OnInit, OnDestroy, AfterContentInit, AfterViewInit {
+export class SmenaDetailComponent implements OnInit, OnDestroy {
   smena: Smena;
   id: number;
-  workersTabelNums: string[];
   workers: WorkerData[] = [];
-  wrkTime: WorkerTime;
+  public selectedSmena: Smena;
+  public selectedWorkers: WorkerData[];
+  private ngUnsubscribe$ = new Subject();
 
   constructor(
     private route: ActivatedRoute,
-    private smenListService: SmenListService,
-    private workerListService: WorkerListService,
+    private store: Store<fromApp.AppState>,
     private router: Router
   ) {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(
-      (params: Params) => {
-        this.id = +params['id'];
-        this.workers = [];
-        this.smena = this.smenListService.getSmenById(this.id);
-        for (let workerTime of this.smena.workersTime) {
-          console.log(workerTime);
-          // this.workersTabelNums.push(workerTime.tbNum);
-          this.workers.push(this.workerListService.getWorkerByTN(workerTime.tbNum));
-
-        }
-      }
+    console.log(this.selectedWorkers);
+    this.route.params.pipe(
+      map(
+        params => {
+          return +params.id;
+        })
+    ).subscribe(id => {
+      this.id = id;
+      this.store.dispatch(new TabelActions.SelectSmena(id));
+    });
+    this.store.pipe(select(getSelectedSmena)).pipe(
+      takeUntil(this.ngUnsubscribe$)
+    ).subscribe(
+      item => this.selectedSmena = item
+    );
+    this.store.pipe(select(getSelectedSmenaWorkersData)).pipe(
+      takeUntil(this.ngUnsubscribe$)
+    ).subscribe(
+      item => this.selectedWorkers = item
     );
   }
 
-  ngAfterContentInit(): void {
-
-  }
-
-  ngAfterViewInit(): void {
-
-  }
-
   ngOnDestroy(): void {
-
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   onEditSmena() {
@@ -59,7 +63,7 @@ export class SmenaDetailComponent implements OnInit, OnDestroy, AfterContentInit
   }
 
   onDeleteSmena() {
-    this.smenListService.deleteSmena(this.id);
+    this.store.dispatch(new TabelActions.DeleteSmena(this.id));
     this.router.navigate(['smen-list']);
   }
 

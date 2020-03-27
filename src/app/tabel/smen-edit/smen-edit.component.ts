@@ -1,12 +1,18 @@
 import {Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {AbstractControl, FormArray, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {ActivatedRoute, Params, Router} from '@angular/router';
+import {Subject, Subscription} from 'rxjs';
+import {select, Store} from '@ngrx/store';
+
 import {SmenListService} from '../smen-list/smen-list.service';
 import {PlaceholderDirective} from '../../shared/placeholder/placeholder.directive';
 import {WorkerSelectDialogListComponent} from './worker-select-dialog/worker-select-dialog-list-component';
-import {Subscription} from 'rxjs';
 import {WorkerData} from '../../workers/worker-list/worker-data.model';
-import {WorkerListService} from '../../workers/worker-list/worker-list.service';
+import * as TabelActions from '../store/tabel.actions';
+import * as fromApp from '../../store/app.reducer';
+import {getMachineList, getSmensFromState, getWorkers} from '../selectors/app.selector';
+import {takeUntil} from 'rxjs/operators';
+import {Smena} from '../smen-list/smena.model';
 
 @Component({
   selector: 'app-smen-edit',
@@ -18,6 +24,16 @@ export class SmenEditComponent implements OnInit, OnDestroy {
   editMode = false;
   smenForm: FormGroup;
   @ViewChild(PlaceholderDirective, {static: false}) dialogHost: PlaceholderDirective;
+  workerList: WorkerData[];
+  public machineList: string[];
+  private ngUnsubscribe$ = new Subject();
+  workerList$ = this.store.pipe(select(getWorkers)).pipe(
+    takeUntil(this.ngUnsubscribe$)
+  ).subscribe(workerList => this.workerList = workerList
+  );
+  machineList$ = this.store.pipe(select(getMachineList)).pipe(
+    takeUntil(this.ngUnsubscribe$)
+  ).subscribe(list => this.machineList = list);
 
   private closeSub: Subscription;
   private selectSub: Subscription;
@@ -28,8 +44,9 @@ export class SmenEditComponent implements OnInit, OnDestroy {
     private router: Router,
     private smenListService: SmenListService,
     private componentFactoryResolver: ComponentFactoryResolver,
-    public workerListService: WorkerListService
-  ) { }
+    private store: Store<fromApp.AppState>
+  ) {
+  }
 
   ngOnInit() {
     this.route.params.subscribe(
@@ -47,9 +64,9 @@ export class SmenEditComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.editMode) {
-      this.smenListService.updateSmena(this.id, this.smenForm.value);
+      this.store.dispatch(new TabelActions.UpdateSmena({index: this.id, newSmena: this.smenForm.value}));
     } else {
-      this.smenListService.addSmena(this.smenForm.value);
+      this.store.dispatch(new TabelActions.AddSmena(this.smenForm.value));
     }
     this.onCancel();
   }
@@ -57,43 +74,6 @@ export class SmenEditComponent implements OnInit, OnDestroy {
   onAddWorkerTime() {
     this.showWorkerSelectDialog();
 
-  }
-
-  private initForm() {
-    let dateSmen = '';
-    let mashine = '';
-    let numSmen = '';
-    const workersTime = new FormArray([]);
-
-    if (this.editMode) {
-      const smena = this.smenListService.getSmenById(this.id);
-      dateSmen = smena.dateSmen;
-      mashine = smena.mashine;
-      numSmen = smena.numSmen;
-      if (smena.workersTime) {
-        for (const wrk of smena.workersTime) {
-          workersTime.push(
-            new FormGroup({
-              tbNum: new FormControl(wrk.tbNum, [Validators.required, Validators.pattern(/^\d\d\d\d$/)]),
-              grade: new FormControl(wrk.grade, [Validators.required, Validators.min(1), Validators.max(6)]),
-              sdelTime: new FormControl(wrk.sdelTime, [Validators.min(0), Validators.max(11.5)]),
-              nightTime: new FormControl(wrk.nightTime, [Validators.min(0), Validators.max(11.5)]),
-              prostTime: new FormControl(wrk.prostTime, [Validators.min(0), Validators.max(11.5)]),
-              prikTime: new FormControl(wrk.prikTime, [Validators.min(0), Validators.max(11.5)]),
-              srednTime: new FormControl(wrk.srednTime, [Validators.min(0), Validators.max(11.5)])
-            })
-          );
-          this.selectedWorker = null;
-        }
-      }
-    }
-
-    this.smenForm = new FormGroup({
-      dateSmen: new FormControl(dateSmen, Validators.required),
-      mashine: new FormControl(mashine, Validators.required),
-      numSmen: new FormControl(numSmen, Validators.required),
-      workersTime: workersTime
-    });
   }
 
   getControls() {
@@ -127,7 +107,7 @@ export class SmenEditComponent implements OnInit, OnDestroy {
         hostViewContainerRef.clear();
         (this.smenForm.get('workersTime') as FormArray).push(
           new FormGroup({
-            tbNum: new FormControl(wrkr.tabelNum , [
+            tbNum: new FormControl(wrkr.tabelNum, [
               Validators.required,
               Validators.pattern(/^\d\d\d\d$/),
               this.tabelNumNotExitstValidator()
@@ -147,7 +127,10 @@ export class SmenEditComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   ngOnDestroy(): void {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
     if (this.closeSub) {
       this.closeSub.unsubscribe();
     }
@@ -162,12 +145,60 @@ export class SmenEditComponent implements OnInit, OnDestroy {
   }
 
   tabelNumNotExitstValidator(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: boolean} | null => {
-      if (this.workerListService.getWorkerByTN(control.value)) {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+      if (this.getWorkerByTN(control.value)) {
         return null;
       } else {
         return {tabelNumNotExist: true};
       }
     };
+  }
+
+  getWorkerByTN(tabelNum: string) {
+    return this.workerList.find((item) => {
+        return item.tabelNum === tabelNum;
+      }
+    );
+  }
+
+  private initForm() {
+    let dateSmen = '';
+    let mashine = '';
+    let numSmen = '';
+    const workersTime = new FormArray([]);
+
+    if (this.editMode) {
+      let smena: Smena;
+      this.store.pipe(select(getSmensFromState)).pipe(
+        takeUntil(this.ngUnsubscribe$)
+      ).subscribe(smens => smena = smens[this.id]);
+      // const smena = this.smenListService.getSmenById(this.id);
+      dateSmen = smena.dateSmen;
+      mashine = smena.mashine;
+      numSmen = smena.numSmen;
+      if (smena.workersTime) {
+        for (const wrk of smena.workersTime) {
+          workersTime.push(
+            new FormGroup({
+              tbNum: new FormControl(wrk.tbNum, [Validators.required, Validators.pattern(/^\d\d\d\d$/)]),
+              grade: new FormControl(wrk.grade, [Validators.required, Validators.min(1), Validators.max(6)]),
+              sdelTime: new FormControl(wrk.sdelTime, [Validators.min(0), Validators.max(11.5)]),
+              nightTime: new FormControl(wrk.nightTime, [Validators.min(0), Validators.max(11.5)]),
+              prostTime: new FormControl(wrk.prostTime, [Validators.min(0), Validators.max(11.5)]),
+              prikTime: new FormControl(wrk.prikTime, [Validators.min(0), Validators.max(11.5)]),
+              srednTime: new FormControl(wrk.srednTime, [Validators.min(0), Validators.max(11.5)])
+            })
+          );
+          this.selectedWorker = null;
+        }
+      }
+    }
+
+    this.smenForm = new FormGroup({
+      dateSmen: new FormControl(dateSmen, Validators.required),
+      mashine: new FormControl(mashine, Validators.required),
+      numSmen: new FormControl(numSmen, Validators.required),
+      workersTime
+    });
   }
 }
