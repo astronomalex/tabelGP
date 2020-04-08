@@ -61,7 +61,7 @@
                  [formGroupName]="i"
                  style="margin-top: 10px">
 
-              <div class="col-xs-4 col-md-2">
+
                 <mat-form-field class="example-full-width">
                   <mat-label>Табельный номер</mat-label>
                   <input
@@ -81,7 +81,7 @@
                   <span *ngIf="wrk.get('tbNum').errors['required']">Это поле обязательно к заполнению!</span>
                   <span *ngIf="wrk.get('tbNum').errors['pattern']">Табельный номер состоит из четырех цифр</span>
                 </span>
-              </div>
+
 
               <mat-form-field class="example-full-width">
                 <mat-label>Разряд</mat-label>

@@ -12,30 +12,37 @@
     <p *ngFor="let wrk of selectedWorkers; let i = index">
       {{ wrk.surname }} {{ wrk.name }} {{ wrk.patronymic }} {{wrk.tabelNum}}
       <br>
+
       <label *ngIf="selectedSmena.workersTime[i].sdelTime">
         Сдельно: {{ selectedSmena.workersTime[i].sdelTime }}
       </label>
       <br *ngIf="selectedSmena.workersTime[i].sdelTime">
+
       <label *ngIf="selectedSmena.workersTime[i].nightTime">
         Ночное время: {{ selectedSmena.workersTime[i].nightTime }}
       </label>
       <br *ngIf="selectedSmena.workersTime[i].nightTime">
+
       <label *ngIf="selectedSmena.workersTime[i].prostTime">
         Простой 2/3 среднего: {{ selectedSmena.workersTime[i].prostTime }}
       </label>
       <br *ngIf="selectedSmena.workersTime[i].prostTime">
+
       <label *ngIf="selectedSmena.workersTime[i].prikTime">
         Работа по приказу: {{ selectedSmena.workersTime[i].prikTime }}
       </label>
       <br *ngIf="selectedSmena.workersTime[i].prikTime">
+
       <label *ngIf="selectedSmena.workersTime[i].srednTime">
         Работа по среднему: {{ selectedSmena.workersTime[i].srednTime }}
       </label>
       <br *ngIf="selectedSmena.workersTime[i].srednTime">
+
       <label *ngIf="selectedSmena.workersTime[i].pprTime">
         ППР: {{ selectedSmena.workersTime[i].pprTime }}
       </label>
       <br  *ngIf="selectedSmena.workersTime[i].pprTime">
+
       <label *ngIf="selectedSmena.workersTime[i].doublePayTime">
         Двойная оплата: {{ selectedSmena.workersTime[i].doublePayTime }}
       </label>
