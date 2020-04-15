@@ -23,7 +23,6 @@ import { AuthComponent } from './auth/auth.component';
 import { PlaceholderDirective } from './shared/placeholder/placeholder.directive';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import {AlertComponent} from './shared/alert/alert.component';
-import {SmenListService} from './tabel/smen-list/smen-list.service';
 import {WorkerListService} from './workers/worker-list/worker-list.service';
 import {AuthInterceptorService} from './auth/auth-interceptor.service';
 import {WorkerSelectDialogListComponent} from './tabel/smen-edit/worker-select-dialog/worker-select-dialog-list-component';
@@ -43,6 +42,7 @@ import { ReportDetailComponent } from './report/report-detail/report-detail.comp
 import { ReportListComponent } from './report/report-list/report-list.component';
 import { ReportsComponent } from './report/reports/reports.component';
 import { ReportsStartComponent } from './report/reports-start/reports-start.component';
+import { ReportItemComponent } from './report/report-list/report-item/report-item.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +70,8 @@ import { ReportsStartComponent } from './report/reports-start/reports-start.comp
     ReportDetailComponent,
     ReportListComponent,
     ReportsComponent,
-    ReportsStartComponent
+    ReportsStartComponent,
+    ReportItemComponent
   ],
   imports: [
     HttpClientModule,
@@ -93,7 +94,6 @@ import { ReportsStartComponent } from './report/reports-start/reports-start.comp
     WorkerSelectDialogListComponent
   ],
   providers: [
-    SmenListService,
     WorkerListService,
     {
       provide: HTTP_INTERCEPTORS,

@@ -1,8 +1,9 @@
 import {WorkUnit} from './work-unit.model';
 
 export class Report {
-  dateRaport: Date;
+  dateReport: string;
+  maschine: string;
   workerListTabelNums: string[];
-  numSmenRaport: number;
-  workListRaport: WorkUnit[];
+  numSmenReport: string;
+  workListReport: WorkUnit[];
 }

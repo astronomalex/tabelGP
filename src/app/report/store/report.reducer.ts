@@ -1,28 +1,46 @@
 import {Report} from '../report.model';
-import * as RaportActions from './report.actions';
+import * as ReportActions from './report.actions';
 
 export interface State {
-  raports: Report[];
+  reports: Report[];
 }
 
 const initialState: State = {
-  raports: []
+  reports: []
 };
 
 export function reportReducer(
   state: State = initialState,
-  actions: RaportActions.ReportActions
+  actions: ReportActions.ReportActions
 ) {
   switch (actions.type) {
-    case RaportActions.ADD_REPORT:
+
+    case ReportActions.ADD_REPORT:
       return {
         ...state,
-        raports: [...state.raports, actions.payload]
+        reports: [...state.reports, actions.payload]
       };
-    case RaportActions.SET_REPORTS:
+
+    case ReportActions.UPDATE_REPORT:
+      const updatedReport = {
+        ...state.reports[actions.payload.index],
+        ...actions.payload.newReport
+      };
+
+      const updatedReports = [...state.reports];
+      updatedReports[actions.payload.index] = updatedReport;
       return {
         ...state,
-        raports: actions.payload
+        reports: updatedReports
       };
+
+    case ReportActions.SET_REPORTS:
+      return {
+        ...state,
+        reports: actions.payload
+      };
+
+    default:
+      return state;
   }
 }

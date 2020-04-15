@@ -8,12 +8,12 @@ export interface AppState {
   tabel: fromTabel.State;
   auth: fromAuth.State;
   workers: fromWorkers.State;
-  raports: fromRaports.State;
+  reports: fromRaports.State;
 }
 
 export const appReducer: ActionReducerMap<AppState> = {
   tabel: fromTabel.tabelReducer,
   auth: fromAuth.authReducer,
   workers: fromWorkers.workersReducer,
-  raports: fromRaports.reportReducer
+  reports: fromRaports.reportReducer
 };

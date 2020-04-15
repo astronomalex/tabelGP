@@ -1,1 +1,13 @@
-<p>raport-list works!</p>
+<div class="row">
+  <div class="col-xs-12">
+    <button class="btn btn-success" (click)="onNewReport()">Создать Рапортичку</button>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <app-report-item
+      *ngFor="let reportEl of (reports | async).reports; let i = index"
+      [report]="reportEl"
+      [index]="i"></app-report-item>
+  </div>
+</div>
