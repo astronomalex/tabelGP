@@ -6,7 +6,7 @@ import {Subject, Subscription} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 
 import * as fromApp from '../../store/app.reducer';
-import {getMachineList, getReportsFromState, getWorkers} from '../../store/selectors/app.selector';
+import {getMachineList, getReportsFromState, getTypesOfWorkFromState, getWorkers} from '../../store/selectors/app.selector';
 import {takeUntil} from 'rxjs/operators';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {Report} from '../report.model';
@@ -26,10 +26,15 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   @ViewChild(PlaceholderDirective, {static: false}) dialogHost: PlaceholderDirective;
   workerList: WorkerData[];
   public machineList: string[];
+  public typesOfWorks: string[];
   private ngUnsubscribe$ = new Subject();
   private closeSub: Subscription;
   private selectSub: Subscription;
   private selectedWorker: WorkerData = null;
+
+  typesOfWorks$ = this.store.pipe(select(getTypesOfWorkFromState)).pipe(
+    takeUntil(this.ngUnsubscribe$)
+  ).subscribe(typesOfWorks => this.typesOfWorks = typesOfWorks);
 
   workerList$ = this.store.pipe(select(getWorkers)).pipe(
     takeUntil(this.ngUnsubscribe$)
@@ -77,7 +82,10 @@ export class ReportEditComponent implements OnInit, OnDestroy {
 
         hostViewContainerRef.clear();
         (this.reportForm.get('workerFormList') as FormArray).push(
-          new FormGroup({tbNum: new FormControl(wrkr.tabelNum, [Validators.required, Validators.pattern(/^\d\d\d\d$/)])
+          new FormGroup({
+            tbNum: new FormControl(wrkr.tabelNum, [Validators.required, Validators.pattern(/^\d\d\d\d$/)]),
+            grade: new FormControl(wrkr.grade, [Validators.required, Validators.min(1), Validators.max(6)
+            ])
           })
         );
       }
@@ -104,6 +112,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
           workerFormList.push(
             new FormGroup({
               tbNum: new FormControl(tabelNum, [Validators.required, Validators.pattern(/^\d\d\d\d$/)])
+
             })
           );
         }
@@ -134,6 +143,23 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     });
   }
 
+  getControlsWorkers() {
+    return (this.reportForm.get('workerFormList') as FormArray).controls;
+  }
+
+  getControlsWorkUnits() {
+    return (this.reportForm.get('workUnitList') as FormArray).controls;
+  }
+
+
+  getWorkerByTN(tabelNum: string) {
+    return this.workerList.find((item) => {
+        return item.tabelNum === tabelNum;
+      }
+    );
+  }
+
+
   onCancel() {
     this.router.navigate(['..'], {relativeTo: this.route});
   }
@@ -149,6 +175,27 @@ export class ReportEditComponent implements OnInit, OnDestroy {
 
   onAddWorker() {
     this.showWorkerSelectDialog();
+  }
+
+  onDeleteWorker(index: number) {
+    (this.reportForm.get('workerFormList') as FormArray).removeAt(index);
+  }
+
+  onAddWorkUnit() {
+    (this.reportForm.get('workUnitList') as FormArray).push(
+      new FormGroup({
+        startTime: new FormControl(null , [Validators.required]),
+        endTime: new FormControl(null , [Validators.required]),
+        typeWork: new FormControl(null , [Validators.required]),
+        numOrder: new FormControl(null , [Validators.required]),
+        nameOrder: new FormControl(null , [Validators.required]),
+        groupDifficulty: new FormControl(null , [Validators.required])
+      })
+    );
+  }
+
+  onDeleteWorkUnit(index: number) {
+    (this.reportForm.get('workUnitList') as FormArray).removeAt(index);
   }
 
   ngOnDestroy() {

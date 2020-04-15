@@ -25,3 +25,5 @@ export const getWorkers = createSelector(WorkerDataFeature, (workersState: Worke
 export const getMachineList = createSelector(TabelFeature, state => state.machineList);
 
 export const getReportsFromState = createSelector(ReportFeature, reportState => reportState.reports);
+
+export const getTypesOfWorkFromState = createSelector(ReportFeature, reportsState => reportsState.typesOfWork);

@@ -3,10 +3,12 @@ import * as ReportActions from './report.actions';
 
 export interface State {
   reports: Report[];
+  typesOfWork: string[];
 }
 
 const initialState: State = {
-  reports: []
+  reports: [],
+  typesOfWork: ['Работа', 'Настройка', 'Простой', 'По среднему', 'ППР']
 };
 
 export function reportReducer(
