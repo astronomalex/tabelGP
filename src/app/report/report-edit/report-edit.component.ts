@@ -6,13 +6,19 @@ import {Subject, Subscription} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 
 import * as fromApp from '../../store/app.reducer';
-import {getMachineList, getReportsFromState, getTypesOfWorkFromState, getWorkers} from '../../store/selectors/app.selector';
+import {
+  getMachineList,
+  getNormsFromState,
+  getReportsFromState,
+  getTypesOfWorkFromState,
+  getWorkers
+} from '../../store/selectors/app.selector';
 import {takeUntil} from 'rxjs/operators';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {Report} from '../report.model';
-import * as TabelActions from '../../tabel/store/tabel.actions';
 import * as ReportActions from '../../report/store/report.actions';
 import {WorkerSelectDialogListComponent} from '../../tabel/smen-edit/worker-select-dialog/worker-select-dialog-list-component';
+import {Norma} from '../norma.model';
 
 @Component({
   selector: 'app-report-edit',
@@ -27,29 +33,30 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   workerList: WorkerData[];
   public machineList: string[];
   public typesOfWorks: string[];
+  public norms: Norma[];
   private ngUnsubscribe$ = new Subject();
-  private closeSub: Subscription;
-  private selectSub: Subscription;
-  private selectedWorker: WorkerData = null;
-
   typesOfWorks$ = this.store.pipe(select(getTypesOfWorkFromState)).pipe(
     takeUntil(this.ngUnsubscribe$)
   ).subscribe(typesOfWorks => this.typesOfWorks = typesOfWorks);
-
   workerList$ = this.store.pipe(select(getWorkers)).pipe(
     takeUntil(this.ngUnsubscribe$)
   ).subscribe(workerList => this.workerList = workerList);
   machineList$ = this.store.pipe(select(getMachineList)).pipe(
     takeUntil(this.ngUnsubscribe$)
   ).subscribe(machineList => this.machineList = machineList);
+  norms$ = this.store.pipe(select(getNormsFromState)).pipe(
+    takeUntil(this.ngUnsubscribe$)
+  ).subscribe(norms => this.norms = norms);
+  private closeSub: Subscription;
+  private selectSub: Subscription;
+  private selectedWorker: WorkerData = null;
 
   constructor(
     private store: Store<fromApp.AppState>,
     private router: Router,
     private route: ActivatedRoute,
     private componentFactoryResolver: ComponentFactoryResolver
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.route.params.subscribe(
@@ -60,6 +67,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   showWorkerSelectDialog() {
     const dialogCmpFactoty = this.componentFactoryResolver.resolveComponentFactory(WorkerSelectDialogListComponent);
     const hostViewContainerRef = this.dialogHost.viewContainerRef;
@@ -90,6 +98,64 @@ export class ReportEditComponent implements OnInit, OnDestroy {
         );
       }
     );
+  }
+
+  getControlsWorkers() {
+    return (this.reportForm.get('workerFormList') as FormArray).controls;
+  }
+
+  getControlsWorkUnits() {
+    return (this.reportForm.get('workUnitList') as FormArray).controls;
+  }
+
+  getWorkerByTN(tabelNum: string) {
+    return this.workerList.find((item) => {
+        return item.tabelNum === tabelNum;
+      }
+    );
+  }
+
+  onCancel() {
+    this.router.navigate(['..'], {relativeTo: this.route});
+  }
+
+  onSubmit() {
+    if (this.editMode) {
+      this.store.dispatch(new ReportActions.UpdateReport({index: this.id, newReport: this.reportForm.value}));
+    } else {
+      this.store.dispatch(new ReportActions.AddReport(this.reportForm.value));
+    }
+    this.onCancel();
+  }
+
+  onAddWorker() {
+    this.showWorkerSelectDialog();
+  }
+
+  onDeleteWorker(index: number) {
+    (this.reportForm.get('workerFormList') as FormArray).removeAt(index);
+  }
+
+  onAddWorkUnit() {
+    (this.reportForm.get('workUnitList') as FormArray).push(
+      new FormGroup({
+        startTime: new FormControl(null, [Validators.required]),
+        endTime: new FormControl(null, [Validators.required]),
+        typeWork: new FormControl(null, [Validators.required]),
+        numOrder: new FormControl(null, [Validators.required]),
+        nameOrder: new FormControl(null, [Validators.required]),
+        groupDifficulty: new FormControl(null, [Validators.required])
+      })
+    );
+  }
+
+  onDeleteWorkUnit(index: number) {
+    (this.reportForm.get('workUnitList') as FormArray).removeAt(index);
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   private initForm() {
@@ -141,66 +207,6 @@ export class ReportEditComponent implements OnInit, OnDestroy {
       workerFormList,
       workUnitList
     });
-  }
-
-  getControlsWorkers() {
-    return (this.reportForm.get('workerFormList') as FormArray).controls;
-  }
-
-  getControlsWorkUnits() {
-    return (this.reportForm.get('workUnitList') as FormArray).controls;
-  }
-
-
-  getWorkerByTN(tabelNum: string) {
-    return this.workerList.find((item) => {
-        return item.tabelNum === tabelNum;
-      }
-    );
-  }
-
-
-  onCancel() {
-    this.router.navigate(['..'], {relativeTo: this.route});
-  }
-
-  onSubmit() {
-    if (this.editMode) {
-      this.store.dispatch(new ReportActions.UpdateReport({index: this.id, newReport: this.reportForm.value}));
-    } else {
-      this.store.dispatch(new ReportActions.AddReport(this.reportForm.value));
-    }
-    this.onCancel();
-  }
-
-  onAddWorker() {
-    this.showWorkerSelectDialog();
-  }
-
-  onDeleteWorker(index: number) {
-    (this.reportForm.get('workerFormList') as FormArray).removeAt(index);
-  }
-
-  onAddWorkUnit() {
-    (this.reportForm.get('workUnitList') as FormArray).push(
-      new FormGroup({
-        startTime: new FormControl(null , [Validators.required]),
-        endTime: new FormControl(null , [Validators.required]),
-        typeWork: new FormControl(null , [Validators.required]),
-        numOrder: new FormControl(null , [Validators.required]),
-        nameOrder: new FormControl(null , [Validators.required]),
-        groupDifficulty: new FormControl(null , [Validators.required])
-      })
-    );
-  }
-
-  onDeleteWorkUnit(index: number) {
-    (this.reportForm.get('workUnitList') as FormArray).removeAt(index);
-  }
-
-  ngOnDestroy() {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
   }
 
 }

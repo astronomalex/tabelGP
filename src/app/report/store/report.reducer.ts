@@ -1,14 +1,17 @@
 import {Report} from '../report.model';
 import * as ReportActions from './report.actions';
+import {Norma} from '../norma.model';
 
 export interface State {
   reports: Report[];
   typesOfWork: string[];
+  norms: Norma[];
 }
 
 const initialState: State = {
   reports: [],
-  typesOfWork: ['Работа', 'Настройка', 'Простой', 'По среднему', 'ППР']
+  typesOfWork: ['Работа', 'Настройка', 'Простой', 'По среднему', 'ППР'],
+  norms: [{grpDiff: '11', norma: 202.85}, {grpDiff: '15', norma: 263.85}]
 };
 
 export function reportReducer(

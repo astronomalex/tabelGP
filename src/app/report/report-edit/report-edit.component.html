@@ -118,21 +118,56 @@
                  [formGroupName]="i"
                  style="margin-top: 10px">
 
+              <mat-form-field>
+                <mat-label>Тип работы</mat-label>
+                <mat-select
+                  #typeWork
+                  required
+                  formControlName="typeWork">
+                  <mat-option *ngFor="let typeWork of typesOfWorks" [value]="typeWork">
+                    {{typeWork}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
               <input
-              type="time"
-              formControlName="startTime">
+                type="time"
+                formControlName="startTime">
 
               <input
                 type="time"
                 formControlName="endTime">
 
-              <mat-form-field>
-                <mat-label>Тип работы</mat-label>
+              <mat-form-field class="example-full-width"
+                              *ngIf="!((typeWork.value === 'ППР')
+              || (typeWork.value === 'Простой')
+              || (typeWork.value === 'По среднему'))">
+                <mat-label>Номер заказа</mat-label>
+                <input
+                  matInput
+                  formControlName="numOrder">
+              </mat-form-field>
+
+              <mat-form-field
+                class="example-full-width"
+                *ngIf="!((typeWork.value === 'ППР')
+                || (typeWork.value === 'Простой')
+                || (typeWork.value === 'По среднему'))">
+                <mat-label>Название заказа</mat-label>
+                <input
+                  matInput
+                  formControlName="nameOrder">
+              </mat-form-field>
+
+              <mat-form-field *ngIf="!((typeWork.value === 'ППР')
+                || (typeWork.value === 'Простой')
+                || (typeWork.value === 'По среднему'))">
+                <mat-label>Группа сложности</mat-label>
                 <mat-select
                   required
-                  formControlName="typeWork">
-                  <mat-option *ngFor="let typeWork of typesOfWorks" [value]="typeWork">
-                    {{typeWork}}
+                  formControlName="groupDifficulty">
+                  <mat-option *ngFor="let norm of norms" [value]="norm.grpDiff">
+                    {{norm.grpDiff}} - {{norm.norma}}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
