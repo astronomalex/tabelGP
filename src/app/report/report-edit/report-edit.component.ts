@@ -34,6 +34,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   public machineList: string[];
   public typesOfWorks: string[];
   public norms: Norma[];
+  public selectedMachine: string;
   private ngUnsubscribe$ = new Subject();
   typesOfWorks$ = this.store.pipe(select(getTypesOfWorkFromState)).pipe(
     takeUntil(this.ngUnsubscribe$)
@@ -46,7 +47,10 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   ).subscribe(machineList => this.machineList = machineList);
   norms$ = this.store.pipe(select(getNormsByMachine)).pipe(
     takeUntil(this.ngUnsubscribe$)
-  ).subscribe(norms => this.norms = norms);
+  ).subscribe(norms => {
+    this.norms = norms;
+    console.log('norms: ' + norms);
+  });
   private closeSub: Subscription;
   private selectSub: Subscription;
   private selectedWorker: WorkerData = null;
@@ -156,6 +160,13 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
+  }
+
+  onMachineChanged(event) {
+    this.selectedMachine = event.value;
+    this.store.dispatch(new ReportActions.SelectMachine(event.value));
+    console.log('onMachineChanged norm:  ' + this.norms);
+    console.log('event.value: ' + event.value);
   }
 
   private initForm() {

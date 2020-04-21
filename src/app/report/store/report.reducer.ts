@@ -5,15 +5,18 @@ import {Norma} from '../norma.model';
 export interface State {
   reports: Report[];
   typesOfWork: string[];
-  norms: Norma[];
   selectedMachine: string;
+  allNorms: {[machine: string]: Norma[]}[];
 }
 
 const initialState: State = {
   reports: [],
   typesOfWork: ['Работа', 'Настройка', 'Простой', 'По среднему', 'ППР'],
-  norms: [{grpDiff: '11', norma: 202.85}, {grpDiff: '15', norma: 263.85}],
-  selectedMachine: null
+  selectedMachine: null,
+  allNorms: [
+    {'GIETZ-1': [{grpDiff: '5', norma: 144000}, {grpDiff: '4', norma: 160000}]},
+    {'Media-100': [{grpDiff: '11', norma: 202850}, {grpDiff: '15', norma: 263850}]}
+    ]
 };
 
 export function reportReducer(
