@@ -6,12 +6,14 @@ export interface State {
   reports: Report[];
   typesOfWork: string[];
   norms: Norma[];
+  selectedMachine: string;
 }
 
 const initialState: State = {
   reports: [],
   typesOfWork: ['Работа', 'Настройка', 'Простой', 'По среднему', 'ППР'],
-  norms: [{grpDiff: '11', norma: 202.85}, {grpDiff: '15', norma: 263.85}]
+  norms: [{grpDiff: '11', norma: 202.85}, {grpDiff: '15', norma: 263.85}],
+  selectedMachine: null
 };
 
 export function reportReducer(
@@ -43,6 +45,12 @@ export function reportReducer(
       return {
         ...state,
         reports: actions.payload
+      };
+
+    case ReportActions.SELECT_MACHINE:
+      return {
+        ...state,
+        selectedMachine: actions.payload
       };
 
     default:

@@ -7,7 +7,7 @@ import {select, Store} from '@ngrx/store';
 
 import * as fromApp from '../../store/app.reducer';
 import {
-  getMachineList,
+  getMachineList, getNormsByMachine,
   getNormsFromState,
   getReportsFromState,
   getTypesOfWorkFromState,
@@ -44,7 +44,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   machineList$ = this.store.pipe(select(getMachineList)).pipe(
     takeUntil(this.ngUnsubscribe$)
   ).subscribe(machineList => this.machineList = machineList);
-  norms$ = this.store.pipe(select(getNormsFromState)).pipe(
+  norms$ = this.store.pipe(select(getNormsByMachine)).pipe(
     takeUntil(this.ngUnsubscribe$)
   ).subscribe(norms => this.norms = norms);
   private closeSub: Subscription;

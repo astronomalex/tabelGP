@@ -28,3 +28,5 @@ export const getReportsFromState = createSelector(ReportFeature, reportState => 
 
 export const getTypesOfWorkFromState = createSelector(ReportFeature, reportsState => reportsState.typesOfWork);
 export const getNormsFromState = createSelector(ReportFeature, reportState => reportState.norms);
+export const getSelectedMachine = createSelector(ReportFeature, reportState => reportState.selectedMachine);
+export const getNormsByMachine = createSelector(getNormsFromState, getSelectedMachine, (norms, selectedMachine) => norms[selectedMachine]);

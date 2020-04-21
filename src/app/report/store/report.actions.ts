@@ -4,6 +4,7 @@ import {Action} from '@ngrx/store';
 export const ADD_REPORT = '[Reports] Add Report';
 export const UPDATE_REPORT = '[Reports] Update Report';
 export const SET_REPORTS = '[Reports] Set Reports';
+export const SELECT_MACHINE = '[Reports] Select Machine';
 
 export class AddReport implements Action {
   readonly type = ADD_REPORT;
@@ -26,7 +27,15 @@ export class UpdateReport implements Action {
   }
 }
 
+export class SelectMachine implements Action {
+  readonly type = SELECT_MACHINE;
+
+  constructor(public payload: string) {
+  }
+}
+
 export type ReportActions =
   | AddReport
   | UpdateReport
-  | SetReports;
+  | SetReports
+  | SelectMachine;
