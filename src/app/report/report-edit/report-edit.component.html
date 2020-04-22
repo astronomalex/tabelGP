@@ -57,11 +57,13 @@
                   formControlName="tbNum"
                   matInput>
               </mat-form-field>
+
               <span *ngIf="getWorkerByTN(tbN.value)">
                   {{getWorkerByTN(tbN.value).surname}}
                 {{getWorkerByTN(tbN.value).name[0]}}.
                 {{getWorkerByTN(tbN.value).patronymic[0]}}.
                 </span>
+
               <span *ngIf="!wrk.get('tbNum').valid && wrk.get('tbNum').touched"
                     class="help-block">
                   <span
@@ -69,7 +71,6 @@
                   <span *ngIf="wrk.get('tbNum').errors['required']">Это поле обязательно к заполнению!</span>
                   <span *ngIf="wrk.get('tbNum').errors['pattern']">Табельный номер состоит из четырех цифр</span>
                 </span>
-
 
               <mat-form-field class="example-full-width">
                 <mat-label>Разряд</mat-label>
@@ -81,7 +82,6 @@
               </mat-form-field>
 
               <div class="col-xs-4 col-md-2">
-
 
               </div>
               <div class="row">

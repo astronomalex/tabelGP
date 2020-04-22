@@ -11,7 +11,7 @@ export class WorkUnit {
     return this.workTime;
   }
 
-  constructor(typeWork, numZakaza, nameZakaza, groupDifficulty, startWorkTime, endWorkTime) {
+  constructor(typeWork, numOrder, nameOrder, groupDifficulty, startWorkTime, endWorkTime) {
     this.workTime = (this.endWorkTime.getTime() - this.startWorkTime.getTime()) * 3600000;
   }
 
