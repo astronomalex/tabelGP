@@ -19,6 +19,8 @@ import {Report} from '../report.model';
 import * as ReportActions from '../../report/store/report.actions';
 import {WorkerSelectDialogListComponent} from '../../tabel/smen-edit/worker-select-dialog/worker-select-dialog-list-component';
 import {Norma} from '../norma.model';
+import {ReportService} from '../report.service';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-report-edit',
@@ -34,6 +36,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   public machineList: string[];
   public typesOfWorks: string[];
   public norms: Norma[];
+  public dateSmen: string;
   public selectedMachine: string;
   private ngUnsubscribe$ = new Subject();
   typesOfWorks$ = this.store.pipe(select(getTypesOfWorkFromState)).pipe(
@@ -59,7 +62,9 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     private store: Store<fromApp.AppState>,
     private router: Router,
     private route: ActivatedRoute,
-    private componentFactoryResolver: ComponentFactoryResolver
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private reportService: ReportService,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit() {
@@ -70,6 +75,57 @@ export class ReportEditComponent implements OnInit, OnDestroy {
         this.initForm();
       }
     );
+  }
+
+  private initForm() {
+    let dateReport = '';
+    let machineReport = '';
+    let numSmenReport = '';
+    const workerFormList = new FormArray([]);
+    const workUnitList = new FormArray([]);
+
+    if (this.editMode) {
+      let report: Report;
+      this.store.pipe(select(getReportsFromState)).pipe(
+        takeUntil(this.ngUnsubscribe$)
+      ).subscribe(reports => report = reports[this.id]);
+      dateReport = report.dateReport;
+      machineReport = report.maschine;
+      numSmenReport = report.numSmenReport;
+      if (report.workerListTabelNums) {
+        for (const tabelNum of report.workerListTabelNums) {
+          workerFormList.push(
+            new FormGroup({
+              tbNum: new FormControl(tabelNum, [Validators.required, Validators.pattern(/^\d\d\d\d$/)])
+
+            })
+          );
+        }
+      }
+      if (report.workListReport) {
+        for (const work of report.workListReport) {
+          workUnitList.push(
+            new FormGroup({
+              startTime: new FormControl(work.startWorkTime, [Validators.required]),
+              endTime: new FormControl(work.endWorkTime, [Validators.required]),
+              typeWork: new FormControl(work.typeWork, [Validators.required]),
+              numOrder: new FormControl(work.numOrder, [Validators.required]),
+              nameOrder: new FormControl(work.nameOrder, [Validators.required]),
+              groupDifficulty: new FormControl(work.groupDifficulty, [Validators.required])
+            })
+          );
+        }
+        this.selectedWorker = null;
+      }
+    }
+
+    this.reportForm = new FormGroup({
+      dateReport: new FormControl(dateReport, [Validators.required]),
+      machineReport: new FormControl(machineReport, [Validators.required]),
+      numSmenReport: new FormControl(numSmenReport, [Validators.required]),
+      workerFormList,
+      workUnitList
+    });
   }
 
   showWorkerSelectDialog() {
@@ -157,11 +213,6 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     (this.reportForm.get('workUnitList') as FormArray).removeAt(index);
   }
 
-  ngOnDestroy() {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
-  }
-
   onMachineChanged(event) {
     this.selectedMachine = event.value;
     this.store.dispatch(new ReportActions.SelectMachine(event.value));
@@ -169,55 +220,17 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     console.log('event.value: ' + event.value);
   }
 
-  private initForm() {
-    let dateReport = '';
-    let machineReport = '';
-    let numSmenReport = '';
-    const workerFormList = new FormArray([]);
-    const workUnitList = new FormArray([]);
-
-    if (this.editMode) {
-      let report: Report;
-      this.store.pipe(select(getReportsFromState)).pipe(
-        takeUntil(this.ngUnsubscribe$)
-      ).subscribe(reports => report = reports[this.id]);
-      dateReport = report.dateReport;
-      machineReport = report.maschine;
-      numSmenReport = report.numSmenReport;
-      if (report.workerListTabelNums) {
-        for (const tabelNum of report.workerListTabelNums) {
-          workerFormList.push(
-            new FormGroup({
-              tbNum: new FormControl(tabelNum, [Validators.required, Validators.pattern(/^\d\d\d\d$/)])
-
-            })
-          );
-        }
-      }
-      if (report.workListReport) {
-        for (const work of report.workListReport) {
-          workUnitList.push(
-            new FormGroup({
-              startTime: new FormControl(work.startWorkTime, [Validators.required]),
-              endTime: new FormControl(work.endWorkTime, [Validators.required]),
-              typeWork: new FormControl(work.typeWork, [Validators.required]),
-              numOrder: new FormControl(work.numOrder, [Validators.required]),
-              nameOrder: new FormControl(work.nameOrder, [Validators.required]),
-              groupDifficulty: new FormControl(work.groupDifficulty, [Validators.required])
-            })
-          );
-        }
-        this.selectedWorker = null;
-      }
-    }
-
-    this.reportForm = new FormGroup({
-      dateReport: new FormControl(dateReport, [Validators.required]),
-      machineReport: new FormControl(machineReport, [Validators.required]),
-      numSmenReport: new FormControl(numSmenReport, [Validators.required]),
-      workerFormList,
-      workUnitList
-    });
+  onDateChanged(event) {
+    const dateString = event.value.toLocaleDateString();
+    const date = event.value;
+    const dateFormated = this.datePipe.transform(date, 'yyyy-MM-dd');
+    this.dateSmen = dateFormated;
+    console.log('dateFormated: ', dateFormated);
+    console.log('New Date: ' + dateString);
   }
 
+  ngOnDestroy() {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
+  }
 }

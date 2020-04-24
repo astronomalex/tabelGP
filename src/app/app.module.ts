@@ -36,13 +36,21 @@ import {AuthEffects} from './auth/store/auth.effect';
 import {WorkersEffects} from './workers/store/workers.effects';
 import {TabelEffects} from './tabel/store/tabel.effects';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatDatepickerModule, MatFormFieldModule, MatInputModule, MatNativeDateModule, MatSelectModule} from '@angular/material';
+import {
+  MAT_DATE_LOCALE,
+  MatDatepickerModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatNativeDateModule,
+  MatSelectModule
+} from '@angular/material';
 import { ReportEditComponent } from './report/report-edit/report-edit.component';
 import { ReportDetailComponent } from './report/report-detail/report-detail.component';
 import { ReportListComponent } from './report/report-list/report-list.component';
 import { ReportsComponent } from './report/reports/reports.component';
 import { ReportsStartComponent } from './report/reports-start/reports-start.component';
 import { ReportItemComponent } from './report/report-list/report-item/report-item.component';
+import {DatePipe} from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -94,7 +102,9 @@ import { ReportItemComponent } from './report/report-list/report-item/report-ite
     WorkerSelectDialogListComponent
   ],
   providers: [
+    DatePipe,
     WorkerListService,
+    {provide: MAT_DATE_LOCALE, useValue: 'ru-Ru'},
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,

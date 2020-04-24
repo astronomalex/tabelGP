@@ -11,6 +11,8 @@
                 required
                 matNativeControl
                 matInput
+                (dateChange)="onDateChanged($event)"
+                #smenDate
                 [matDatepicker]="myDatepicker"
                 id="dateReport"
                 formControlName="dateReport">
@@ -133,11 +135,19 @@
 
               <input
                 type="time"
-                formControlName="startTime">
+                formControlName="startTime"
+                #sTime>
 
               <input
                 type="time"
-                formControlName="endTime">
+                formControlName="endTime"
+                #eTime>
+
+              <span *ngIf="sTime && eTime && smenDate">
+                Время работы: {{reportService.calculateTime(
+                dateSmen + 'T' + sTime.value + ':00.000Z',
+                dateSmen + 'T' + eTime.value + ':00.000Z'
+              ) }}</span>
 
               <mat-form-field class="example-full-width"
                               *ngIf="!((typeWork.value === 'ППР')
