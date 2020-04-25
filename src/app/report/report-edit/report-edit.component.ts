@@ -175,6 +175,34 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     );
   }
 
+  calculateReportTime(typeWork: string = null) {
+    let minutesOfReport = 0;
+    if (typeWork) {
+      for (const control of (this.reportForm.get('workUnitList') as FormArray).controls) {
+        if (typeWork === control.controls.typeWork.value) {
+          minutesOfReport +=
+            this.reportService.calculateTime(
+              this.dateSmen,
+              control.controls.startTime.value,
+              control.controls.endTime.value
+            );
+        }
+      }
+    } else {
+      for (const control of (this.reportForm.get('workUnitList') as FormArray).controls) {
+        minutesOfReport +=
+          this.reportService.calculateTime(
+            this.dateSmen,
+            control.controls.startTime.value,
+            control.controls.endTime.value
+          );
+      }
+    }
+    // console.log(this.reportService.calculateTime(this.dateSmen, control.controls.startTime.value, control.controls.endTime.value));
+    console.log('minutesOfReport: ' + minutesOfReport);
+    return minutesOfReport;
+  }
+
   onCancel() {
     this.router.navigate(['..'], {relativeTo: this.route});
   }
@@ -225,8 +253,13 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     const date = event.value;
     const dateFormated = this.datePipe.transform(date, 'yyyy-MM-dd');
     this.dateSmen = dateFormated;
-    console.log('dateFormated: ', dateFormated);
-    console.log('New Date: ' + dateString);
+    // console.log('dateFormated: ', dateFormated);
+    // console.log('New Date: ' + dateString);
+    this.calculateReportTime();
+  }
+
+  onWorkTimeChanged(numberOfMinutes) {
+    console.log('numberOfMinutes had changed: ' + numberOfMinutes);
   }
 
   ngOnDestroy() {

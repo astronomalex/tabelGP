@@ -143,12 +143,12 @@
                 formControlName="endTime"
                 #eTime>
 
-              <span *ngIf="sTime && eTime && smenDate">
-                Время работы: {{reportService.calculateTime(
-                dateSmen + 'T' + sTime.value + ':00.000Z',
-                dateSmen + 'T' + eTime.value + ':00.000Z'
-              ) }}</span>
+              <span
+                (cuechange)="onWorkTimeChanged(reportService.calculateTime(dateSmen, sTime.value, eTime.value))"
+                *ngIf="sTime.value && eTime.value && smenDate.value">
 
+                Время работы: {{reportService.calculateTime(dateSmen, sTime.value, eTime.value) }}</span>
+              <br>
               <mat-form-field class="example-full-width"
                               *ngIf="!((typeWork.value === 'ППР')
               || (typeWork.value === 'Простой')
@@ -202,6 +202,12 @@
               type="button"
               (click)="onAddWorkUnit()">Добавить работу
             </button>
+            <span *ngIf="calculateReportTime()"> Минут всего: {{ calculateReportTime() }}  </span>
+            <span *ngIf="calculateReportTime('Простой')"> Минут простоя: {{ calculateReportTime('Простой') }}  </span>
+            <span *ngIf="calculateReportTime('ППР')"> Минут ППР: {{ calculateReportTime('ППР') }}  </span>
+            <span *ngIf="calculateReportTime('По среднему')"> Минут по среднему: {{ calculateReportTime('По среднему') }}  </span>
+            <span *ngIf="calculateReportTime('Работа') || calculateReportTime('Настройка')">
+              Минут сдельно: {{ calculateReportTime('Работа') +  calculateReportTime('Настройка') }}  </span>
             <hr>
             <div class="row">
               <div class="col-xs-12">
