@@ -23,7 +23,6 @@ import { AuthComponent } from './auth/auth.component';
 import { PlaceholderDirective } from './shared/placeholder/placeholder.directive';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import {AlertComponent} from './shared/alert/alert.component';
-import {SmenListService} from './tabel/smen-list/smen-list.service';
 import {WorkerListService} from './workers/worker-list/worker-list.service';
 import {AuthInterceptorService} from './auth/auth-interceptor.service';
 import {WorkerSelectDialogListComponent} from './tabel/smen-edit/worker-select-dialog/worker-select-dialog-list-component';
@@ -37,7 +36,21 @@ import {AuthEffects} from './auth/store/auth.effect';
 import {WorkersEffects} from './workers/store/workers.effects';
 import {TabelEffects} from './tabel/store/tabel.effects';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatDatepickerModule, MatFormFieldModule, MatInputModule, MatNativeDateModule, MatSelectModule} from '@angular/material';
+import {
+  MAT_DATE_LOCALE,
+  MatDatepickerModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatNativeDateModule,
+  MatSelectModule
+} from '@angular/material';
+import { ReportEditComponent } from './report/report-edit/report-edit.component';
+import { ReportDetailComponent } from './report/report-detail/report-detail.component';
+import { ReportListComponent } from './report/report-list/report-list.component';
+import { ReportsComponent } from './report/reports/reports.component';
+import { ReportsStartComponent } from './report/reports-start/reports-start.component';
+import { ReportItemComponent } from './report/report-list/report-item/report-item.component';
+import {DatePipe} from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -60,7 +73,13 @@ import {MatDatepickerModule, MatFormFieldModule, MatInputModule, MatNativeDateMo
     PlaceholderDirective,
     LoadingSpinnerComponent,
     AlertComponent,
-    WorkerSelectDialogListComponent
+    WorkerSelectDialogListComponent,
+    ReportEditComponent,
+    ReportDetailComponent,
+    ReportListComponent,
+    ReportsComponent,
+    ReportsStartComponent,
+    ReportItemComponent
   ],
   imports: [
     HttpClientModule,
@@ -83,8 +102,9 @@ import {MatDatepickerModule, MatFormFieldModule, MatInputModule, MatNativeDateMo
     WorkerSelectDialogListComponent
   ],
   providers: [
-    SmenListService,
+    DatePipe,
     WorkerListService,
+    {provide: MAT_DATE_LOCALE, useValue: 'ru-Ru'},
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,

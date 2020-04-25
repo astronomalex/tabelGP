@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Smena} from './smena.model';
-import {SmenListService} from './smen-list.service';
 import {Subscription, Observable} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../auth/auth.service';
@@ -19,7 +18,6 @@ export class SmenListComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   constructor(
-    private slService: SmenListService,
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,

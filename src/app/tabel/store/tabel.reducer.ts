@@ -25,32 +25,32 @@ const initialState: State = {
 
 export function tabelReducer(
   state: State = initialState,
-  action: TabelActions.TabelActions
+  actions: TabelActions.TabelActions
 ) {
-  switch (action.type) {
+  switch (actions.type) {
     case TabelActions.ADD_SMENA:
       return {
         ...state,
-        smens: [...state.smens, action.payload]
+        smens: [...state.smens, actions.payload]
       };
     case TabelActions.ADD_SMENS:
       return {
         ...state,
-        smens: [...state.smens, ...action.payload]
+        smens: [...state.smens, ...actions.payload]
       };
     case TabelActions.SET_SMENS:
       return {
         ...state,
-        smens: [...action.payload]
+        smens: [...actions.payload]
       };
     case TabelActions.UPDATE_SMENA:
       const updatedSmena = {
-        ...state.smens[action.payload.index],
-        ...action.payload.newSmena
+        ...state.smens[actions.payload.index],
+        ...actions.payload.newSmena
       };
 
       const updatedSmens = [...state.smens];
-      updatedSmens[action.payload.index] = updatedSmena;
+      updatedSmens[actions.payload.index] = updatedSmena;
 
       return {
         ...state,
@@ -59,7 +59,7 @@ export function tabelReducer(
     case TabelActions.SELECT_SMENA:
       return {
         ...state,
-        selectedSmenaId: action.payload
+        selectedSmenaId: actions.payload
       };
     case TabelActions.UNSELECT_SMENA:
       return {

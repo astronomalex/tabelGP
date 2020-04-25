@@ -12,6 +12,10 @@ import {WorkerDataEditComponent} from './workers/worker-data-edit/worker-data-ed
 import {AuthComponent} from './auth/auth.component';
 import {AuthGuard} from './auth/auth.guard';
 import {WorkerListResolverService} from './workers/worker-list-resolver.service';
+import {ReportsComponent} from './report/reports/reports.component';
+import {ReportsStartComponent} from './report/reports-start/reports-start.component';
+import {ReportEditComponent} from './report/report-edit/report-edit.component';
+import {ReportDetailComponent} from './report/report-detail/report-detail.component';
 
 
 
@@ -24,6 +28,14 @@ const routes: Routes = [
       {path: 'new', component: SmenEditComponent},
       {path: ':id', component: SmenaDetailComponent},
       {path: ':id/edit', component: SmenEditComponent}
+    ] },
+  {path: 'reports', component: ReportsComponent,
+    resolve: [SmenListResolverService, WorkerListResolverService],
+    canActivate: [AuthGuard], children: [
+      {path: '', component: ReportsStartComponent},
+      {path: 'new', component: ReportEditComponent},
+      {path: ':id', component: ReportDetailComponent},
+      {path: ':id/edit', component: ReportEditComponent}
     ] },
   {path: 'worker-list', component: WorkersComponent,
     resolve: [SmenListResolverService, WorkerListResolverService],

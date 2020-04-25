@@ -4,7 +4,7 @@ import {WorkerData} from '../../../workers/worker-list/worker-data.model';
 import {PlaceholderDirective} from '../../../shared/placeholder/placeholder.directive';
 import {AppState} from '../../../store/app.reducer';
 import {select, Store} from '@ngrx/store';
-import {getWorkers} from '../../selectors/app.selector';
+import {getWorkers} from '../../../store/selectors/app.selector';
 import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 

@@ -7,7 +7,7 @@ import * as fromApp from '../store/app.reducer';
 import * as AuthActions from '../auth/store/auth.actions';
 import * as TabelActions from '../tabel/store/tabel.actions';
 import * as WorkerActions from '../workers/store/workers.actions';
-import {getSmensFromState, getWorkers} from '../tabel/selectors/app.selector';
+import {getSmensFromState, getWorkers} from '../store/selectors/app.selector';
 
 @Component({
   selector: 'app-header',

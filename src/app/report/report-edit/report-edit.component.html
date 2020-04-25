@@ -1,0 +1,235 @@
+<ng-template appPlaceHolder></ng-template>
+<div class="row">
+  <div class="col-xs-12">
+    <form [formGroup]="reportForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <mat-form-field>
+              <mat-label>Дата</mat-label>
+              <input
+                required
+                matNativeControl
+                matInput
+                (dateChange)="onDateChanged($event)"
+                #smenDate
+                [matDatepicker]="myDatepicker"
+                id="dateReport"
+                formControlName="dateReport">
+              <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+              <mat-datepicker #myDatepicker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Машина</mat-label>
+              <mat-select
+                (selectionChange)="onMachineChanged($event)"
+                required
+                formControlName="machineReport">
+                <mat-option *ngFor="let machine of machineList" [value]="machine">
+                  {{machine}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Номер смены</mat-label>
+              <mat-select
+                formControlName="numSmenReport"
+                required>
+                <mat-option value="1">1</mat-option>
+                <mat-option value="2">2</mat-option>
+                <mat-option value="3">3</mat-option>
+                <mat-option value="4">4</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <div class="row">
+          <div class="col-xs-12" formArrayName="workerFormList">
+            <div class="row"
+                 *ngFor="let wrk of getControlsWorkers(); let i = index"
+                 [formGroupName]="i"
+                 style="margin-top: 10px">
+
+              <mat-form-field class="example-full-width">
+                <mat-label>Табельный номер</mat-label>
+                <input
+                  #tbN
+                  formControlName="tbNum"
+                  matInput>
+              </mat-form-field>
+
+              <span *ngIf="getWorkerByTN(tbN.value)">
+                  {{getWorkerByTN(tbN.value).surname}}
+                {{getWorkerByTN(tbN.value).name[0]}}.
+                {{getWorkerByTN(tbN.value).patronymic[0]}}.
+                </span>
+
+              <span *ngIf="!wrk.get('tbNum').valid && wrk.get('tbNum').touched"
+                    class="help-block">
+                  <span
+                    *ngIf="wrk.get('tbNum').errors['tabelNumNotExist']">Данного номера нет в базе табельных номеров!</span>
+                  <span *ngIf="wrk.get('tbNum').errors['required']">Это поле обязательно к заполнению!</span>
+                  <span *ngIf="wrk.get('tbNum').errors['pattern']">Табельный номер состоит из четырех цифр</span>
+                </span>
+
+              <mat-form-field class="example-full-width">
+                <mat-label>Разряд</mat-label>
+                <input
+                  formControlName="grade"
+                  type="number"
+                  pattern="^[1-6]+$"
+                  matInput>
+              </mat-form-field>
+
+              <div class="col-xs-4 col-md-2">
+
+              </div>
+              <div class="row">
+                <button
+                  class="btn btn-danger"
+                  (click)="onDeleteWorker(i)"
+                  type="button">Удалить
+                </button>
+              </div>
+              <div class="row">
+                <br>
+                <hr>
+              </div>
+
+            </div>
+
+            <button
+              class="btn btn-success"
+              type="button"
+              (click)="onAddWorker()">Добавить рабочего
+            </button>
+            <hr>
+            <div class="row">
+              <div class="col-xs-12">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <div class="row">
+          <div class="col-xs-12" formArrayName="workUnitList">
+            <div class="row"
+                 *ngFor="let wrk of getControlsWorkUnits(); let i = index"
+                 [formGroupName]="i"
+                 style="margin-top: 10px">
+
+              <mat-form-field>
+                <mat-label>Тип работы</mat-label>
+                <mat-select
+                  #typeWork
+                  required
+                  formControlName="typeWork">
+                  <mat-option *ngFor="let typeWork of typesOfWorks" [value]="typeWork">
+                    {{typeWork}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <input
+                type="time"
+                formControlName="startTime"
+                #sTime>
+
+              <input
+                type="time"
+                formControlName="endTime"
+                #eTime>
+
+              <span
+                (cuechange)="onWorkTimeChanged(reportService.calculateTime(dateSmen, sTime.value, eTime.value))"
+                *ngIf="sTime.value && eTime.value && smenDate.value">
+
+                Время работы: {{reportService.calculateTime(dateSmen, sTime.value, eTime.value) }}</span>
+              <br>
+              <mat-form-field class="example-full-width"
+                              *ngIf="!((typeWork.value === 'ППР')
+              || (typeWork.value === 'Простой')
+              || (typeWork.value === 'По среднему'))">
+                <mat-label>Номер заказа</mat-label>
+                <input
+                  matInput
+                  formControlName="numOrder">
+              </mat-form-field>
+
+              <mat-form-field
+                class="example-full-width"
+                *ngIf="!((typeWork.value === 'ППР')
+                || (typeWork.value === 'Простой')
+                || (typeWork.value === 'По среднему'))">
+                <mat-label>Название заказа</mat-label>
+                <input
+                  matInput
+                  formControlName="nameOrder">
+              </mat-form-field>
+
+              <mat-form-field *ngIf="!((typeWork.value === 'ППР')
+                || (typeWork.value === 'Простой')
+                || (typeWork.value === 'По среднему'))">
+                <mat-label>Группа сложности</mat-label>
+                <mat-select
+                  required
+                  formControlName="groupDifficulty">
+                  <mat-option *ngFor="let norm of norms" [value]="norm.grpDiff">
+                    {{norm.grpDiff}} - {{norm.norma}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <div class="row">
+                <button
+                  class="btn btn-danger"
+                  (click)="onDeleteWorkUnit(i)"
+                  type="button">Удалить
+                </button>
+              </div>
+              <div class="row">
+                <br>
+                <hr>
+              </div>
+
+            </div>
+
+            <button
+              class="btn btn-success"
+              type="button"
+              (click)="onAddWorkUnit()">Добавить работу
+            </button>
+            <span *ngIf="calculateReportTime()"> Минут всего: {{ calculateReportTime() }}  </span>
+            <span *ngIf="calculateReportTime('Простой')"> Минут простоя: {{ calculateReportTime('Простой') }}  </span>
+            <span *ngIf="calculateReportTime('ППР')"> Минут ППР: {{ calculateReportTime('ППР') }}  </span>
+            <span *ngIf="calculateReportTime('По среднему')"> Минут по среднему: {{ calculateReportTime('По среднему') }}  </span>
+            <span *ngIf="calculateReportTime('Работа') || calculateReportTime('Настройка')">
+              Минут сдельно: {{ calculateReportTime('Работа') +  calculateReportTime('Настройка') }}  </span>
+            <hr>
+            <div class="row">
+              <div class="col-xs-12">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <button
+            [disabled]="!reportForm.valid"
+            type="submit"
+            class="btn btn-success">Сохранить
+          </button>
+          <button
+            (click)="onCancel()"
+            type="button"
+            class="btn btn-danger">Отмена
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

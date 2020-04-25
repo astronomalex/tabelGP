@@ -4,13 +4,12 @@ import {ActivatedRoute, Params, Router} from '@angular/router';
 import {Subject, Subscription} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 
-import {SmenListService} from '../smen-list/smen-list.service';
 import {PlaceholderDirective} from '../../shared/placeholder/placeholder.directive';
 import {WorkerSelectDialogListComponent} from './worker-select-dialog/worker-select-dialog-list-component';
 import {WorkerData} from '../../workers/worker-list/worker-data.model';
 import * as TabelActions from '../store/tabel.actions';
 import * as fromApp from '../../store/app.reducer';
-import {getMachineList, getSmensFromState, getWorkers} from '../selectors/app.selector';
+import {getMachineList, getSmensFromState, getWorkers} from '../../store/selectors/app.selector';
 import {takeUntil} from 'rxjs/operators';
 import {Smena} from '../smen-list/smena.model';
 
@@ -42,7 +41,6 @@ export class SmenEditComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private smenListService: SmenListService,
     private componentFactoryResolver: ComponentFactoryResolver,
     private store: Store<fromApp.AppState>
   ) {
@@ -121,7 +119,9 @@ export class SmenEditComponent implements OnInit, OnDestroy {
             nightTime: new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
             prostTime: new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
             prikTime: new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
-            srednTime: new FormControl(null, [Validators.min(0), Validators.max(11.5)])
+            srednTime: new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
+            pprTime: new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
+            doublePayTime: new FormControl(null, [Validators.min(0), Validators.max(11.5)])
           })
         );
       }
@@ -177,27 +177,29 @@ export class SmenEditComponent implements OnInit, OnDestroy {
       mashine = smena.mashine;
       numSmen = smena.numSmen;
       if (smena.workersTime) {
-        for (const wrk of smena.workersTime) {
+        for (const worker of smena.workersTime) {
           workersTime.push(
             new FormGroup({
-              tbNum: new FormControl(wrk.tbNum, [Validators.required, Validators.pattern(/^\d\d\d\d$/)]),
-              grade: new FormControl(wrk.grade, [Validators.required, Validators.min(1), Validators.max(6)]),
-              sdelTime: new FormControl(wrk.sdelTime, [Validators.min(0), Validators.max(11.5)]),
-              nightTime: new FormControl(wrk.nightTime, [Validators.min(0), Validators.max(11.5)]),
-              prostTime: new FormControl(wrk.prostTime, [Validators.min(0), Validators.max(11.5)]),
-              prikTime: new FormControl(wrk.prikTime, [Validators.min(0), Validators.max(11.5)]),
-              srednTime: new FormControl(wrk.srednTime, [Validators.min(0), Validators.max(11.5)])
+              tbNum: new FormControl(worker.tbNum, [Validators.required, Validators.pattern(/^\d\d\d\d$/)]),
+              grade: new FormControl(worker.grade, [Validators.required, Validators.min(1), Validators.max(6)]),
+              sdelTime: new FormControl(worker.sdelTime, [Validators.min(0), Validators.max(11.5)]),
+              nightTime: new FormControl(worker.nightTime, [Validators.min(0), Validators.max(11.5)]),
+              prostTime: new FormControl(worker.prostTime, [Validators.min(0), Validators.max(11.5)]),
+              prikTime: new FormControl(worker.prikTime, [Validators.min(0), Validators.max(11.5)]),
+              srednTime: new FormControl(worker.srednTime, [Validators.min(0), Validators.max(11.5)]),
+              pprTime: new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
+              doublePayTime: new FormControl(null, [Validators.min(0), Validators.max(11.5)])
             })
           );
-          this.selectedWorker = null;
         }
+        this.selectedWorker = null;
       }
     }
 
     this.smenForm = new FormGroup({
-      dateSmen: new FormControl(dateSmen, Validators.required),
-      mashine: new FormControl(mashine, Validators.required),
-      numSmen: new FormControl(numSmen, Validators.required),
+      dateSmen: new FormControl(dateSmen, [Validators.required]),
+      mashine: new FormControl(mashine, [Validators.required]),
+      numSmen: new FormControl(numSmen, [Validators.required]),
       workersTime
     });
   }

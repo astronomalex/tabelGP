@@ -7,7 +7,7 @@ import {Smena} from '../smen-list/smena.model';
 import {WorkerData} from '../../workers/worker-list/worker-data.model';
 import * as fromApp from '../../store/app.reducer';
 import * as TabelActions from '../store/tabel.actions';
-import {getSelectedSmena, getSelectedSmenaWorkersData} from '../selectors/app.selector';
+import {getSelectedSmena, getSelectedSmenaWorkersData} from '../../store/selectors/app.selector';
 import {Subject} from 'rxjs';
 
 @Component({
