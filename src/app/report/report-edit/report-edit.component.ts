@@ -97,7 +97,6 @@ export class ReportEditComponent implements OnInit, OnDestroy {
           workerFormList.push(
             new FormGroup({
               tbNum: new FormControl(tabelNum, [Validators.required, Validators.pattern(/^\d\d\d\d$/)])
-
             })
           );
         }
@@ -164,7 +163,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     return (this.reportForm.get('workerFormList') as FormArray).controls;
   }
 
-  getControlsWorkUnits() {
+  get getControlsWorkUnits() {
     return (this.reportForm.get('workUnitList') as FormArray).controls;
   }
 

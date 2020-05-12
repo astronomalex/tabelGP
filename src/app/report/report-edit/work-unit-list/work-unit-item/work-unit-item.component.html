@@ -1,0 +1,69 @@
+<div>
+  <div class="row"
+       *ngFor="let wrk of getControlsWorkUnits(); let i = index"
+       [formGroupName]="i"
+       style="margin-top: 10px">
+
+    <mat-form-field>
+      <mat-label>Тип работы</mat-label>
+      <mat-select
+        #typeWork
+        required
+        formControlName="typeWork">
+        <mat-option *ngFor="let typeWork of typesOfWorks" [value]="typeWork">
+          {{typeWork}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <input
+      type="time"
+      formControlName="startTime"
+      #sTime>
+
+    <input
+      type="time"
+      formControlName="endTime"
+      #eTime>
+
+    <span
+      (cuechange)="onWorkTimeChanged(reportService.calculateTime(dateSmen, sTime.value, eTime.value))"
+      *ngIf="sTime.value && eTime.value && smenDate.value">
+
+                Время работы: {{reportService.calculateTime(dateSmen, sTime.value, eTime.value) }}</span>
+    <br>
+    <mat-form-field class="example-full-width"
+                    *ngIf="!((typeWork.value === 'ППР')
+              || (typeWork.value === 'Простой')
+              || (typeWork.value === 'По среднему'))">
+      <mat-label>Номер заказа</mat-label>
+      <input
+        matInput
+        formControlName="numOrder">
+    </mat-form-field>
+
+    <mat-form-field
+      class="example-full-width"
+      *ngIf="!((typeWork.value === 'ППР')
+                || (typeWork.value === 'Простой')
+                || (typeWork.value === 'По среднему'))">
+      <mat-label>Название заказа</mat-label>
+      <input
+        matInput
+        formControlName="nameOrder">
+    </mat-form-field>
+
+    <mat-form-field *ngIf="!((typeWork.value === 'ППР')
+                || (typeWork.value === 'Простой')
+                || (typeWork.value === 'По среднему'))">
+      <mat-label>Группа сложности</mat-label>
+      <mat-select
+        required
+        formControlName="groupDifficulty">
+        <mat-option *ngFor="let norm of norms" [value]="norm.grpDiff">
+          {{norm.grpDiff}} - {{norm.norma}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+</div>

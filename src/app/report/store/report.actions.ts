@@ -5,6 +5,7 @@ export const ADD_REPORT = '[Reports] Add Report';
 export const UPDATE_REPORT = '[Reports] Update Report';
 export const SET_REPORTS = '[Reports] Set Reports';
 export const SELECT_MACHINE = '[Reports] Select Machine';
+export const EDITED_REPORT_UPDATE = '[Reports] Edited Report Update';
 
 export class AddReport implements Action {
   readonly type = ADD_REPORT;
@@ -34,8 +35,16 @@ export class SelectMachine implements Action {
   }
 }
 
+export class EditedReportUpdate implements Action {
+  readonly type = EDITED_REPORT_UPDATE;
+
+  constructor(public payload: Report) {
+  }
+}
+
 export type ReportActions =
   | AddReport
   | UpdateReport
   | SetReports
-  | SelectMachine;
+  | SelectMachine
+  | EditedReportUpdate;

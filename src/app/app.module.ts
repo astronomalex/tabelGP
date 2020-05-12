@@ -51,6 +51,8 @@ import { ReportsComponent } from './report/reports/reports.component';
 import { ReportsStartComponent } from './report/reports-start/reports-start.component';
 import { ReportItemComponent } from './report/report-list/report-item/report-item.component';
 import {DatePipe} from '@angular/common';
+import { WorkUnitListComponent } from './report/report-edit/work-unit-list/work-unit-list.component';
+import { WorkUnitItemComponent } from './report/report-edit/work-unit-list/work-unit-item/work-unit-item.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +81,9 @@ import {DatePipe} from '@angular/common';
     ReportListComponent,
     ReportsComponent,
     ReportsStartComponent,
-    ReportItemComponent
+    ReportItemComponent,
+    WorkUnitListComponent,
+    WorkUnitItemComponent
   ],
   imports: [
     HttpClientModule,
