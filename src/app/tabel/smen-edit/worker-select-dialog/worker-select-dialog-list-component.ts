@@ -14,7 +14,7 @@ import {Subject} from 'rxjs';
   styleUrls: ['./worker-select-dialog-list.component.css']
 })
 export class WorkerSelectDialogListComponent implements OnInit, OnDestroy {
-  @Output() close = new EventEmitter<void>();
+  @Output() closeDialog = new EventEmitter<void>();
   @Output() selectedWorker = new EventEmitter<WorkerData>();
   @ViewChild(PlaceholderDirective, {static: false}) workerItem: PlaceholderDirective;
   private ngUnsubscribe$ = new Subject();
@@ -34,7 +34,7 @@ export class WorkerSelectDialogListComponent implements OnInit, OnDestroy {
   }
 
   onClose() {
-    this.close.emit();
+    this.closeDialog.emit();
   }
 
   onSelect(index: number) {

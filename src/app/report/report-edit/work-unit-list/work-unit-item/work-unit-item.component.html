@@ -19,6 +19,7 @@
     <input
       type="time"
       formControlName="startTime"
+
       #sTime>
 
     <input
@@ -28,7 +29,7 @@
 
     <span
       (cuechange)="onWorkTimeChanged(reportService.calculateTime(dateSmen, sTime.value, eTime.value))"
-      *ngIf="sTime.value && eTime.value && smenDate.value">
+      *ngIf="sTime.value && eTime.value && dateSmen">
 
                 Время работы: {{reportService.calculateTime(dateSmen, sTime.value, eTime.value) }}</span>
     <br>

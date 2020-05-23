@@ -88,7 +88,7 @@ export class SmenEditComponent implements OnInit, OnDestroy {
     hostViewContainerRef.clear();
     const componentRef = hostViewContainerRef.createComponent(dialogCmpFactoty);
 
-    this.closeSub = componentRef.instance.close.subscribe(
+    this.closeSub = componentRef.instance.closeDialog.subscribe(
       () => {
         this.closeSub.unsubscribe();
         this.selectSub.unsubscribe();

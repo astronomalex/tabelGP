@@ -6,11 +6,13 @@
     type="button">Удалить
   </button>
 </div>
+
 <div class="row">
+  <app-work-unit-item
+    [dateSmen]="dateSmen">
+  </app-work-unit-item>
   <br>
   <hr>
-</div>
-
 </div>
 
 <button
@@ -18,6 +20,7 @@
   type="button"
   (click)="onAddWorkUnit()">Добавить работу
 </button>
+
 <span *ngIf="calculateReportTime()"> Минут всего: {{ calculateReportTime() }}  </span>
 <span *ngIf="calculateReportTime('Простой')"> Минут простоя: {{ calculateReportTime('Простой') }}  </span>
 <span *ngIf="calculateReportTime('ППР')"> Минут ППР: {{ calculateReportTime('ППР') }}  </span>
