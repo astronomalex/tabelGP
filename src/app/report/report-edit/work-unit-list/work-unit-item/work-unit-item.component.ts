@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {WorkUnit} from '../../../work-unit.model';
 import {ReportService} from '../../../report.service';
+import {FormArray, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-work-unit-item',
@@ -9,6 +10,7 @@ import {ReportService} from '../../../report.service';
 })
 export class WorkUnitItemComponent implements OnInit {
   @Input() dateSmen: string;
+  @Input() reportForm: FormGroup;
   @Output() formChanged = new EventEmitter<{ typeWork: string, amountMinutes: number }>();
   workItem: WorkUnit;
 
@@ -27,4 +29,7 @@ export class WorkUnitItemComponent implements OnInit {
     console.log('numberOfMinutes had changed: ' + numberOfMinutes);
   }
 
+  getControlsWorkUnits() {
+    return (this.reportForm.get('workUnitList') as FormArray).controls;
+  }
 }

@@ -1,5 +1,5 @@
 import {Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {PlaceholderDirective} from '../../shared/placeholder/placeholder.directive';
 import {WorkerData} from '../../workers/worker-list/worker-data.model';
 import {Subject, Subscription} from 'rxjs';
@@ -64,7 +64,8 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private componentFactoryResolver: ComponentFactoryResolver,
     private reportService: ReportService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private formBuilder: FormBuilder
   ) {}
 
   ngOnInit() {
@@ -90,7 +91,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
         takeUntil(this.ngUnsubscribe$)
       ).subscribe(reports => report = reports[this.id]);
       dateReport = report.dateReport;
-      machineReport = report.maschine;
+      machineReport = report.machine;
       numSmenReport = report.numSmenReport;
       if (report.workerListTabelNums) {
         for (const tabelNum of report.workerListTabelNums) {
@@ -125,6 +126,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
       workerFormList,
       workUnitList
     });
+    this.reportForm.valueChanges.subscribe(newValues => console.log('New Values: ' + newValues));
   }
 
   showWorkerSelectDialog() {
@@ -163,10 +165,6 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     return (this.reportForm.get('workerFormList') as FormArray).controls;
   }
 
-  get getControlsWorkUnits() {
-    return (this.reportForm.get('workUnitList') as FormArray).controls;
-  }
-
   getWorkerByTN(tabelNum: string) {
     return this.workerList.find((item) => {
         return item.tabelNum === tabelNum;
@@ -195,19 +193,6 @@ export class ReportEditComponent implements OnInit, OnDestroy {
 
   onDeleteWorker(index: number) {
     (this.reportForm.get('workerFormList') as FormArray).removeAt(index);
-  }
-
-  onAddWorkUnit() {
-    (this.reportForm.get('workUnitList') as FormArray).push(
-      new FormGroup({
-        startTime: new FormControl(null, [Validators.required]),
-        endTime: new FormControl(null, [Validators.required]),
-        typeWork: new FormControl(null, [Validators.required]),
-        numOrder: new FormControl(null, [Validators.required]),
-        nameOrder: new FormControl(null, [Validators.required]),
-        groupDifficulty: new FormControl(null, [Validators.required])
-      })
-    );
   }
 
   onDeleteWorkUnit(index: number) {

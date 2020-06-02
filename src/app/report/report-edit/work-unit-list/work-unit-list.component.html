@@ -1,14 +1,6 @@
-
-<div class="row">
-  <button
-    class="btn btn-danger"
-    (click)="onDeleteWorkUnit(i)"
-    type="button">Удалить
-  </button>
-</div>
-
 <div class="row">
   <app-work-unit-item
+    [reportForm]="reportForm"
     [dateSmen]="dateSmen">
   </app-work-unit-item>
   <br>

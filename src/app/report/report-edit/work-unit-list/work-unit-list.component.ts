@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormArray} from '@angular/forms';
+import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ReportService} from '../../report.service';
 
 @Component({
@@ -9,6 +9,7 @@ import {ReportService} from '../../report.service';
 })
 export class WorkUnitListComponent implements OnInit {
   @Input() dateSmen: string;
+  @Input() reportForm: FormGroup;
   constructor(
     private reportService: ReportService
   ) { }
@@ -44,4 +45,16 @@ export class WorkUnitListComponent implements OnInit {
     return minutesOfReport;
   }
 
+  onAddWorkUnit() {
+    (this.reportForm.get('workUnitList') as FormArray).push(
+      new FormGroup({
+        startTime: new FormControl(null, [Validators.required]),
+        endTime: new FormControl(null, [Validators.required]),
+        typeWork: new FormControl(null, [Validators.required]),
+        numOrder: new FormControl(null, [Validators.required]),
+        nameOrder: new FormControl(null, [Validators.required]),
+        groupDifficulty: new FormControl(null, [Validators.required])
+      })
+    );
+  }
 }
