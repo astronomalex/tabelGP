@@ -8,6 +8,7 @@
       <mat-label>Тип работы</mat-label>
       <mat-select
         #typeWork
+        [formGroup]="reportForm"
         required
         formControlName="typeWork">
         <mat-option *ngFor="let typeWork of typesOfWorks" [value]="typeWork">
@@ -19,12 +20,13 @@
     <input
       type="time"
       formControlName="startTime"
-
+      [formGroup]="reportForm"
       #sTime>
 
     <input
       type="time"
       formControlName="endTime"
+      [formGroup]="reportForm"
       #eTime>
 
     <span
@@ -40,6 +42,7 @@
       <mat-label>Номер заказа</mat-label>
       <input
         matInput
+        [formGroup]="reportForm"
         formControlName="numOrder">
     </mat-form-field>
 
@@ -51,6 +54,7 @@
       <mat-label>Название заказа</mat-label>
       <input
         matInput
+        [formGroup]="reportForm"
         formControlName="nameOrder">
     </mat-form-field>
 
@@ -60,6 +64,7 @@
       <mat-label>Группа сложности</mat-label>
       <mat-select
         required
+        [formGroup]="reportForm"
         formControlName="groupDifficulty">
         <mat-option *ngFor="let norm of norms" [value]="norm.grpDiff">
           {{norm.grpDiff}} - {{norm.norma}}

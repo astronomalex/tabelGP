@@ -1,5 +1,7 @@
 <div class="row">
   <app-work-unit-item
+    [typesOfWorks]="typesOfWorks"
+    [norms]="norms"
     [reportForm]="reportForm"
     [dateSmen]="dateSmen">
   </app-work-unit-item>
@@ -21,6 +23,6 @@
               Минут сдельно: {{ calculateReportTime('Работа') +  calculateReportTime('Настройка') }}  </span>
 <hr>
 <div class="row">
-  <div class="col-xs-12">
+  <div class="col-xs-12">,
   </div>
 </div>

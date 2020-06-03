@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ReportService} from '../../report.service';
+import {Norma} from '../../norma.model';
 
 @Component({
   selector: 'app-work-unit-list',
@@ -9,40 +10,14 @@ import {ReportService} from '../../report.service';
 })
 export class WorkUnitListComponent implements OnInit {
   @Input() dateSmen: string;
+  @Input() norms: Norma[];
+  @Input() typesOfWorks: string[];
   @Input() reportForm: FormGroup;
   constructor(
     private reportService: ReportService
   ) { }
 
   ngOnInit() {
-  }
-
-  calculateReportTime(typeWork: string = null) {
-    let minutesOfReport = 0;
-    if (typeWork) {
-      for (const control of (this.reportForm.get('workUnitList') as FormArray).controls) {
-        if (typeWork === control.controls.typeWork.value) {
-          minutesOfReport +=
-            this.reportService.calculateTime(
-              this.dateSmen,
-              control.controls.startTime.value,
-              control.controls.endTime.value
-            );
-        }
-      }
-    } else {
-      for (const control of (this.reportForm.get('workUnitList') as FormArray).controls) {
-        minutesOfReport +=
-          this.reportService.calculateTime(
-            this.dateSmen,
-            control.controls.startTime.value,
-            control.controls.endTime.value
-          );
-      }
-    }
-    // console.log(this.reportService.calculateTime(this.dateSmen, control.controls.startTime.value, control.controls.endTime.value));
-    console.log('minutesOfReport: ' + minutesOfReport);
-    return minutesOfReport;
   }
 
   onAddWorkUnit() {

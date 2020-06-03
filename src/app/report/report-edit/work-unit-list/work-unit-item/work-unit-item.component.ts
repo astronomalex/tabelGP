@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {WorkUnit} from '../../../work-unit.model';
 import {ReportService} from '../../../report.service';
 import {FormArray, FormGroup} from '@angular/forms';
+import {Norma} from '../../../norma.model';
 
 @Component({
   selector: 'app-work-unit-item',
@@ -10,8 +11,11 @@ import {FormArray, FormGroup} from '@angular/forms';
 })
 export class WorkUnitItemComponent implements OnInit {
   @Input() dateSmen: string;
+  @Input() norms: Norma[];
   @Input() reportForm: FormGroup;
+  @Input() typesOfWorks: string[];
   @Output() formChanged = new EventEmitter<{ typeWork: string, amountMinutes: number }>();
+
   workItem: WorkUnit;
 
   constructor(
@@ -22,7 +26,7 @@ export class WorkUnitItemComponent implements OnInit {
   }
 
   calculateTimeInMinutes() {
-    let workTime = (this.endWorkTime.getTime() - this.startWorkTime.getTime()) * 3600000;
+    // const workTime = (this.endWorkTime.getTime() - this.startWorkTime.getTime()) * 3600000;
   }
 
   onWorkTimeChanged(numberOfMinutes) {
@@ -32,4 +36,13 @@ export class WorkUnitItemComponent implements OnInit {
   getControlsWorkUnits() {
     return (this.reportForm.get('workUnitList') as FormArray).controls;
   }
+
+  onDeleteWorkUnit(index: number) {
+    (this.reportForm.get('workUnitList') as FormArray).removeAt(index);
+  }
+
+  onDeleteWorker(index: number) {
+    (this.reportForm.get('workerFormList') as FormArray).removeAt(index);
+  }
+
 }

@@ -191,13 +191,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     this.showWorkerSelectDialog();
   }
 
-  onDeleteWorker(index: number) {
-    (this.reportForm.get('workerFormList') as FormArray).removeAt(index);
-  }
 
-  onDeleteWorkUnit(index: number) {
-    (this.reportForm.get('workUnitList') as FormArray).removeAt(index);
-  }
 
   onMachineChanged(event) {
     this.selectedMachine = event.value;
@@ -216,8 +210,39 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     this.calculateReportTime();
   }
 
+  calculateReportTime(typeWork: string = null) {
+    let minutesOfReport = 0;
+    if (typeWork) {
+      for (const control of (this.reportForm.get('workUnitList') as FormArray).controls) {
+        if (typeWork === control.typeWork.value) {
+          minutesOfReport +=
+            this.reportService.calculateTime(
+              this.dateSmen,
+              control.controls.startTime.value,
+              control.controls.endTime.value
+            );
+        }
+      }
+    } else {
+      for (const control of (this.reportForm.get('workUnitList') as FormArray)) {
+        minutesOfReport +=
+          this.reportService.calculateTime(
+            this.dateSmen,
+            control.startTime.value,
+            control.endTime.value
+          );
+      }
+    }
+    // console.log(this.reportService.calculateTime(this.dateSmen, control.controls.startTime.value, control.controls.endTime.value));
+    console.log('minutesOfReport: ' + minutesOfReport);
+    return minutesOfReport;
+  }
+
+
   ngOnDestroy() {
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
   }
+
+
 }

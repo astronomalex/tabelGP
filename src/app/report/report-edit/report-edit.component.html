@@ -84,7 +84,10 @@
               </mat-form-field>
 
               <div class="row">
-                <app-work-unit-list [reportForm]="reportForm"></app-work-unit-list>
+                <app-work-unit-list
+                  [typesOfWorks]="typesOfWorks"
+                  [norms]="norms"
+                  [reportForm]="reportForm"></app-work-unit-list>
               </div>
               <div class="row">
                 <button
