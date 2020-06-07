@@ -21,6 +21,7 @@ import {WorkerSelectDialogListComponent} from '../../tabel/smen-edit/worker-sele
 import {Norma} from '../norma.model';
 import {ReportService} from '../report.service';
 import {DatePipe} from '@angular/common';
+import {WorkUnit} from '../work-unit.model';
 
 @Component({
   selector: 'app-report-edit',
@@ -33,6 +34,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   reportForm: FormGroup;
   @ViewChild(PlaceholderDirective, {static: false}) dialogHost: PlaceholderDirective;
   workerList: WorkerData[];
+  public workUnits: WorkUnit[];
   public machineList: string[];
   public typesOfWorks: string[];
   public norms: Norma[];
@@ -58,14 +60,14 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   private selectSub: Subscription;
   private selectedWorker: WorkerData = null;
 
+
   constructor(
     private store: Store<fromApp.AppState>,
     private router: Router,
     private route: ActivatedRoute,
     private componentFactoryResolver: ComponentFactoryResolver,
     private reportService: ReportService,
-    private datePipe: DatePipe,
-    private formBuilder: FormBuilder
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit() {
@@ -213,25 +215,33 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   calculateReportTime(typeWork: string = null) {
     let minutesOfReport = 0;
     if (typeWork) {
-      for (const control of (this.reportForm.get('workUnitList') as FormArray).controls) {
-        if (typeWork === control.typeWork.value) {
-          minutesOfReport +=
-            this.reportService.calculateTime(
-              this.dateSmen,
-              control.controls.startTime.value,
-              control.controls.endTime.value
-            );
+      for (const workUnit of this.workUnits) {
+        if (typeWork === workUnit.typeWork) {
+          minutesOfReport += workUnit.getworkTime();
         }
       }
+      // for (const control of (this.reportForm.get('workUnitList') as FormArray).controls) {
+      //   if (typeWork === control.typeWork.value) {
+      //     minutesOfReport +=
+      //       this.reportService.calculateTime(
+      //         this.dateSmen,
+      //         control.controls.startTime.value,
+      //         control.controls.endTime.value
+      //       );
+      //   }
+      // }
     } else {
-      for (const control of (this.reportForm.get('workUnitList') as FormArray)) {
-        minutesOfReport +=
-          this.reportService.calculateTime(
-            this.dateSmen,
-            control.startTime.value,
-            control.endTime.value
-          );
+      for (const workUnit of this.workUnits) {
+        minutesOfReport += workUnit.getworkTime();
       }
+      // for (const control of (this.reportForm.get('workUnitList') as FormArray)) {
+      //   minutesOfReport +=
+      //     this.reportService.calculateTime(
+      //       this.dateSmen,
+      //       control.startTime.value,
+      //       control.endTime.value
+      //     );
+      // }
     }
     // console.log(this.reportService.calculateTime(this.dateSmen, control.controls.startTime.value, control.controls.endTime.value));
     console.log('minutesOfReport: ' + minutesOfReport);

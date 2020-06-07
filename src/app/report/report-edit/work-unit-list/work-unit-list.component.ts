@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ReportService} from '../../report.service';
 import {Norma} from '../../norma.model';
+import {WorkUnit} from '../../work-unit.model';
 
 @Component({
   selector: 'app-work-unit-list',
@@ -13,6 +14,7 @@ export class WorkUnitListComponent implements OnInit {
   @Input() norms: Norma[];
   @Input() typesOfWorks: string[];
   @Input() reportForm: FormGroup;
+  @Input() workUnits: WorkUnit[];
   constructor(
     private reportService: ReportService
   ) { }

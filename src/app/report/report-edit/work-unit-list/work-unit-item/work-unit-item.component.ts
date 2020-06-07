@@ -13,10 +13,15 @@ export class WorkUnitItemComponent implements OnInit {
   @Input() dateSmen: string;
   @Input() norms: Norma[];
   @Input() reportForm: FormGroup;
+  @Input() workUnits: WorkUnit[];
   @Input() typesOfWorks: string[];
+  selectedTypeOfWorks: string;
   @Output() formChanged = new EventEmitter<{ typeWork: string, amountMinutes: number }>();
+  startWorkTime: number;
+  endWorkTime: number;
+  amountOfMinutes: number;
 
-  workItem: WorkUnit;
+  // workStartTime: time;
 
   constructor(
     private reportService: ReportService
@@ -27,13 +32,16 @@ export class WorkUnitItemComponent implements OnInit {
 
   calculateTimeInMinutes() {
     // const workTime = (this.endWorkTime.getTime() - this.startWorkTime.getTime()) * 3600000;
+    // return workTime;
   }
 
   onWorkTimeChanged(numberOfMinutes) {
     console.log('numberOfMinutes had changed: ' + numberOfMinutes);
+    this.amountOfMinutes = numberOfMinutes;
+    this.formChanged.emit({typeWork: this.selectedTypeOfWorks, amountMinutes: this.amountOfMinutes});
   }
 
-  getControlsWorkUnits() {
+  getWorkUnits() {
     return (this.reportForm.get('workUnitList') as FormArray).controls;
   }
 
