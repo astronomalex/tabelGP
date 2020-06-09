@@ -1,0 +1,12 @@
+diff a/src/app/report/report-edit/report-edit.component.html b/src/app/report/report-edit/report-edit.component.html	(rejected hunks)
+@@ -83,8 +83,8 @@
+                   matInput>
+               </mat-form-field>
+ 
+-              <div class="col-xs-4 col-md-2">
+-
++              <div class="row">
++                <app-work-unit-list [reportForm]="reportForm"></app-work-unit-list>
+               </div>
+               <div class="row">
+                 <button

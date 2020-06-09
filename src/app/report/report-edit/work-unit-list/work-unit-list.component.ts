@@ -22,6 +22,10 @@ export class WorkUnitListComponent implements OnInit {
   ngOnInit() {
   }
 
+  onDeleteWorkUnit(i: number) {
+
+  }
+
   onAddWorkUnit() {
     (this.reportForm.get('workUnitList') as FormArray).push(
       new FormGroup({

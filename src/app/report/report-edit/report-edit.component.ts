@@ -193,7 +193,9 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     this.showWorkerSelectDialog();
   }
 
-
+  onDeleteWorker(index: number) {
+    (this.reportForm.get('workerFormList') as FormArray).removeAt(index);
+  }
 
   onMachineChanged(event) {
     this.selectedMachine = event.value;

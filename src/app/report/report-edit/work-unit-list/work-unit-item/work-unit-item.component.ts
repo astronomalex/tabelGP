@@ -17,6 +17,7 @@ export class WorkUnitItemComponent implements OnInit {
   @Input() typesOfWorks: string[];
   selectedTypeOfWorks: string;
   @Output() formChanged = new EventEmitter<{ typeWork: string, amountMinutes: number }>();
+  @Output() deleteWorkUnit = new EventEmitter<number>();
   startWorkTime: number;
   endWorkTime: number;
   amountOfMinutes: number;
@@ -46,11 +47,10 @@ export class WorkUnitItemComponent implements OnInit {
   }
 
   onDeleteWorkUnit(index: number) {
-    (this.reportForm.get('workUnitList') as FormArray).removeAt(index);
+    // (this.reportForm.get('workUnitList') as FormArray).removeAt(index);
+
   }
 
-  onDeleteWorker(index: number) {
-    (this.reportForm.get('workerFormList') as FormArray).removeAt(index);
-  }
+
 
 }
