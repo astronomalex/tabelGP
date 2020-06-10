@@ -7,6 +7,7 @@ import {select, Store} from '@ngrx/store';
 
 import * as fromApp from '../../store/app.reducer';
 import {
+  getEditedReport,
   getMachineList, getNormsByMachine,
   getNormsFromState,
   getReportsFromState,
@@ -34,12 +35,13 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   reportForm: FormGroup;
   @ViewChild(PlaceholderDirective, {static: false}) dialogHost: PlaceholderDirective;
   workerList: WorkerData[];
-  public workUnits: WorkUnit[];
+  public workUnits: WorkUnit[] = [];
   public machineList: string[];
   public typesOfWorks: string[];
   public norms: Norma[];
   public dateSmen: string;
   public selectedMachine: string;
+  editedReport$ = this.store.pipe(select(getEditedReport));
   private ngUnsubscribe$ = new Subject();
   typesOfWorks$ = this.store.pipe(select(getTypesOfWorkFromState)).pipe(
     takeUntil(this.ngUnsubscribe$)
@@ -85,7 +87,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     let machineReport = '';
     let numSmenReport = '';
     const workerFormList = new FormArray([]);
-    const workUnitList = new FormArray([]);
+    // const workUnitList = new FormArray([]);
 
     if (this.editMode) {
       let report: Report;
@@ -104,29 +106,13 @@ export class ReportEditComponent implements OnInit, OnDestroy {
           );
         }
       }
-      if (report.workListReport) {
-        for (const work of report.workListReport) {
-          workUnitList.push(
-            new FormGroup({
-              startTime: new FormControl(work.startWorkTime, [Validators.required]),
-              endTime: new FormControl(work.endWorkTime, [Validators.required]),
-              typeWork: new FormControl(work.typeWork, [Validators.required]),
-              numOrder: new FormControl(work.numOrder, [Validators.required]),
-              nameOrder: new FormControl(work.nameOrder, [Validators.required]),
-              groupDifficulty: new FormControl(work.groupDifficulty, [Validators.required])
-            })
-          );
-        }
-        this.selectedWorker = null;
-      }
     }
 
     this.reportForm = new FormGroup({
       dateReport: new FormControl(dateReport, [Validators.required]),
       machineReport: new FormControl(machineReport, [Validators.required]),
       numSmenReport: new FormControl(numSmenReport, [Validators.required]),
-      workerFormList,
-      workUnitList
+      workerFormList
     });
     this.reportForm.valueChanges.subscribe(newValues => console.log('New Values: ' + newValues));
   }
@@ -197,6 +183,10 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     (this.reportForm.get('workerFormList') as FormArray).removeAt(index);
   }
 
+  onDeleteWorkUnit(index: number) {
+    this.workUnits.splice(index, 1);
+  }
+
   onMachineChanged(event) {
     this.selectedMachine = event.value;
     this.store.dispatch(new ReportActions.SelectMachine(event.value));
@@ -222,28 +212,10 @@ export class ReportEditComponent implements OnInit, OnDestroy {
           minutesOfReport += workUnit.getworkTime();
         }
       }
-      // for (const control of (this.reportForm.get('workUnitList') as FormArray).controls) {
-      //   if (typeWork === control.typeWork.value) {
-      //     minutesOfReport +=
-      //       this.reportService.calculateTime(
-      //         this.dateSmen,
-      //         control.controls.startTime.value,
-      //         control.controls.endTime.value
-      //       );
-      //   }
-      // }
     } else {
       for (const workUnit of this.workUnits) {
         minutesOfReport += workUnit.getworkTime();
       }
-      // for (const control of (this.reportForm.get('workUnitList') as FormArray)) {
-      //   minutesOfReport +=
-      //     this.reportService.calculateTime(
-      //       this.dateSmen,
-      //       control.startTime.value,
-      //       control.endTime.value
-      //     );
-      // }
     }
     // console.log(this.reportService.calculateTime(this.dateSmen, control.controls.startTime.value, control.controls.endTime.value));
     console.log('minutesOfReport: ' + minutesOfReport);

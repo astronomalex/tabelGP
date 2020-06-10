@@ -30,3 +30,5 @@ export const getTypesOfWorkFromState = createSelector(ReportFeature, reportsStat
 export const getNormsFromState = createSelector(ReportFeature, reportState => reportState.allNorms);
 export const getSelectedMachine = createSelector(ReportFeature, reportState => reportState.selectedMachine);
 export const getNormsByMachine = createSelector(getNormsFromState, getSelectedMachine, (norms, selectedMachine) => norms[selectedMachine]);
+export const getEditedReport = createSelector(ReportFeature, reportsState => reportsState.editedReport);
+export const getEditedWorkUnits = createSelector(getEditedReport, editedReport => editedReport.workListReport);

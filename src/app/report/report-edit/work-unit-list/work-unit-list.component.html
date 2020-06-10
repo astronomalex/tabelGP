@@ -1,10 +1,12 @@
 <div class="row">
   <app-work-unit-item
-    (deleteWorkUnit)=""
+    *ngFor="let workUnit of workUnits$ | async; let i = index"
+    [index]="i"
+    (deleteWorkUnit)="onDeleteWorkUnit($event.valueOf())"
     [typesOfWorks]="typesOfWorks"
     [norms]="norms"
     [reportForm]="reportForm"
-    [workUnits]="workUnits"
+    [workUnit]="workUnit"
     [dateSmen]="dateSmen">
   </app-work-unit-item>
   <br>

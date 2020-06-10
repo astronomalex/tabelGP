@@ -1,8 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ReportService} from '../../report.service';
 import {Norma} from '../../norma.model';
 import {WorkUnit} from '../../work-unit.model';
+import * as fromApp from '../../../store/app.reducer';
+import {select, Store} from '@ngrx/store';
+import {getEditedReport, getEditedWorkUnits} from '../../../store/selectors/app.selector';
+
 
 @Component({
   selector: 'app-work-unit-list',
@@ -15,15 +19,40 @@ export class WorkUnitListComponent implements OnInit {
   @Input() typesOfWorks: string[];
   @Input() reportForm: FormGroup;
   @Input() workUnits: WorkUnit[];
+  @Output() deleteWorkUnit = new EventEmitter<number>();
+
+  editedReport$ = this.store.pipe(select(getEditedReport));
+  workUnits$ = this.store.pipe(select(getEditedWorkUnits));
+
   constructor(
-    private reportService: ReportService
+    private reportService: ReportService,
+    private store: Store<fromApp.AppState>
   ) { }
 
   ngOnInit() {
   }
 
   onDeleteWorkUnit(i: number) {
+    this.deleteWorkUnit.emit(i);
+  }
 
+  calculateReportTime(typeWork: string = null) {
+    let minutesOfReport = 0;
+    if (typeWork) {
+      console.log('workUnits' + this.workUnits);
+      for (const workUnit of this.workUnits) {
+        if (typeWork === workUnit.typeWork) {
+          minutesOfReport += workUnit.getworkTime();
+        }
+      }
+    } else {
+      for (const workUnit of this.workUnits) {
+        minutesOfReport += workUnit.getworkTime();
+      }
+    }
+    // console.log(this.reportService.calculateTime(this.dateSmen, control.controls.startTime.value, control.controls.endTime.value));
+    console.log('minutesOfReport: ' + minutesOfReport);
+    return minutesOfReport;
   }
 
   onAddWorkUnit() {

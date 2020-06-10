@@ -1,10 +1,6 @@
 <div>
   <div class="row"
-       *ngFor="let wrkUnit of workUnits; let i = index"
-       [formGroupName]="i"
-       style="margin-top: 10px">
-
-    <mat-form-field>
+  <mat-form-field>
       <mat-label>Тип работы</mat-label>
       <mat-select
         #typeWork
