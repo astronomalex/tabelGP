@@ -86,6 +86,7 @@
               <div class="row">
                 <app-work-unit-list
                   (deleteWorkUnit)="onDeleteWorkUnit($event.valueOf())"
+                  (addWorkUnit)="onAddWorkUnit()"
                   [typesOfWorks]="typesOfWorks"
                   [norms]="norms"
                   [reportForm]="reportForm"

@@ -20,6 +20,7 @@ export class WorkUnitListComponent implements OnInit {
   @Input() reportForm: FormGroup;
   @Input() workUnits: WorkUnit[];
   @Output() deleteWorkUnit = new EventEmitter<number>();
+  @Output() addWorkUnit = new EventEmitter();
 
   editedReport$ = this.store.pipe(select(getEditedReport));
   workUnits$ = this.store.pipe(select(getEditedWorkUnits));
@@ -38,7 +39,8 @@ export class WorkUnitListComponent implements OnInit {
 
   calculateReportTime(typeWork: string = null) {
     let minutesOfReport = 0;
-    if (typeWork) {
+    console.log('workUnits: ' + this.workUnits);
+    if (typeWork && this.workUnits) {
       console.log('workUnits' + this.workUnits);
       for (const workUnit of this.workUnits) {
         if (typeWork === workUnit.typeWork) {
@@ -56,15 +58,16 @@ export class WorkUnitListComponent implements OnInit {
   }
 
   onAddWorkUnit() {
-    (this.reportForm.get('workUnitList') as FormArray).push(
-      new FormGroup({
-        startTime: new FormControl(null, [Validators.required]),
-        endTime: new FormControl(null, [Validators.required]),
-        typeWork: new FormControl(null, [Validators.required]),
-        numOrder: new FormControl(null, [Validators.required]),
-        nameOrder: new FormControl(null, [Validators.required]),
-        groupDifficulty: new FormControl(null, [Validators.required])
-      })
-    );
+    this.addWorkUnit.emit();
+    // (this.reportForm.get('workUnitList') as FormArray).push(
+    //   new FormGroup({
+    //     startTime: new FormControl(null, [Validators.required]),
+    //     endTime: new FormControl(null, [Validators.required]),
+    //     typeWork: new FormControl(null, [Validators.required]),
+    //     numOrder: new FormControl(null, [Validators.required]),
+    //     nameOrder: new FormControl(null, [Validators.required]),
+    //     groupDifficulty: new FormControl(null, [Validators.required])
+    //   })
+    // );
   }
 }

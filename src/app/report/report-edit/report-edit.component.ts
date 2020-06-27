@@ -35,7 +35,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   reportForm: FormGroup;
   @ViewChild(PlaceholderDirective, {static: false}) dialogHost: PlaceholderDirective;
   workerList: WorkerData[];
-  public workUnits: WorkUnit[] = [];
+  public workUnits: WorkUnit[] = [new WorkUnit('', '', '', '', Date.parse('25 May 2020 07:30'), Date.parse('25 May 2020 07:31'))];
   public machineList: string[];
   public typesOfWorks: string[];
   public norms: Norma[];
@@ -185,6 +185,10 @@ export class ReportEditComponent implements OnInit, OnDestroy {
 
   onDeleteWorkUnit(index: number) {
     this.workUnits.splice(index, 1);
+  }
+
+  onAddWorkUnit() {
+    this.workUnits.push(new WorkUnit(this.typesOfWorks[0], '', '', this.norms[0].grpDiff, Date.now(), Date.now()));
   }
 
   onMachineChanged(event) {

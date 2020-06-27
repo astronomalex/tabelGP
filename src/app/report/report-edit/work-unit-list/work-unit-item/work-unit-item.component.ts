@@ -22,6 +22,7 @@ export class WorkUnitItemComponent implements OnInit {
   selectedTypeOfWorks: string;
   @Output() formChanged = new EventEmitter<{ typeWork: string, amountMinutes: number }>();
   @Output() deleteWorkUnit = new EventEmitter<number>();
+  workUnitForm: FormGroup;
   startWorkTime: number;
   endWorkTime: number;
   amountOfMinutes: number;
@@ -35,20 +36,15 @@ export class WorkUnitItemComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this..workListReport) {
-      for (const work of report.workListReport) {
-        workUnitList.push(
-          new FormGroup({
-            startTime: new FormControl(work.startWorkTime, [Validators.required]),
-            endTime: new FormControl(work.endWorkTime, [Validators.required]),
-            typeWork: new FormControl(work.typeWork, [Validators.required]),
-            numOrder: new FormControl(work.numOrder, [Validators.required]),
-            nameOrder: new FormControl(work.nameOrder, [Validators.required]),
-            groupDifficulty: new FormControl(work.groupDifficulty, [Validators.required])
-          })
-        );
-      }
-      this.selectedWorker = null;
+    if (this.workUnit) {
+      this.workUnitForm = new FormGroup({
+        startTime: new FormControl(this.workUnit.startWorkTime, [Validators.required]),
+        endTime: new FormControl(this.workUnit.endWorkTime, [Validators.required]),
+        typeWork: new FormControl(this.workUnit.typeWork, [Validators.required]),
+        numOrder: new FormControl(this.workUnit.numOrder, [Validators.required]),
+        nameOrder: new FormControl(this.workUnit.nameOrder, [Validators.required]),
+        groupDifficulty: new FormControl(this.workUnit.groupDifficulty, [Validators.required])
+      });
     }
   }
 
