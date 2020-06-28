@@ -69,6 +69,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private componentFactoryResolver: ComponentFactoryResolver,
     private reportService: ReportService,
+    private fb: FormBuilder,
     private datePipe: DatePipe
   ) {}
 
@@ -87,7 +88,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     let machineReport = '';
     let numSmenReport = '';
     const workerFormList = new FormArray([]);
-    // const workUnitList = new FormArray([]);
+     const workUnitList = new FormArray([]);
 
     if (this.editMode) {
       let report: Report;
@@ -107,13 +108,18 @@ export class ReportEditComponent implements OnInit, OnDestroy {
         }
       }
     }
-
-    this.reportForm = new FormGroup({
+    this.reportForm = this.fb.group({
       dateReport: new FormControl(dateReport, [Validators.required]),
       machineReport: new FormControl(machineReport, [Validators.required]),
       numSmenReport: new FormControl(numSmenReport, [Validators.required]),
       workerFormList
     });
+    //this.reportForm = new FormGroup({
+    //  dateReport: new FormControl(dateReport, [Validators.required]),
+    //  machineReport: new FormControl(machineReport, [Validators.required]),
+    // numSmenReport: new FormControl(numSmenReport, [Validators.required]),
+    //  workerFormList
+    //});
     this.reportForm.valueChanges.subscribe(newValues => console.log('New Values: ' + newValues));
   }
 
