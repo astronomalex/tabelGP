@@ -18,6 +18,7 @@ export class WorkUnitListComponent implements OnInit {
   @Input() norms: Norma[];
   @Input() typesOfWorks: string[];
   @Input() reportForm: FormGroup;
+  workUnitForm: FormGroup;
   @Input() workUnits: WorkUnit[];
   @Output() deleteWorkUnit = new EventEmitter<number>();
   @Output() addWorkUnit = new EventEmitter();
@@ -31,6 +32,7 @@ export class WorkUnitListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
   }
 
   onDeleteWorkUnit(i: number) {
@@ -55,6 +57,11 @@ export class WorkUnitListComponent implements OnInit {
     // console.log(this.reportService.calculateTime(this.dateSmen, control.controls.startTime.value, control.controls.endTime.value));
     console.log('minutesOfReport: ' + minutesOfReport);
     return minutesOfReport;
+  }
+
+  getControlsWorks() {
+    console.log('from getControlWorks reportForm: ' + this.reportForm);
+    return (this.reportForm.get('workUnitList') as FormArray).controls;
   }
 
   onAddWorkUnit() {

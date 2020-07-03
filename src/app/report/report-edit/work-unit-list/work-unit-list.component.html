@@ -1,8 +1,8 @@
 <div
-  formArrayName="workUnitList"
+  [formGroup]="workUnitForm"
   class="row">
   <app-work-unit-item
-    *ngFor="let work of reportForm.controls.workUnitList.controls; let i = index"
+    *ngFor="let work of getControlsWorks(); let i = index"
     [index]="i"
     (deleteWorkUnit)="onDeleteWorkUnit($event.valueOf())"
     [typesOfWorks]="typesOfWorks"
@@ -27,7 +27,3 @@
 <span *ngIf="calculateReportTime('Работа') || calculateReportTime('Настройка')">
               Минут сдельно: {{ calculateReportTime('Работа') +  calculateReportTime('Настройка') }}  </span>
 <hr>
-<div class="row">
-  <div class="col-xs-12">,
-  </div>
-</div>

@@ -1,5 +1,4 @@
-<div>
-  <div class="row">
+<div [formGroup]="workUnitForm">
   <mat-form-field>
       <mat-label>Тип работы</mat-label>
       <mat-select
@@ -72,6 +71,4 @@
       (click)="onDeleteWorkUnit(i)"
       type="button">Удалить
     </button>
-  </div>
-
 </div>
