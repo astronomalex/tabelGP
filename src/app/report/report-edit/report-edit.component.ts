@@ -35,7 +35,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   reportForm: FormGroup;
   @ViewChild(PlaceholderDirective, {static: false}) dialogHost: PlaceholderDirective;
   workerList: WorkerData[];
-  public workUnits: WorkUnit[] = [new WorkUnit('', '', '', '', Date.parse('25 May 2020 07:30'), Date.parse('25 May 2020 07:31'))];
+  // public workUnits: WorkUnit[] = [new WorkUnit('', '', '', '', Date.parse('25 May 2020 07:30'), Date.parse('25 May 2020 07:31'))];
   public machineList: string[];
   public typesOfWorks: string[];
   public norms: Norma[];
@@ -88,7 +88,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     let machineReport = '';
     let numSmenReport = '';
     const workerFormList = new FormArray([]);
-     const workUnitList = new FormArray([]);
+    const workUnitList = new FormArray([]);
 
     if (this.editMode) {
       let report: Report;
@@ -101,26 +101,37 @@ export class ReportEditComponent implements OnInit, OnDestroy {
       if (report.workerListTabelNums) {
         for (const tabelNum of report.workerListTabelNums) {
           workerFormList.push(
-            new FormGroup({
+            this.fb.group({
               tbNum: new FormControl(tabelNum, [Validators.required, Validators.pattern(/^\d\d\d\d$/)])
             })
           );
         }
       }
+      if (report.workListReport) {
+        workUnitList.push(
+          this.initWorkUnitControl()
+        );
+      }
     }
     this.reportForm = this.fb.group({
-      dateReport: new FormControl(dateReport, [Validators.required]),
-      machineReport: new FormControl(machineReport, [Validators.required]),
-      numSmenReport: new FormControl(numSmenReport, [Validators.required]),
-      workerFormList
+      dateReport: [dateReport, [Validators.required]],
+      machineReport: [machineReport, [Validators.required]],
+      numSmenReport: [numSmenReport, [Validators.required]],
+      workerFormList,
+      workUnitList,
     });
-    //this.reportForm = new FormGroup({
-    //  dateReport: new FormControl(dateReport, [Validators.required]),
-    //  machineReport: new FormControl(machineReport, [Validators.required]),
-    // numSmenReport: new FormControl(numSmenReport, [Validators.required]),
-    //  workerFormList
-    //});
     this.reportForm.valueChanges.subscribe(newValues => console.log('New Values: ' + newValues));
+  }
+
+  initWorkUnitControl() {
+    return this.fb.group({
+      startTime: [null, [Validators.required]],
+      endTime: [null, [Validators.required]],
+      typeWork: [null, [Validators.required]],
+      numOrder: [null, [Validators.required]],
+      nameOrder: [null, [Validators.required]],
+      groupDifficulty: [null, [Validators.required]]
+    });
   }
 
   showWorkerSelectDialog() {
@@ -154,6 +165,8 @@ export class ReportEditComponent implements OnInit, OnDestroy {
       }
     );
   }
+
+
 
   getControlsWorkers() {
     return (this.reportForm.get('workerFormList') as FormArray).controls;
@@ -189,12 +202,15 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     (this.reportForm.get('workerFormList') as FormArray).removeAt(index);
   }
 
-  onDeleteWorkUnit(index: number) {
-    this.workUnits.splice(index, 1);
+  onAddWorkUnit() {
+    const control = <FormArray> this.reportForm.controls.workUnitList;
+    control.push(this.initWorkUnitControl());
+    // this.workUnits.push(new WorkUnit(this.typesOfWorks[0], '', '', this.norms[0].grpDiff, Date.now(), Date.now()));
   }
 
-  onAddWorkUnit() {
-    this.workUnits.push(new WorkUnit(this.typesOfWorks[0], '', '', this.norms[0].grpDiff, Date.now(), Date.now()));
+  onDeleteWorkUnit(i: number) {
+    const control = <FormArray> this.reportForm.controls.workUnitList;
+    control.removeAt(i);
   }
 
   onMachineChanged(event) {
@@ -217,19 +233,40 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   calculateReportTime(typeWork: string = null) {
     let minutesOfReport = 0;
     if (typeWork) {
-      for (const workUnit of this.workUnits) {
-        if (typeWork === workUnit.typeWork) {
-          minutesOfReport += workUnit.getworkTime();
+      for (const control of <FormArray> this.reportForm.controls.workUnitList) {
+        if (typeWork === control.typeWork.value) {
+          minutesOfReport +=
+            this.reportService.calculateTime(
+              this.dateSmen,
+              control.startTime.value,
+              control.endTime.value
+            );
         }
       }
     } else {
-      for (const workUnit of this.workUnits) {
-        minutesOfReport += workUnit.getworkTime();
+      for (const control of (this.reportForm.get('workUnitList') as FormArray).controls) {
+        minutesOfReport +=
+          this.reportService.calculateTime(
+            this.dateSmen,
+            control.controls.startTime.value,
+            control.controls.endTime.value
+          );
       }
     }
-    // console.log(this.reportService.calculateTime(this.dateSmen, control.controls.startTime.value, control.controls.endTime.value));
-    console.log('minutesOfReport: ' + minutesOfReport);
-    return minutesOfReport;
+    // if (typeWork) {
+    //   for (const workUnit of this.workUnits) {
+    //     if (typeWork === workUnit.typeWork) {
+    //       minutesOfReport += workUnit.getworkTime();
+    //     }
+    //   }
+    // } else {
+    //   for (const workUnit of this.workUnits) {
+    //     minutesOfReport += workUnit.getworkTime();
+    //   }
+    // }
+    // // console.log(this.reportService.calculateTime(this.dateSmen, control.controls.startTime.value, control.controls.endTime.value));
+    // console.log('minutesOfReport: ' + minutesOfReport);
+    // return minutesOfReport;
   }
 
 
