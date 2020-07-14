@@ -1,6 +1,5 @@
 
-<div
-  [formGroup]="workUnitForm"
+<div [formArrayName]="controlWorks"
   class="row">
   <app-work-unit-item
     *ngFor="let work of getControlsWorks(); let i = index"
@@ -13,18 +12,19 @@
   </app-work-unit-item>
   <br>
   <hr>
+
+
+  <button
+    class="btn btn-success"
+    type="button"
+    (click)="onAddWorkUnit()">Добавить работу
+  </button>
+
+  <span *ngIf="calculateReportTime()"> Минут всего: {{ calculateReportTime() }}  </span>
+  <span *ngIf="calculateReportTime('Простой')"> Минут простоя: {{ calculateReportTime('Простой') }}  </span>
+  <span *ngIf="calculateReportTime('ППР')"> Минут ППР: {{ calculateReportTime('ППР') }}  </span>
+  <span *ngIf="calculateReportTime('По среднему')"> Минут по среднему: {{ calculateReportTime('По среднему') }}  </span>
+  <span *ngIf="calculateReportTime('Работа') || calculateReportTime('Настройка')">
+                Минут сдельно: {{ calculateReportTime('Работа') +  calculateReportTime('Настройка') }}  </span>
+  <hr>
 </div>
-
-<button
-  class="btn btn-success"
-  type="button"
-  (click)="onAddWorkUnit()">Добавить работу
-</button>
-
-<span *ngIf="calculateReportTime()"> Минут всего: {{ calculateReportTime() }}  </span>
-<span *ngIf="calculateReportTime('Простой')"> Минут простоя: {{ calculateReportTime('Простой') }}  </span>
-<span *ngIf="calculateReportTime('ППР')"> Минут ППР: {{ calculateReportTime('ППР') }}  </span>
-<span *ngIf="calculateReportTime('По среднему')"> Минут по среднему: {{ calculateReportTime('По среднему') }}  </span>
-<span *ngIf="calculateReportTime('Работа') || calculateReportTime('Настройка')">
-              Минут сдельно: {{ calculateReportTime('Работа') +  calculateReportTime('Настройка') }}  </span>
-<hr>

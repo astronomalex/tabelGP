@@ -122,7 +122,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
         }
       }
     }
-    this.reportForm = this.fb.group({
+    this.reportForm = new FormGroup({
       dateReport: new FormControl(dateReport, [Validators.required]),
       machineReport: new FormControl(machineReport, [Validators.required]),
       numSmenReport: new FormControl(numSmenReport, [Validators.required]),
@@ -134,7 +134,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     //  machineReport: new FormControl(machineReport, [Validators.required]),
     // numSmenReport: new FormControl(numSmenReport, [Validators.required]),
     //  workerFormList
-    //});
+    // });
     this.reportForm.valueChanges.subscribe(newValues => console.log('New Values: ' + newValues));
   }
 
@@ -183,6 +183,15 @@ export class ReportEditComponent implements OnInit, OnDestroy {
 
   getControlsWorkers() {
     return (this.reportForm.get('workerFormList') as FormArray).controls;
+  }
+
+  getControlsWorks() {
+    console.log('from getControlWorks reportForm: ' + this.reportForm);
+    if (this.reportForm) {
+      return (this.reportForm.get('workUnitList') as FormArray).controls;
+    } else {
+      return undefined;
+    }
   }
 
   getWorkerByTN(tabelNum: string) {
@@ -251,7 +260,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
           minutesOfReport += workUnit.getworkTime();
         }
       }
-    } else {
+    } else  if (this.workUnits) {
       for (const workUnit of this.workUnits) {
         minutesOfReport += workUnit.getworkTime();
       }

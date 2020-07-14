@@ -18,6 +18,7 @@ export class WorkUnitListComponent implements OnInit {
   @Input() norms: Norma[];
   @Input() typesOfWorks: string[];
   @Input() reportForm: FormGroup;
+  @Input() controlWorks: FormArray;
   workUnitForm: FormGroup;
   @Input() workUnits: WorkUnit[];
   @Output() deleteWorkUnit = new EventEmitter<number>();
@@ -42,26 +43,31 @@ export class WorkUnitListComponent implements OnInit {
   calculateReportTime(typeWork: string = null) {
     let minutesOfReport = 0;
     console.log('workUnits: ' + this.workUnits);
-    if (typeWork && this.workUnits) {
+    console.log('typework: ' + typeWork);
+    if (this.workUnits !== undefined) {
       console.log('workUnits' + this.workUnits);
       for (const workUnit of this.workUnits) {
         if (typeWork === workUnit.typeWork) {
           minutesOfReport += workUnit.getworkTime();
         }
       }
-    } else {
-      for (const workUnit of this.workUnits) {
-        minutesOfReport += workUnit.getworkTime();
+    } else if (this.controlWorks) {
+      for (const workUnitControl of this.controlWorks.controls) {
+        minutesOfReport +=
+          this.reportService.calculateTime(
+            this.dateSmen, workUnitControl.startTime.value, workUnitControl.controls.endTime.value
+          );
+        console.log(
+          this.reportService.calculateTime(this.dateSmen, workUnitControl.controls.startTime.value, workUnitControl.controls.endTime.value)
+        );
       }
     }
-    // console.log(this.reportService.calculateTime(this.dateSmen, control.controls.startTime.value, control.controls.endTime.value));
     console.log('minutesOfReport: ' + minutesOfReport);
     return minutesOfReport;
   }
 
   getControlsWorks() {
-    console.log('from getControlWorks reportForm: ' + this.reportForm);
-    return (this.reportForm.get('workUnitList') as FormArray).controls;
+    return this.controlWorks;
   }
 
   onAddWorkUnit() {
