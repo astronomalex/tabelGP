@@ -185,14 +185,14 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     return (this.reportForm.get('workerFormList') as FormArray).controls;
   }
 
-  getControlsWorks() {
-    console.log('from getControlWorks reportForm: ' + this.reportForm);
-    if (this.reportForm) {
-      return (this.reportForm.get('workUnitList') as FormArray).controls;
-    } else {
-      return undefined;
-    }
-  }
+  // getControlsWorks() {
+  //   console.log('from getControlWorks reportForm: ' + this.reportForm);
+  //   if (this.reportForm) {
+  //     return (this.reportForm.get('workUnitList') as FormArray).controls;
+  //   } else {
+  //     return undefined;
+  //   }
+  // }
 
   getWorkerByTN(tabelNum: string) {
     return this.workerList.find((item) => {

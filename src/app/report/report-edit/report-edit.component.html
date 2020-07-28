@@ -90,7 +90,7 @@
                   [typesOfWorks]="typesOfWorks"
                   [norms]="norms"
                   [reportForm]="reportForm"
-                  [controlWorks]="getControlsWorks()"
+                  [controlWorks]="reportForm.get('workUnitList')as FormArray"
                   [workUnits]="workUnits"></app-work-unit-list>
               </div>
               <div class="row">
