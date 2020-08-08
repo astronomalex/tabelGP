@@ -7,6 +7,10 @@ export class Report {
   numSmenReport: string;
   workListReport: WorkUnit[];
 
-  constructor(dateReport, machine, workerListTabelNums, numSmenReport, workListReport?) {}
+  constructor(dateReport?, machine?, workerListTabelNums?, numSmenReport?, workListReport?) {
+    if (!workListReport) {
+      workListReport = [];
+    }
+  }
 
 }

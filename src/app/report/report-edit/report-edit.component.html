@@ -24,7 +24,7 @@
               <mat-select
                 (selectionChange)="onMachineChanged($event)"
                 required
-                formControlName="machineReport">
+                formControlName="machine">
                 <mat-option *ngFor="let machine of machineList" [value]="machine">
                   {{machine}}
                 </mat-option>
@@ -46,7 +46,7 @@
       </div>
       <div class="col-xs-12">
         <div class="row">
-          <div class="col-xs-12" formArrayName="workerFormList">
+          <div class="col-xs-12" formArrayName="workerListTabelNums">
             <div class="row"
                  *ngFor="let wrk of getControlsWorkers(); let i = index"
                  [formGroupName]="i"
@@ -83,16 +83,7 @@
                   matInput>
               </mat-form-field>
 
-              <div class="row">
-                <app-work-unit-list
-                  (deleteWorkUnit)="onDeleteWorkUnit($event.valueOf())"
-                  (addWorkUnit)="onAddWorkUnit()"
-                  [typesOfWorks]="typesOfWorks"
-                  [norms]="norms"
-                  [reportForm]="reportForm"
-                  [controlWorks]="reportForm.get('workUnitList')as FormArray"
-                  [workUnits]="workUnits"></app-work-unit-list>
-              </div>
+
               <div class="row">
                 <button
                   class="btn btn-danger"
@@ -114,18 +105,26 @@
             </button>
             <hr>
             <div class="row">
-              <div class="col-xs-12">
-              </div>
+              <ul>
+                <li *ngFor="let work of workUnitListFormArr?.controls; let i = index">
+                  <app-work-unit-item
+                    [index]="i"
+                    [workUnitForm]="work"
+                    (deleteWorkUnit)="delWork($event)"
+                  ></app-work-unit-item>
+                </li>
+              </ul>
+              <button class="bg-success" (click)="addWork()">Добавить работу</button>
+<!--                <app-work-unit-list-->
+<!--                  (deleteWorkUnit)="onDeleteWorkUnit($event.valueOf())"-->
+<!--                  (addWorkUnit)="onAddWorkUnit()"-->
+<!--                  [typesOfWorks]="typesOfWorks"-->
+<!--                  [norms]="norms"-->
+<!--                  [reportForm]="reportForm"-->
+<!--                  [controlWorks]="reportForm.get('workUnitList')as FormArray"-->
+<!--                  [workUnits]="workUnits"></app-work-unit-list>-->
+
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-12">
-        <div class="row">
-          <div class="col-xs-12">
-            <app-work-unit-list
-              [dateSmen]="dateSmen">
-            </app-work-unit-list>
           </div>
         </div>
       </div>

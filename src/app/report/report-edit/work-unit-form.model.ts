@@ -1,4 +1,4 @@
-import {FormControl} from '@angular/forms';
+import {FormControl, Validators} from '@angular/forms';
 import {WorkUnit} from '../work-unit.model';
 import {createPerformWatchHost} from '@angular/compiler-cli/src/perform_watch';
 
@@ -12,10 +12,21 @@ export class WorkUnitFormModel {
 
   constructor(workUnit: WorkUnit) {
     this.startWorkTime.setValue(workUnit.startWorkTime);
+    this.startWorkTime.setValidators([Validators.required]);
+
     this.endWorkTime.setValue(workUnit.endWorkTime);
+    this.endWorkTime.setValidators([Validators.required]);
+
     this.typeWork.setValue(workUnit.typeWork);
+    this.typeWork.setValidators([Validators.required]);
+
     this.numOrder.setValue(workUnit.numOrder);
+    this.numOrder.setValidators([Validators.required]);
+
     this.nameOrder.setValue(workUnit.nameOrder);
+    this.nameOrder.setValidators([Validators.required]);
+
     this.groupDifficulty.setValue(workUnit.groupDifficulty);
+    this.groupDifficulty.setValidators([Validators.required]);
   }
 }

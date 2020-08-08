@@ -61,15 +61,15 @@ export class WorkUnitListComponent implements OnInit {
         }
       }
     } else if (this.controlWorks) {
-      for (const workUnitControl of this.controlWorks.controls) {
-        minutesOfReport +=
-          this.reportService.calculateTime(
-            this.dateSmen, workUnitControl.startTime.value, workUnitControl.endTime.value
-          );
-        console.log(
-          this.reportService.calculateTime(this.dateSmen, workUnitControl.startTime.value, workUnitControl.endTime.value)
-        );
-      }
+      // for (const workUnitControl of this.controlWorks.controls) {
+      //   minutesOfReport +=
+      //     this.reportService.calculateTime(
+      //       this.dateSmen, workUnitControl.startTime.value, workUnitControl.endTime.value
+      //     );
+      //   console.log(
+      //     this.reportService.calculateTime(this.dateSmen, workUnitControl.startTime.value, workUnitControl.endTime.value)
+      //   );
+      // }
     }
     console.log('minutesOfReport: ' + minutesOfReport);
     return minutesOfReport;

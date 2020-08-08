@@ -22,7 +22,7 @@ export class WorkUnitItemComponent implements OnInit {
   selectedTypeOfWorks: string;
   @Output() formChanged = new EventEmitter<{ typeWork: string, amountMinutes: number }>();
   @Output() deleteWorkUnit = new EventEmitter<number>();
-  public workUnitForm: FormGroup;
+  @Input() workUnitForm: FormGroup;
   startWorkTime: number;
   endWorkTime: number;
   amountOfMinutes: number;
@@ -36,16 +36,16 @@ export class WorkUnitItemComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.workUnit) {
-      this.workUnitForm = new FormGroup({
-        startTime: new FormControl(this.workUnit.startWorkTime, [Validators.required]),
-        endTime: new FormControl(this.workUnit.endWorkTime, [Validators.required]),
-        typeWork: new FormControl(this.workUnit.typeWork, [Validators.required]),
-        numOrder: new FormControl(this.workUnit.numOrder, [Validators.required]),
-        nameOrder: new FormControl(this.workUnit.nameOrder, [Validators.required]),
-        groupDifficulty: new FormControl(this.workUnit.groupDifficulty, [Validators.required])
-      });
-    }
+    // if (this.workUnit) {
+    //   this.workUnitForm = new FormGroup({
+    //     startTime: new FormControl(this.workUnit.startWorkTime, [Validators.required]),
+    //     endTime: new FormControl(this.workUnit.endWorkTime, [Validators.required]),
+    //     typeWork: new FormControl(this.workUnit.typeWork, [Validators.required]),
+    //     numOrder: new FormControl(this.workUnit.numOrder, [Validators.required]),
+    //     nameOrder: new FormControl(this.workUnit.nameOrder, [Validators.required]),
+    //     groupDifficulty: new FormControl(this.workUnit.groupDifficulty, [Validators.required])
+    //   });
+    // }
   }
 
   calculateTimeInMinutes() {
@@ -61,13 +61,13 @@ export class WorkUnitItemComponent implements OnInit {
     this.formChanged.emit({typeWork: this.selectedTypeOfWorks, amountMinutes: this.amountOfMinutes});
   }
 
-  getWorkUnits() {
-    return (this.reportForm.get('workUnitList') as FormArray).controls;
-  }
+  // getWorkUnits() {
+  //   return (this.reportForm.get('workUnitList') as FormArray).controls;
+  // }
 
-  onDeleteWorkUnit(index: number) {
+  onDeleteWorkUnit() {
     // (this.reportForm.get('workUnitList') as FormArray).removeAt(index);
-    this.deleteWorkUnit.emit(index);
+    this.deleteWorkUnit.emit(this.index);
   }
 
 

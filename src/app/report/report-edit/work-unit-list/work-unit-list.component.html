@@ -1,5 +1,5 @@
+<form [formGroup]=""
 
-<div [formArrayName]="controlWorks"
   class="row">
   <app-work-unit-item
     *ngFor="let work of getControlsWorks(); let i = index"
@@ -27,4 +27,4 @@
   <span *ngIf="calculateReportTime('Работа') || calculateReportTime('Настройка')">
                 Минут сдельно: {{ calculateReportTime('Работа') +  calculateReportTime('Настройка') }}  </span>
   <hr>
-</div>
+

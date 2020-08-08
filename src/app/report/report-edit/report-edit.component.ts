@@ -23,6 +23,7 @@ import {Norma} from '../norma.model';
 import {ReportService} from '../report.service';
 import {DatePipe} from '@angular/common';
 import {WorkUnit} from '../work-unit.model';
+import {ReportEditFormService} from './report-edit-form.service';
 
 @Component({
   selector: 'app-report-edit',
@@ -33,6 +34,9 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   id: number;
   editMode = false;
   reportForm: FormGroup;
+  reportFormSub: Subscription;
+  formInvalid = false;
+  workUnitListFormArr: FormArray;
   @ViewChild(PlaceholderDirective, {static: false}) dialogHost: PlaceholderDirective;
   workerList: WorkerData[];
   public workUnits: WorkUnit[];
@@ -70,10 +74,15 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     private componentFactoryResolver: ComponentFactoryResolver,
     private reportService: ReportService,
     private fb: FormBuilder,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private reportEditFormService: ReportEditFormService
   ) {}
 
   ngOnInit() {
+    this.reportFormSub = this.reportEditFormService.reportForm$.subscribe(report => {
+      this.reportForm = report;
+      this.workUnitListFormArr = this.reportForm.get('workListReport') as FormArray;
+    });
     this.route.params.subscribe(
       (params: Params) => {
         this.id = +params.id;
@@ -84,58 +93,54 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   }
 
   private initForm() {
-    let dateReport = '';
-    let machineReport = '';
-    let numSmenReport = '';
-    const workerFormList = new FormArray([]);
-    const workUnitList = new FormArray([]);
 
-    if (this.editMode) {
-      let report: Report;
-      this.store.pipe(select(getReportsFromState)).pipe(
-        takeUntil(this.ngUnsubscribe$)
-      ).subscribe(reports => report = reports[this.id]);
-      dateReport = report.dateReport;
-      machineReport = report.machine;
-      numSmenReport = report.numSmenReport;
-      if (report.workerListTabelNums) {
-        for (const tabelNum of report.workerListTabelNums) {
-          workerFormList.push(
-            new FormGroup({
-              tbNum: new FormControl(tabelNum, [Validators.required, Validators.pattern(/^\d\d\d\d$/)])
-            })
-          );
-        }
-      }
-      if (report.workListReport) {
-        for (const work of report.workListReport) {
-          workUnitList.push(
-            new FormGroup({
-              startTime: new FormControl(work.startWorkTime, [Validators.required]),
-              endTime: new FormControl(work.endWorkTime, [Validators.required]),
-              typeWork: new FormControl(work.typeWork, [Validators.required]),
-              numOrder: new FormControl(work.numOrder, [Validators.required]),
-              nameOrder: new FormControl(work.nameOrder, [Validators.required]),
-              groupDifficulty: new FormControl(work.groupDifficulty, [Validators.required])
-            })
-          );
-        }
-      }
-    }
-    this.reportForm = new FormGroup({
-      dateReport: new FormControl(dateReport, [Validators.required]),
-      machineReport: new FormControl(machineReport, [Validators.required]),
-      numSmenReport: new FormControl(numSmenReport, [Validators.required]),
-      workerFormList,
-      workUnitList
-    });
+    // let dateReport = '';
+    // let machineReport = '';
+    // let numSmenReport = '';
+     const workerFormList = new FormArray([]);
+    //
+    //
+    // if (this.editMode) {
+    //   let report: Report;
+    //   this.store.pipe(select(getReportsFromState)).pipe(
+    //     takeUntil(this.ngUnsubscribe$)
+    //   ).subscribe(reports => report = reports[this.id]);
+    //   // dateReport = report.dateReport;
+    //   // machineReport = report.machine;
+    //   // numSmenReport = report.numSmenReport;
+    //   if (report.workerListTabelNums) {
+    //     for (const tabelNum of report.workerListTabelNums) {
+    //       workerFormList.push(
+    //         new FormGroup({
+    //           tbNum: new FormControl(tabelNum, [Validators.required, Validators.pattern(/^\d\d\d\d$/)])
+    //         })
+    //       );
+    //     }
+    //   }
+    //   //   if (report.workListReport) {
+    //   //     for (const work of report.workListReport) {
+    //   //       workUnitList.push(
+    //   //         new FormGroup({
+    //   //           startTime: new FormControl(work.startWorkTime, [Validators.required]),
+    //   //           endTime: new FormControl(work.endWorkTime, [Validators.required]),
+    //   //           typeWork: new FormControl(work.typeWork, [Validators.required]),
+    //   //           numOrder: new FormControl(work.numOrder, [Validators.required]),
+    //   //           nameOrder: new FormControl(work.nameOrder, [Validators.required]),
+    //   //           groupDifficulty: new FormControl(work.groupDifficulty, [Validators.required])
+    //   //         })
+    //   //       );
+    //   //     }
+    //   //   }
+    //   // }
+    //   this.reportForm['workerFormList'] = workerFormList;
+    // }
     // this.reportForm = new FormGroup({
     //  dateReport: new FormControl(dateReport, [Validators.required]),
     //  machineReport: new FormControl(machineReport, [Validators.required]),
     // numSmenReport: new FormControl(numSmenReport, [Validators.required]),
     //  workerFormList
-    // });
-    this.reportForm.valueChanges.subscribe(newValues => console.log('New Values: ' + newValues));
+    // // });
+     this.reportForm.valueChanges.subscribe(newValues => console.log('New Values: ' + newValues));
   }
 
   showWorkerSelectDialog() {
@@ -224,16 +229,16 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     (this.reportForm.get('workerFormList') as FormArray).removeAt(index);
   }
 
-  onDeleteWorkUnit(index: number) {
-    // this.workUnits.splice(index, 1);
-    const control = this.reportForm.controls.workUnitList as FormArray;
-  }
-
-  onAddWorkUnit() {
-    // this.workUnits.push(new WorkUnit(this.typesOfWorks[0], '', '', this.norms[0].grpDiff, Date.now(), Date.now()));
-    const control = this.reportForm.controls.workUnitList as FormArray;
-    control.push(this.initWorkUnitGroup());
-  }
+  // onDeleteWorkUnit(index: number) {
+  //   // this.workUnits.splice(index, 1);
+  //   const control = this.reportForm.controls.workUnitList as FormArray;
+  // }
+  //
+  // onAddWorkUnit() {
+  //   // this.workUnits.push(new WorkUnit(this.typesOfWorks[0], '', '', this.norms[0].grpDiff, Date.now(), Date.now()));
+  //   const control = this.reportForm.controls.workUnitList as FormArray;
+  //   control.push(this.initWorkUnitGroup());
+  // }
 
   onMachineChanged(event) {
     this.selectedMachine = event.value;
@@ -272,9 +277,16 @@ export class ReportEditComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy() {
+    this.reportFormSub.unsubscribe();
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
   }
 
+  addWork() {
+    this.reportEditFormService.addWork();
+  }
 
+  delWork(index: number) {
+    this.reportEditFormService.delWork(index);
+  }
 }
