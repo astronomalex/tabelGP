@@ -97,7 +97,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     // let dateReport = '';
     // let machineReport = '';
     // let numSmenReport = '';
-     const workerFormList = new FormArray([]);
+    //  const workerFormList = new FormArray([]);
     //
     //
     // if (this.editMode) {
@@ -164,7 +164,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
         this.selectedWorker = wrkr;
 
         hostViewContainerRef.clear();
-        (this.reportForm.get('workerFormList') as FormArray).push(
+        (this.reportForm.get('workerListReport') as FormArray).push(
           new FormGroup({
             tbNum: new FormControl(wrkr.tabelNum, [Validators.required, Validators.pattern(/^\d\d\d\d$/)]),
             grade: new FormControl(wrkr.grade, [Validators.required, Validators.min(1), Validators.max(6)
@@ -187,7 +187,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   }
 
   getControlsWorkers() {
-    return (this.reportForm.get('workerFormList') as FormArray).controls;
+    return (this.reportForm.get('workerListReport') as FormArray).controls;
   }
 
   // getControlsWorks() {
@@ -226,7 +226,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   }
 
   onDeleteWorker(index: number) {
-    (this.reportForm.get('workerFormList') as FormArray).removeAt(index);
+    (this.reportForm.get('workerListReport') as FormArray).removeAt(index);
   }
 
   // onDeleteWorkUnit(index: number) {

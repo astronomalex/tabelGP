@@ -46,7 +46,7 @@
       </div>
       <div class="col-xs-12">
         <div class="row">
-          <div class="col-xs-12" formArrayName="workerListTabelNums">
+          <div class="col-xs-12" formArrayName="workerListReport">
             <div class="row"
                  *ngFor="let wrk of getControlsWorkers(); let i = index"
                  [formGroupName]="i"
@@ -106,7 +106,7 @@
             <hr>
             <div class="row">
               <ul>
-                <li *ngFor="let work of workUnitListFormArr?.controls; let i = index">
+                <li *ngFor="let work of workUnitListFormArr.controls; let i = index">
                   <app-work-unit-item
                     [index]="i"
                     [workUnitForm]="work"

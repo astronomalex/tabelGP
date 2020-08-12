@@ -13,7 +13,12 @@ export class WorkUnit {
 
   constructor(typeWork?, numOrder?, nameOrder?, groupDifficulty?, startWorkTime?, endWorkTime?) {
     console.log(this.startWorkTime, this.endWorkTime);
-    this.workTime = (this.endWorkTime.getTime() - this.startWorkTime.getTime()) * 3600000;
+
+    if (this.startWorkTime && this.endWorkTime) {
+      this.workTime = (this.endWorkTime.getTime() - this.startWorkTime.getTime()) * 3600000;
+    } else {
+      this.workTime = 0;
+    }
   }
 
   public getworkTime() {
