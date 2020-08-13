@@ -1,74 +1,70 @@
 <div [formGroup]="workUnitForm">
   <mat-form-field>
-      <mat-label>Тип работы</mat-label>
-      <mat-select
-        #typeWork
-        [formGroup]="reportForm"
-        required
-        formControlName="typeWork">
-        <mat-option *ngFor="let typeWork of typesOfWorks" [value]="typeWork">
-          {{typeWork}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <mat-label>Тип работы</mat-label>
+    <mat-select
+      #typeWork
 
+      required
+      formControlName="typeWork">
+      <mat-option *ngFor="let typeOfWork of typesOfWorks" [value]="typeOfWork">
+        {{typeOfWork}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <input
+    type="time"
+    formControlName="startTime"
+    #sTime>
+
+  <input
+    type="time"
+    formControlName="endTime"
+    #eTime>
+
+  <span
+    (cuechange)="onWorkTimeChanged(reportService.calculateTime(dateSmen, sTime.value, eTime.value))"
+    *ngIf="sTime.value && eTime.value && dateSmen">
+
+              Время работы: {{reportService.calculateTime(dateSmen, sTime.value, eTime.value) }}</span>
+  <br>
+  <mat-form-field class="example-full-width"
+                  *ngIf="!((typeWork.value === 'ППР')
+            || (typeWork.value === 'Простой')
+            || (typeWork.value === 'По среднему'))">
+    <mat-label>Номер заказа</mat-label>
     <input
-      type="time"
-      formControlName="startTime"
-      #sTime>
+      matInput
+      formControlName="numOrder">
+  </mat-form-field>
 
-    <input
-      type="time"
-      formControlName="endTime"
-      [formGroup]="reportForm"
-      #eTime>
-
-    <span
-      (cuechange)="onWorkTimeChanged(reportService.calculateTime(dateSmen, sTime.value, eTime.value))"
-      *ngIf="sTime.value && eTime.value && dateSmen">
-
-                Время работы: {{reportService.calculateTime(dateSmen, sTime.value, eTime.value) }}</span>
-    <br>
-    <mat-form-field class="example-full-width"
-                    *ngIf="!((typeWork.value === 'ППР')
+  <mat-form-field
+    class="example-full-width"
+    *ngIf="!((typeWork.value === 'ППР')
               || (typeWork.value === 'Простой')
               || (typeWork.value === 'По среднему'))">
-      <mat-label>Номер заказа</mat-label>
-      <input
-        matInput
-        [formGroup]="reportForm"
-        formControlName="numOrder">
-    </mat-form-field>
+    <mat-label>Название заказа</mat-label>
+    <input
+      matInput
+      formControlName="nameOrder">
+  </mat-form-field>
 
-    <mat-form-field
-      class="example-full-width"
-      *ngIf="!((typeWork.value === 'ППР')
-                || (typeWork.value === 'Простой')
-                || (typeWork.value === 'По среднему'))">
-      <mat-label>Название заказа</mat-label>
-      <input
-        matInput
-        [formGroup]="reportForm"
-        formControlName="nameOrder">
-    </mat-form-field>
+  <mat-form-field *ngIf="!((typeWork.value === 'ППР')
+              || (typeWork.value === 'Простой')
+              || (typeWork.value === 'По среднему'))">
+    <mat-label>Группа сложности</mat-label>
+    <mat-select
+      required
+      formControlName="groupDifficulty">
+      <mat-option *ngFor="let norm of norms" [value]="norm.grpDiff">
+        {{norm.grpDiff}} - {{norm.norma}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 
-    <mat-form-field *ngIf="!((typeWork.value === 'ППР')
-                || (typeWork.value === 'Простой')
-                || (typeWork.value === 'По среднему'))">
-      <mat-label>Группа сложности</mat-label>
-      <mat-select
-        required
-        [formGroup]="reportForm"
-        formControlName="groupDifficulty">
-        <mat-option *ngFor="let norm of norms" [value]="norm.grpDiff">
-          {{norm.grpDiff}} - {{norm.norma}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <button
-      class="btn btn-danger"
-      (click)="onDeleteWorkUnit(i)"
-      type="button">Удалить
-    </button>
+  <button
+    class="btn btn-danger"
+    (click)="onDeleteWorkUnit()"
+    type="button">Удалить
+  </button>
 </div>

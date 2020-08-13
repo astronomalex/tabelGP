@@ -106,9 +106,10 @@
             <hr>
             <div class="row">
               <ul>
-                <li *ngFor="let work of workUnitListFormArr.controls; let i = index">
+                <li *ngFor="let work of workUnitListFormArr?.controls; let i = index">
                   <app-work-unit-item
                     [index]="i"
+                    [typesOfWorks]="typesOfWorks"
                     [workUnitForm]="work"
                     (deleteWorkUnit)="delWork($event)"
                   ></app-work-unit-item>
