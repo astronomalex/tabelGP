@@ -3,7 +3,6 @@
     <mat-label>Тип работы</mat-label>
     <mat-select
       #typeWork
-
       required
       formControlName="typeWork">
       <mat-option *ngFor="let typeOfWork of typesOfWorks" [value]="typeOfWork">
@@ -26,7 +25,7 @@
     (cuechange)="onWorkTimeChanged(reportService.calculateTime(dateSmen, sTime.value, eTime.value))"
     *ngIf="sTime.value && eTime.value && dateSmen">
 
-              Время работы: {{reportService.calculateTime(dateSmen, sTime.value, eTime.value) }}</span>
+    Время работы: {{reportService.calculateTime(dateSmen, sTime.value, eTime.value) }}</span>
   <br>
   <mat-form-field
     class="example-full-width"

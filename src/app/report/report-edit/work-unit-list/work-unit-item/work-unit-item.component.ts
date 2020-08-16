@@ -20,7 +20,7 @@ export class WorkUnitItemComponent implements OnInit {
   @Input() typesOfWorks: string[];
   @Input() index: number;
   selectedTypeOfWorks: string;
-  @Output() formChanged = new EventEmitter<{ typeWork: string, amountMinutes: number }>();
+  @Output() formChanged = new EventEmitter<{ index: number, typeWork: string, amountMinutes: number }>();
   @Output() deleteWorkUnit = new EventEmitter<number>();
   @Input() workUnitForm: FormGroup;
   // startWorkTime: number;

@@ -24,6 +24,7 @@ import {ReportService} from '../report.service';
 import {DatePipe} from '@angular/common';
 import {WorkUnit} from '../work-unit.model';
 import {ReportEditFormService} from './report-edit-form.service';
+import {TimeWorkInfo} from './time-work-Info.model';
 
 @Component({
   selector: 'app-report-edit',
@@ -65,6 +66,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   private closeSub: Subscription;
   private selectSub: Subscription;
   private selectedWorker: WorkerData = null;
+  private timeWorkInfoList: TimeWorkInfo [];
 
 
   constructor(
@@ -313,5 +315,9 @@ export class ReportEditComponent implements OnInit, OnDestroy {
 
   delWork(index: number) {
     this.reportEditFormService.delWork(index);
+  }
+
+  formWorkUnitChanged(dataEvent: TimeWorkInfo) {
+    time
   }
 }
