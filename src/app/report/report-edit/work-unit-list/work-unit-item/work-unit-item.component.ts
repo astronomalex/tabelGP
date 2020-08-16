@@ -23,8 +23,8 @@ export class WorkUnitItemComponent implements OnInit {
   @Output() formChanged = new EventEmitter<{ typeWork: string, amountMinutes: number }>();
   @Output() deleteWorkUnit = new EventEmitter<number>();
   @Input() workUnitForm: FormGroup;
-  startWorkTime: number;
-  endWorkTime: number;
+  // startWorkTime: number;
+  // endWorkTime: number;
   amountOfMinutes: number;
   workUnits$ = this.store.pipe(select(getEditedWorkUnits));
 

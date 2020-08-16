@@ -1,7 +1,7 @@
 <ng-template appPlaceHolder></ng-template>
 <div class="row">
   <div class="col-xs-12">
-    <form [formGroup]="reportForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="reportForm">
       <div class="row">
         <div class="col-xs-12">
           <div class="form-group">
@@ -111,21 +111,21 @@
                     [index]="i"
                     [typesOfWorks]="typesOfWorks"
                     [workUnitForm]="work"
+                    [norms]="norms"
                     (deleteWorkUnit)="delWork($event)"
                   ></app-work-unit-item>
                 </li>
               </ul>
               <button class="bg-success" (click)="addWork()">Добавить работу</button>
-<!--                <app-work-unit-list-->
-<!--                  (deleteWorkUnit)="onDeleteWorkUnit($event.valueOf())"-->
-<!--                  (addWorkUnit)="onAddWorkUnit()"-->
-<!--                  [typesOfWorks]="typesOfWorks"-->
-<!--                  [norms]="norms"-->
-<!--                  [reportForm]="reportForm"-->
-<!--                  [controlWorks]="reportForm.get('workUnitList')as FormArray"-->
-<!--                  [workUnits]="workUnits"></app-work-unit-list>-->
 
             </div>
+            <span *ngIf="calculateReportTime()"> Минут всего: {{ calculateReportTime() }}  </span>
+            <span *ngIf="calculateReportTime('Простой')"> Минут простоя: {{ calculateReportTime('Простой') }}  </span>
+            <span *ngIf="calculateReportTime('ППР')"> Минут ППР: {{ calculateReportTime('ППР') }}  </span>
+            <span *ngIf="calculateReportTime('По среднему')"> Минут по среднему: {{ calculateReportTime('По среднему') }}  </span>
+            <span *ngIf="calculateReportTime('Работа') || calculateReportTime('Настройка')">
+                Минут сдельно: {{ calculateReportTime('Работа') +  calculateReportTime('Настройка') }}  </span>
+
           </div>
         </div>
       </div>
@@ -134,6 +134,7 @@
           <button
             [disabled]="!reportForm.valid"
             type="submit"
+            (click)="onSubmit()"
             class="btn btn-success">Сохранить
           </button>
           <button

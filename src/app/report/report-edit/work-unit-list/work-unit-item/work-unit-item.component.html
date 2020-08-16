@@ -1,4 +1,4 @@
-<div [formGroup]="workUnitForm">
+<form [formGroup]="workUnitForm">
   <mat-form-field>
     <mat-label>Тип работы</mat-label>
     <mat-select
@@ -14,12 +14,12 @@
 
   <input
     type="time"
-    formControlName="startTime"
+    formControlName="startWorkTime"
     #sTime>
 
   <input
     type="time"
-    formControlName="endTime"
+    formControlName="endWorkTime"
     #eTime>
 
   <span
@@ -28,10 +28,11 @@
 
               Время работы: {{reportService.calculateTime(dateSmen, sTime.value, eTime.value) }}</span>
   <br>
-  <mat-form-field class="example-full-width"
-                  *ngIf="!((typeWork.value === 'ППР')
-            || (typeWork.value === 'Простой')
-            || (typeWork.value === 'По среднему'))">
+  <mat-form-field
+    class="example-full-width"
+    *ngIf="!((typeWork.value === 'ППР')
+      || (typeWork.value === 'Простой')
+      || (typeWork.value === 'По среднему'))">
     <mat-label>Номер заказа</mat-label>
     <input
       matInput
@@ -67,4 +68,4 @@
     (click)="onDeleteWorkUnit()"
     type="button">Удалить
   </button>
-</div>
+</form>

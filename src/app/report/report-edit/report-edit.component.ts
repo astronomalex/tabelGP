@@ -243,7 +243,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   onMachineChanged(event) {
     this.selectedMachine = event.value;
     this.store.dispatch(new ReportActions.SelectMachine(event.value));
-    console.log('onMachineChanged norm:  ' + this.norms);
+    console.log('onMachineChanged norm:  ' + this.norms.values());
     console.log('event.value: ' + event.value);
   }
 
@@ -260,19 +260,44 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   calculateReportTime(typeWork: string = null) {
     let minutesOfReport = 0;
     if (typeWork) {
-      for (const workUnit of this.workUnits) {
-        if (typeWork === workUnit.typeWork) {
-          minutesOfReport += workUnit.getworkTime();
+      for (const control of (this.reportForm.get('workUnitList') as FormArray).controls) {
+        if (typeWork === control.typeWork.value) {
+          minutesOfReport +=
+            this.reportService.calculateTime(
+              this.dateSmen,
+              control.controls.startTime.value,
+              control.controls.endTime.value
+            );
         }
       }
-    } else  if (this.workUnits) {
-      for (const workUnit of this.workUnits) {
-        minutesOfReport += workUnit.getworkTime();
+    } else {
+      for (const control of (this.reportForm.get('workUnitList') as FormArray).controls) {
+        minutesOfReport +=
+          this.reportService.calculateTime(
+            this.dateSmen,
+            control.controls.startTime.value,
+            control.controls.endTime.value
+          );
       }
     }
     // console.log(this.reportService.calculateTime(this.dateSmen, control.controls.startTime.value, control.controls.endTime.value));
     console.log('minutesOfReport: ' + minutesOfReport);
     return minutesOfReport;
+    // let minutesOfReport = 0;
+    // if (typeWork && this.workUnits) {
+    //   for (const workUnit of this.workUnits) {
+    //     if (typeWork === workUnit.typeWork) {
+    //       minutesOfReport += workUnit.getworkTime();
+    //     }
+    //   }
+    // } else  if (this.workUnits) {
+    //   for (const workUnit of this.workUnits) {
+    //     minutesOfReport += workUnit.getworkTime();
+    //   }
+    // }
+    // // console.log(this.reportService.calculateTime(this.dateSmen, control.controls.startTime.value, control.controls.endTime.value));
+    // console.log('minutesOfReport: ' + minutesOfReport);
+    // return minutesOfReport;
   }
 
 
