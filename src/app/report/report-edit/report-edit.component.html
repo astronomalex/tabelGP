@@ -112,7 +112,7 @@
                     [typesOfWorks]="typesOfWorks"
                     [workUnitForm]="work"
                     [norms]="norms"
-                    (formChanged)=""
+                    (formChanged)="formWorkUnitChanged($event)"
                     (deleteWorkUnit)="delWork($event)"
                   ></app-work-unit-item>
                 </li>

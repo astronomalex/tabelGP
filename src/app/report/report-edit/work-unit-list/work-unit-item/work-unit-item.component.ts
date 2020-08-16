@@ -6,6 +6,7 @@ import {Norma} from '../../../norma.model';
 import {select, Store} from '@ngrx/store';
 import * as fromApp from '../../../../store/app.reducer';
 import {getEditedReport, getEditedWorkUnits} from '../../../../store/selectors/app.selector';
+import {TimeWorkInfo} from '../../time-work-Info.model';
 
 @Component({
   selector: 'app-work-unit-item',
@@ -20,7 +21,7 @@ export class WorkUnitItemComponent implements OnInit {
   @Input() typesOfWorks: string[];
   @Input() index: number;
   selectedTypeOfWorks: string;
-  @Output() formChanged = new EventEmitter<{ index: number, typeWork: string, amountMinutes: number }>();
+  @Output() formChanged = new EventEmitter<TimeWorkInfo>();
   @Output() deleteWorkUnit = new EventEmitter<number>();
   @Input() workUnitForm: FormGroup;
   // startWorkTime: number;
@@ -36,16 +37,7 @@ export class WorkUnitItemComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // if (this.workUnit) {
-    //   this.workUnitForm = new FormGroup({
-    //     startTime: new FormControl(this.workUnit.startWorkTime, [Validators.required]),
-    //     endTime: new FormControl(this.workUnit.endWorkTime, [Validators.required]),
-    //     typeWork: new FormControl(this.workUnit.typeWork, [Validators.required]),
-    //     numOrder: new FormControl(this.workUnit.numOrder, [Validators.required]),
-    //     nameOrder: new FormControl(this.workUnit.nameOrder, [Validators.required]),
-    //     groupDifficulty: new FormControl(this.workUnit.groupDifficulty, [Validators.required])
-    //   });
-    // }
+
   }
 
   calculateTimeInMinutes() {
@@ -58,7 +50,12 @@ export class WorkUnitItemComponent implements OnInit {
   onWorkTimeChanged(numberOfMinutes) {
     console.log('numberOfMinutes had changed: ' + numberOfMinutes);
     this.amountOfMinutes = numberOfMinutes;
-    this.formChanged.emit({typeWork: this.selectedTypeOfWorks, amountMinutes: this.amountOfMinutes});
+    const timeWorkInfo = new TimeWorkInfo(
+      this.index,
+      this.workUnitForm.get('typeWork').value,
+      this.amountOfMinutes
+    );
+    this.formChanged.emit(timeWorkInfo);
   }
 
   // getWorkUnits() {
