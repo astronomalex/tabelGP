@@ -24,8 +24,8 @@ export class WorkUnitItemComponent implements OnInit {
   @Output() formChanged = new EventEmitter<TimeWorkInfo>();
   @Output() deleteWorkUnit = new EventEmitter<number>();
   @Input() workUnitForm: FormGroup;
-  // startWorkTime: number;
-  // endWorkTime: number;
+  public startWorkTime: string;
+  endWorkTime: string;
   amountOfMinutes: number;
   workUnits$ = this.store.pipe(select(getEditedWorkUnits));
 
@@ -67,6 +67,14 @@ export class WorkUnitItemComponent implements OnInit {
     this.deleteWorkUnit.emit(this.index);
   }
 
+  startTimeChanged(event) {
+    this.startWorkTime = event.target.value;
+    this.onWorkTimeChanged(this.reportService.calculateTime(this.dateSmen, this.startWorkTime, this.endWorkTime));
+  }
 
+  endTimeChanged(event) {
+    this.endWorkTime = event.target.value;
+    this.onWorkTimeChanged(this.reportService.calculateTime(this.dateSmen, this.startWorkTime, this.endWorkTime))
+  }
 
 }

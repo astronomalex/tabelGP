@@ -13,13 +13,18 @@
 
   <input
     type="time"
+    (change)="startTimeChanged($event)"
     formControlName="startWorkTime"
     #sTime>
 
   <input
     type="time"
+    (change)="endTimeChanged($event)"
     formControlName="endWorkTime"
     #eTime>
+  <label>
+    {{startWorkTime}} время   {{endWorkTime}}
+  </label>
 
   <span
     (cuechange)="onWorkTimeChanged(reportService.calculateTime(dateSmen, sTime.value, eTime.value))"
