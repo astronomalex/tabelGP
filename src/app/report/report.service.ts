@@ -14,11 +14,15 @@ export class ReportService {
   }
 
   public calculateTime(dateReport: string, startDateString: string, endDateString: string) {
-    const startDateStringMerged = this.megreDateTimeString(dateReport, startDateString);
-    const endDateStringMerged = this.megreDateTimeString(dateReport, endDateString);
-    // console.log('startDateString: ' + startDateString);
-    // console.log('endDateString: ' + endDateString);
-    return this.correctDate(endDateStringMerged) - this.correctDate(startDateStringMerged, true);
+    if (dateReport && startDateString && endDateString) {
+      const startDateStringMerged = this.megreDateTimeString(dateReport, startDateString);
+      const endDateStringMerged = this.megreDateTimeString(dateReport, endDateString);
+      // console.log('startDateString: ' + startDateString);
+      // console.log('endDateString: ' + endDateString);
+      return this.correctDate(endDateStringMerged) - this.correctDate(startDateStringMerged, true);
+    } else {
+      return 0;
+    }
   }
 
   private megreDateTimeString(dateString, timeString) {

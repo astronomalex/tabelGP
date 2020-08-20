@@ -191,37 +191,64 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     this.calculateReportTime();
   }
 
+  // calculateReportTime(typeWork: string = null) {
+  //   let minutesOfReport = 0;
+  //   if (typeWork) {
+  //     for (const timeWorkInfo of this.timeWorkInfoList) {
+  //       if (typeWork === timeWorkInfo.typeWork) {
+  //         minutesOfReport += timeWorkInfo.amountMinutes;
+  //       }
+  //     }
+  //   } else {
+  //     for (const timeWorkInfo of this.timeWorkInfoList) {
+  //       minutesOfReport += timeWorkInfo.amountMinutes;
+  //     }
+  //   }
+  //   // console.log(this.reportService.calculateTime(this.dateSmen, control.controls.startTime.value, control.controls.endTime.value));
+  //   console.log('minutesOfReport: ' + minutesOfReport);
+  //   return minutesOfReport;
+  // }
+
   calculateReportTime(typeWork: string = null) {
-    let minutesOfReport = 0;
-    if (typeWork) {
-      for (const timeWorkInfo of this.timeWorkInfoList) {
-        if (typeWork === timeWorkInfo.typeWork) {
-          minutesOfReport += timeWorkInfo.amountMinutes;
+    if (this.workUnitListFormArr.length > 0) {
+      let minutesOfReport = 0;
+      if (typeWork) {
+        for (const control of this.workUnitListFormArr.controls) {
+          if (
+            typeWork === (control as FormGroup).controls.typeWork.value &&
+            (control as FormGroup).controls.startWorkTime &&
+            (control as FormGroup).controls.endWorkTime
+          ) {
+            minutesOfReport +=
+              this.reportService.calculateTime(
+                this.dateSmen,
+                (control as FormGroup).controls.startWorkTime.value,
+                (control as FormGroup).controls.endWorkTime.value
+              );
+          }
+        }
+      } else {
+        for (const control of this.workUnitListFormArr.controls) {
+          if (
+            (control as FormGroup).controls.startWorkTime.value &&
+            (control as FormGroup).controls.endWorkTime.value
+          ) {
+            minutesOfReport +=
+              this.reportService.calculateTime(
+                this.dateSmen,
+                (control as FormGroup).controls.startWorkTime.value,
+                (control as FormGroup).controls.endWorkTime.value
+              );
+          }
+
         }
       }
+      // console.log(this.reportService.calculateTime(this.dateSmen, control.controls.startTime.value, control.controls.endTime.value));
+      console.log('minutesOfReport: ' + minutesOfReport);
+      return minutesOfReport;
     } else {
-      for (const timeWorkInfo of this.timeWorkInfoList) {
-        minutesOfReport += timeWorkInfo.amountMinutes;
-      }
+      return null;
     }
-    // console.log(this.reportService.calculateTime(this.dateSmen, control.controls.startTime.value, control.controls.endTime.value));
-    console.log('minutesOfReport: ' + minutesOfReport);
-    return minutesOfReport;
-    // let minutesOfReport = 0;
-    // if (typeWork && this.workUnits) {
-    //   for (const workUnit of this.workUnits) {
-    //     if (typeWork === workUnit.typeWork) {
-    //       minutesOfReport += workUnit.getworkTime();
-    //     }
-    //   }
-    // } else  if (this.workUnits) {
-    //   for (const workUnit of this.workUnits) {
-    //     minutesOfReport += workUnit.getworkTime();
-    //   }
-    // }
-    // // console.log(this.reportService.calculateTime(this.dateSmen, control.controls.startTime.value, control.controls.endTime.value));
-    // console.log('minutesOfReport: ' + minutesOfReport);
-    // return minutesOfReport;
   }
 
 
