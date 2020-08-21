@@ -6,12 +6,13 @@ export class WorkUnit {
   public numOrder: string;
   public nameOrder: string;
   public groupDifficulty: string;
+  public amountDonePieces: number;
 
   public get getWorkTime() {
     return this.workTime;
   }
 
-  constructor(typeWork?, numOrder?, nameOrder?, groupDifficulty?, startWorkTime?, endWorkTime?) {
+  constructor(typeWork?, numOrder?, nameOrder?, groupDifficulty?, startWorkTime?, endWorkTime?, amountDonePieces?) {
     console.log(this.startWorkTime, this.endWorkTime);
 
     if (this.startWorkTime && this.endWorkTime) {

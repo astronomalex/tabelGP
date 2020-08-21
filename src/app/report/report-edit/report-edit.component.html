@@ -121,12 +121,13 @@
               <button class="bg-success" (click)="addWork()">Добавить работу</button>
 
             </div>
-            <span *ngIf="calculateReportTime()"> Минут всего: {{ calculateReportTime() }}  </span>
-            <span *ngIf="calculateReportTime('Простой')"> Минут простоя: {{ calculateReportTime('Простой') }}  </span>
-            <span *ngIf="calculateReportTime('ППР')"> Минут ППР: {{ calculateReportTime('ППР') }}  </span>
-            <span *ngIf="calculateReportTime('По среднему')"> Минут по среднему: {{ calculateReportTime('По среднему') }}  </span>
-            <span *ngIf="calculateReportTime('Работа') || calculateReportTime('Настройка')">
-                Минут сдельно: {{ calculateReportTime('Работа') +  calculateReportTime('Настройка') }}  </span>
+            <span *ngIf="calculateReportTime().minutesOfReport"> Минут всего: {{ calculateReportTime().minutesOfReport }}</span>
+            <span *ngIf="calculateReportTime().percentOfReport"> Процент выработки: {{ calculateReportTime().percentOfReport }}</span>
+            <span *ngIf="calculateReportTime('Простой').minutesOfReport"> Минут простоя: {{ calculateReportTime('Простой').minutesOfReport }}  </span>
+            <span *ngIf="calculateReportTime('ППР').minutesOfReport"> Минут ППР: {{ calculateReportTime('ППР').minutesOfReport }}  </span>
+            <span *ngIf="calculateReportTime('По среднему').minutesOfReport"> Минут по среднему: {{ calculateReportTime('По среднему').minutesOfReport }}  </span>
+            <span *ngIf="calculateReportTime('Работа').minutesOfReport || calculateReportTime('Настройка').minutesOfReport">
+                Минут сдельно: {{ calculateReportTime('Работа').minutesOfReport +  calculateReportTime('Настройка').minutesOfReport }}  </span>
 
           </div>
         </div>

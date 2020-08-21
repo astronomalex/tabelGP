@@ -4,5 +4,6 @@
   (click)="onItemClick(index)"
   style="cursor: pointer"
   class="list-group-item clearfix">
-  <p>{{ report | date }}. №Смены: {{ report.numSmenReport }}. Машина: {{ report.machine }}</p>
+  <p>{{ report.dateReport | date }}. №Смены: {{ report.numSmenReport }}. Машина: {{ report.machine }}</p>
+  <p>{{ report.workerListTabelNums}}</p>
 </a>

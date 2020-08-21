@@ -3,7 +3,6 @@
     <mat-label>Тип работы</mat-label>
     <mat-select
       #typeWork
-      required
       formControlName="typeWork">
       <mat-option *ngFor="let typeOfWork of typesOfWorks" [value]="typeOfWork">
         {{typeOfWork}}
@@ -22,9 +21,6 @@
     (change)="endTimeChanged($event)"
     formControlName="endWorkTime"
     #eTime>
-  <label>
-    {{startWorkTime}} время   {{endWorkTime}}
-  </label>
 
   <span
     (cuechange)="onWorkTimeChanged(reportService.calculateTime(dateSmen, sTime.value, eTime.value))"
@@ -59,12 +55,22 @@
               || (typeWork.value === 'По среднему'))">
     <mat-label>Группа сложности</mat-label>
     <mat-select
-      required
       formControlName="groupDifficulty">
-      <mat-option *ngFor="let norm of norms" [value]="norm.grpDiff">
+      <mat-option *ngFor="let norm of norms" [value]="norm.norma">
         {{norm.grpDiff}} - {{norm.norma}}
       </mat-option>
     </mat-select>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="!((typeWork.value === 'ППР')
+              || (typeWork.value === 'Простой')
+              || (typeWork.value === 'Настройка')
+              || (typeWork.value === 'По среднему'))">
+    <mat-label>Количество штук</mat-label>
+    <input
+      type="number"
+      matInput
+      formControlName="amountDonePieces">
   </mat-form-field>
 
   <button

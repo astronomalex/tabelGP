@@ -191,66 +191,57 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     this.calculateReportTime();
   }
 
-  // calculateReportTime(typeWork: string = null) {
-  //   let minutesOfReport = 0;
-  //   if (typeWork) {
-  //     for (const timeWorkInfo of this.timeWorkInfoList) {
-  //       if (typeWork === timeWorkInfo.typeWork) {
-  //         minutesOfReport += timeWorkInfo.amountMinutes;
-  //       }
-  //     }
-  //   } else {
-  //     for (const timeWorkInfo of this.timeWorkInfoList) {
-  //       minutesOfReport += timeWorkInfo.amountMinutes;
-  //     }
-  //   }
-  //   // console.log(this.reportService.calculateTime(this.dateSmen, control.controls.startTime.value, control.controls.endTime.value));
-  //   console.log('minutesOfReport: ' + minutesOfReport);
-  //   return minutesOfReport;
-  // }
-
   calculateReportTime(typeWork: string = null) {
     if (this.workUnitListFormArr.length > 0) {
       let minutesOfReport = 0;
-      if (typeWork) {
-        for (const control of this.workUnitListFormArr.controls) {
-          if (
-            typeWork === (control as FormGroup).controls.typeWork.value &&
-            (control as FormGroup).controls.startWorkTime &&
-            (control as FormGroup).controls.endWorkTime
-          ) {
-            minutesOfReport +=
-              this.reportService.calculateTime(
-                this.dateSmen,
-                (control as FormGroup).controls.startWorkTime.value,
-                (control as FormGroup).controls.endWorkTime.value
-              );
-          }
-        }
-      } else {
-        for (const control of this.workUnitListFormArr.controls) {
-          if (
-            (control as FormGroup).controls.startWorkTime.value &&
-            (control as FormGroup).controls.endWorkTime.value
-          ) {
-            minutesOfReport +=
-              this.reportService.calculateTime(
-                this.dateSmen,
-                (control as FormGroup).controls.startWorkTime.value,
-                (control as FormGroup).controls.endWorkTime.value
-              );
-          }
+      let percentOfReport = 0;
 
+      for (const control of this.workUnitListFormArr.controls) {
+        if (
+          (control as FormGroup).controls.startWorkTime.value &&
+          (control as FormGroup).controls.endWorkTime.value
+        ) {
+          const minutesOfWork =
+            this.reportService.calculateTime(
+              this.dateSmen,
+              (control as FormGroup).controls.startWorkTime.value,
+              (control as FormGroup).controls.endWorkTime.value
+            );
+          let percentOfWork = 100;
+          if ((control as FormGroup).controls.groupDifficulty.value &&
+            (control as FormGroup).controls.amountDonePieces &&
+            (control as FormGroup).controls.typeWork.value === 'Работа') {
+            const norm = (control as FormGroup).controls.groupDifficulty.value;
+            console.log('selected norm: ' + norm);
+            percentOfWork =
+              (((control as FormGroup).controls.amountDonePieces.value / norm) * 690) / minutesOfWork * 100;
+            console.log('Percent of work: ' + percentOfWork);
+          }
+          if (typeWork) {
+            if ( typeWork === (control as FormGroup).controls.typeWork.value) {
+              minutesOfReport += minutesOfWork;
+            }
+          } else {
+            if (!((control as FormGroup).controls.typeWork.value === 'Простой')) {
+              minutesOfReport += minutesOfWork;
+              percentOfReport += minutesOfWork * (percentOfWork / 100);
+            }
+          }
         }
+
       }
-      // console.log(this.reportService.calculateTime(this.dateSmen, control.controls.startTime.value, control.controls.endTime.value));
+      percentOfReport = Number((percentOfReport / minutesOfReport * 100).toFixed(2));
       console.log('minutesOfReport: ' + minutesOfReport);
-      return minutesOfReport;
+      console.log('PercentOfReport: ' + percentOfReport);
+      return { minutesOfReport, percentOfReport };
     } else {
-      return null;
+      return {minutesOfReport: 0, percentOfReport: 0};
     }
   }
 
+  calculatePercentWorks() {
+
+  }
 
   ngOnDestroy() {
     this.reportFormSub.unsubscribe();
