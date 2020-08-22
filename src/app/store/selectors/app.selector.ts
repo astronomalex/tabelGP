@@ -1,4 +1,4 @@
-import {createFeatureSelector, createSelector, State} from '@ngrx/store';
+import {createFeatureSelector, createSelector} from '@ngrx/store';
 import {AppState} from '../app.reducer';
 import * as TabelState from '../../tabel/store/tabel.reducer';
 import * as WorkerState from '../../workers/store/workers.reducer';
@@ -11,7 +11,8 @@ export const WorkerDataFeature = createFeatureSelector<AppState, WorkerState.Sta
 export const ReportFeature = createFeatureSelector<AppState, ReportState.State>('reports');
 
 export const getSelectedSmenaId = createSelector(TabelFeature, (tabelState: TabelState.State) => tabelState.selectedSmenaId);
-export const getSelectedSmena = createSelector(TabelFeature, (tabelState: TabelState.State) => tabelState.smens[tabelState.selectedSmenaId]);
+export const getSelectedSmena =
+  createSelector(TabelFeature, (tabelState: TabelState.State) => tabelState.smens[tabelState.selectedSmenaId]);
 export const getSelectedSmenaWorkersTime = createSelector(
   TabelFeature, (tabelState: TabelState.State) => tabelState.smens[tabelState.selectedSmenaId].workersTime
 );
@@ -28,6 +29,7 @@ export const getReportsFromState = createSelector(ReportFeature, reportState => 
 
 export const getTypesOfWorkFromState = createSelector(ReportFeature, reportsState => reportsState.typesOfWork);
 export const getNormsFromState = createSelector(ReportFeature, reportState => reportState.allNorms);
+export const getSelectedReport = createSelector(ReportFeature, reportState => reportState.reports[reportState.selectedReportId]);
 export const getSelectedMachine = createSelector(ReportFeature, reportState => reportState.selectedMachine);
 export const getNormsByMachine = createSelector(getNormsFromState, getSelectedMachine, (norms, selectedMachine) => norms[selectedMachine]);
 export const getEditedReport = createSelector(ReportFeature, reportsState => reportsState.editedReport);

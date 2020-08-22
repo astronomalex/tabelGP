@@ -6,6 +6,7 @@ export interface State {
   reports: Report[];
   typesOfWork: string[];
   selectedMachine: string;
+  selectedReportId: number;
   allNorms: {[machine: string]: Norma[]};
   editedReport: Report;
 }
@@ -14,6 +15,7 @@ const initialState: State = {
   reports: [],
   typesOfWork: ['Работа', 'Настройка', 'Простой', 'По среднему', 'ППР'],
   selectedMachine: null,
+  selectedReportId: null,
   allNorms: {
       'GIETZ-1': [{grpDiff: '5', norma: 144000}, {grpDiff: '4', norma: 160000}],
       'Media-100': [{grpDiff: '11', norma: 202850}, {grpDiff: '15', norma: 263850}]
@@ -44,6 +46,12 @@ export function reportReducer(
       return {
         ...state,
         reports: updatedReports
+      };
+
+    case ReportActions.SELECT_REPORT:
+      return {
+        ...state,
+        selectedReportId: actions.payload
       };
 
     case ReportActions.SET_REPORTS:

@@ -6,17 +6,9 @@ import {Subject, Subscription} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 
 import * as fromApp from '../../store/app.reducer';
-import {
-  getEditedReport,
-  getMachineList, getNormsByMachine,
-  getNormsFromState,
-  getReportsFromState,
-  getTypesOfWorkFromState,
-  getWorkers
-} from '../../store/selectors/app.selector';
+import {getEditedReport, getMachineList, getNormsByMachine, getTypesOfWorkFromState, getWorkers} from '../../store/selectors/app.selector';
 import {takeUntil} from 'rxjs/operators';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {Report} from '../report.model';
 import * as ReportActions from '../../report/store/report.actions';
 import {WorkerSelectDialogListComponent} from '../../tabel/smen-edit/worker-select-dialog/worker-select-dialog-list-component';
 import {Norma} from '../norma.model';
@@ -24,7 +16,6 @@ import {ReportService} from '../report.service';
 import {DatePipe} from '@angular/common';
 import {WorkUnit} from '../work-unit.model';
 import {ReportEditFormService} from './report-edit-form.service';
-import {TimeWorkInfo} from './time-work-Info.model';
 
 @Component({
   selector: 'app-report-edit',
@@ -66,7 +57,6 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   private closeSub: Subscription;
   private selectSub: Subscription;
   private selectedWorker: WorkerData = null;
-  private timeWorkInfoList: TimeWorkInfo [];
 
 
   constructor(
@@ -83,7 +73,6 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.reportFormSub = this.reportEditFormService.reportForm$.subscribe(report => {
       this.reportForm = report;
-      this.timeWorkInfoList = [];
       this.workUnitListFormArr = this.reportForm.get('workListReport') as FormArray;
     });
     this.route.params.subscribe(
@@ -96,7 +85,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   }
 
   private initForm() {
-     this.reportForm.valueChanges.subscribe(newValues => console.log('New Values: ' + newValues));
+     // this.reportForm.valueChanges.subscribe(newValues => console.log('New Values: ' + newValues));
   }
 
   showWorkerSelectDialog() {
@@ -182,10 +171,8 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   }
 
   onDateChanged(event) {
-    const dateString = event.value.toLocaleDateString();
     const date = event.value;
-    const dateFormated = this.datePipe.transform(date, 'yyyy-MM-dd');
-    this.dateSmen = dateFormated;
+    this.dateSmen = this.datePipe.transform(date, 'yyyy-MM-dd');
     // console.log('dateFormated: ', dateFormated);
     // console.log('New Date: ' + dateString);
     this.calculateReportTime();
@@ -257,7 +244,4 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     this.reportEditFormService.delWork(index);
   }
 
-  formWorkUnitChanged(dataEvent: TimeWorkInfo) {
-    this.timeWorkInfoList.push(dataEvent);
-  }
 }
