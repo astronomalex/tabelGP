@@ -37,7 +37,13 @@ export class WorkUnitItemComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-
+    // if (this.reportForm.controls.dateSmen.value &&
+    //   this.reportForm.controls.startWorkTime.value &&
+    //   this.reportForm.controls.endWorkTime.value) {
+    //   this.startWorkTime = this.reportForm.controls.startWorkTime.value;
+    //   this.endWorkTime = this.reportForm.controls.endWorkTime.value;
+    //   this.dateSmen = this.reportForm.controls.dateSmen.value;
+    // }
   }
 
   calculateTimeInMinutes() {

@@ -5,13 +5,6 @@ import {Report} from './report.model';
   providedIn: 'root'
 })
 export class ReportService {
-  public calculateTimeReport(report: Report) {
-    let totalTime: number;
-    for (const workUnit of report.workListReport) {
-      totalTime += workUnit.getworkTime();
-    }
-    return totalTime;
-  }
 
   public calculateTime(dateReport: string, startDateString: string, endDateString: string) {
     if (dateReport && startDateString && endDateString) {

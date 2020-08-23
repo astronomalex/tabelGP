@@ -50,14 +50,14 @@ export class WorkUnitListComponent implements OnInit {
   }
 
   calculateReportTime(typeWork: string = null) {
-    let minutesOfReport = 0;
+    const minutesOfReport = 0;
     console.log('workUnits: ' + this.workUnits);
     console.log('typework: ' + typeWork);
     if (this.workUnits !== undefined) {
       console.log('workUnits' + this.workUnits);
       for (const workUnit of this.workUnits) {
         if (typeWork === workUnit.typeWork) {
-          minutesOfReport += workUnit.getworkTime();
+          // minutesOfReport += workUnit.getworkTime();
         }
       }
     } else if (this.controlWorks) {

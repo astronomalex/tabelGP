@@ -29,7 +29,7 @@ export class WorkUnitFormModel {
 
     this.groupDifficulty.setValue(workUnit.groupDifficulty);
     // this.groupDifficulty.setValidators([Validators.required]);
-
+    this.amountDonePieces.setValue(workUnit.amountDonePieces);
     // this.amountDonePieces.setValidators([Validators.required]);
   }
 }

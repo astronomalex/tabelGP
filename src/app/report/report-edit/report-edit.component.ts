@@ -10,7 +10,7 @@ import {
   getEditedReport,
   getMachineList,
   getNormsByMachine,
-  getReportsFromState,
+  getReportsFromState, getSelectedReport,
   getTypesOfWorkFromState,
   getWorkers
 } from '../../store/selectors/app.selector';
@@ -35,6 +35,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   id: number;
   editMode = false;
   reportForm: FormGroup;
+  report: Report;
   // reportFormSub: Subscription;
   formInvalid = false;
   persentOfReport: number;
@@ -63,6 +64,11 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   ).subscribe(norms => {
     this.norms = norms;
     console.log('norms: ' + norms);
+  });
+  report$ = this.store.pipe(select(getSelectedReport)).pipe(
+    takeUntil(this.ngUnsubscribe$)
+  ).subscribe(report => {
+    this.report = report;
   });
   private closeSub: Subscription;
   private selectSub: Subscription;
@@ -98,15 +104,11 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     const workListReport = new FormArray([]);
 
     if (this.editMode) {
-      let report: Report;
-      this.store.pipe(select(getReportsFromState)).pipe(
-        takeUntil(this.ngUnsubscribe$)
-      ).subscribe(reports => report = reports[this.id]);
-      dateReport = report.dateReport;
-      machine = report.machine;
-      numSmenReport = report.numSmenReport;
-      if (report.workerListReport) {
-        for (const worker of report.workerListReport) {
+      dateReport = this.report.dateReport;
+      machine = this.report.machine;
+      numSmenReport = this.report.numSmenReport;
+      if (this.report.workerListReport) {
+        for (const worker of this.report.workerListReport) {
           workerListReport.push(
             new FormGroup({
               tbNum: new FormControl(worker.tbNum, [Validators.required, Validators.pattern(/^\d\d\d\d$/)]),
@@ -115,24 +117,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
           );
         }
       }
-      if (report.workListReport) {
-        for (const work of report.workListReport) {
-          workListReport.push(
-            new FormGroup({
-              startWorkTime: new FormControl(work.startWorkTime, [Validators.required]),
-              endWorkTime: new FormControl(work.endWorkTime, [Validators.required]),
-              typeWork: new FormControl(work.typeWork, [Validators.required]),
-              numOrder: new FormControl(work.numOrder, [Validators.required]),
-              nameOrder: new FormControl(work.nameOrder, [Validators.required]),
-              groupDifficulty: new FormControl(work.groupDifficulty, [Validators.required]),
-              amountDonePieces: new FormControl(work.amountDonePieces, [Validators.required, Validators.min(1)])
-            })
-          );
-        }
-        this.selectedWorker = null;
-      }
     }
-
     this.reportForm = new FormGroup({
       dateReport: new FormControl(dateReport, [Validators.required]),
       machine: new FormControl(machine, [Validators.required]),
@@ -140,6 +125,40 @@ export class ReportEditComponent implements OnInit, OnDestroy {
       workerListReport,
       workListReport
     });
+    if (this.editMode) {
+      if (this.report.workListReport) {
+        for (const work of this.report.workListReport) {
+          this.addWork(
+            work.typeWork,
+            work.numOrder,
+            work.nameOrder,
+            work.groupDifficulty,
+            work.startWorkTime,
+            work.endWorkTime,
+            work.amountDonePieces
+          );
+        }
+        this.selectedWorker = null;
+      }
+    }
+  }
+
+  addWork(typeWork?, numOrder?, nameOrder?, groupDifficulty?, startWorkTime?, endWorkTime?, amountDonePieces?) {
+    // const currentReport = this.reportForm;
+    const currentWork = this.reportForm.get('workListReport') as FormArray;
+    currentWork.push(
+      this.fb.group(
+        new WorkUnitFormModel(
+          new WorkUnit(typeWork, numOrder, nameOrder, groupDifficulty, startWorkTime, endWorkTime, amountDonePieces)
+        )
+      )
+    );
+  }
+
+  delWork(index: number) {
+    const currentWorks = this.reportForm.get('workListReport') as FormArray;
+
+    currentWorks.removeAt(index);
   }
 
   showWorkerSelectDialog() {
@@ -300,23 +319,6 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe$.complete();
   }
 
-  addWork() {
-    // const currentReport = this.reportForm;
-    const currentWork = this.reportForm.get('workListReport') as FormArray;
-    currentWork.push(
-      this.fb.group(
-        new WorkUnitFormModel(
-          new WorkUnit()
-        )
-      )
-    );
-  }
 
-  delWork(index: number) {
-    const currentReport = this.reportForm.getRawValue();
-    const currentWorks = currentReport.get('workListReport') as FormArray;
-
-    currentWorks.removeAt(index);
-  }
 
 }
