@@ -56,6 +56,49 @@ export class SmenEditComponent implements OnInit, OnDestroy {
     );
   }
 
+  private initForm() {
+    let dateSmen = '';
+    let mashine = '';
+    let numSmen = '';
+    const workersTime = new FormArray([]);
+
+    if (this.editMode) {
+      let smena: Smena;
+      this.store.pipe(select(getSmensFromState)).pipe(
+        takeUntil(this.ngUnsubscribe$)
+      ).subscribe(smens => smena = smens[this.id]);
+      // const smena = this.smenListService.getSmenById(this.id);
+      dateSmen = smena.dateSmen;
+      mashine = smena.mashine;
+      numSmen = smena.numSmen;
+      if (smena.workersTime) {
+        for (const worker of smena.workersTime) {
+          workersTime.push(
+            new FormGroup({
+              tbNum: new FormControl(worker.tbNum, [Validators.required, Validators.pattern(/^\d\d\d\d$/)]),
+              grade: new FormControl(worker.grade, [Validators.required, Validators.min(1), Validators.max(6)]),
+              sdelTime: new FormControl(worker.sdelTime, [Validators.min(0), Validators.max(11.5)]),
+              nightTime: new FormControl(worker.nightTime, [Validators.min(0), Validators.max(11.5)]),
+              prostTime: new FormControl(worker.prostTime, [Validators.min(0), Validators.max(11.5)]),
+              prikTime: new FormControl(worker.prikTime, [Validators.min(0), Validators.max(11.5)]),
+              srednTime: new FormControl(worker.srednTime, [Validators.min(0), Validators.max(11.5)]),
+              pprTime: new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
+              doublePayTime: new FormControl(null, [Validators.min(0), Validators.max(11.5)])
+            })
+          );
+        }
+        this.selectedWorker = null;
+      }
+    }
+
+    this.smenForm = new FormGroup({
+      dateSmen: new FormControl(dateSmen, [Validators.required]),
+      mashine: new FormControl(mashine, [Validators.required]),
+      numSmen: new FormControl(numSmen, [Validators.required]),
+      workersTime
+    });
+  }
+
   onCancel() {
     this.router.navigate(['..'], {relativeTo: this.route});
   }
@@ -159,48 +202,5 @@ export class SmenEditComponent implements OnInit, OnDestroy {
         return item.tabelNum === tabelNum;
       }
     );
-  }
-
-  private initForm() {
-    let dateSmen = '';
-    let mashine = '';
-    let numSmen = '';
-    const workersTime = new FormArray([]);
-
-    if (this.editMode) {
-      let smena: Smena;
-      this.store.pipe(select(getSmensFromState)).pipe(
-        takeUntil(this.ngUnsubscribe$)
-      ).subscribe(smens => smena = smens[this.id]);
-      // const smena = this.smenListService.getSmenById(this.id);
-      dateSmen = smena.dateSmen;
-      mashine = smena.mashine;
-      numSmen = smena.numSmen;
-      if (smena.workersTime) {
-        for (const worker of smena.workersTime) {
-          workersTime.push(
-            new FormGroup({
-              tbNum: new FormControl(worker.tbNum, [Validators.required, Validators.pattern(/^\d\d\d\d$/)]),
-              grade: new FormControl(worker.grade, [Validators.required, Validators.min(1), Validators.max(6)]),
-              sdelTime: new FormControl(worker.sdelTime, [Validators.min(0), Validators.max(11.5)]),
-              nightTime: new FormControl(worker.nightTime, [Validators.min(0), Validators.max(11.5)]),
-              prostTime: new FormControl(worker.prostTime, [Validators.min(0), Validators.max(11.5)]),
-              prikTime: new FormControl(worker.prikTime, [Validators.min(0), Validators.max(11.5)]),
-              srednTime: new FormControl(worker.srednTime, [Validators.min(0), Validators.max(11.5)]),
-              pprTime: new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
-              doublePayTime: new FormControl(null, [Validators.min(0), Validators.max(11.5)])
-            })
-          );
-        }
-        this.selectedWorker = null;
-      }
-    }
-
-    this.smenForm = new FormGroup({
-      dateSmen: new FormControl(dateSmen, [Validators.required]),
-      mashine: new FormControl(mashine, [Validators.required]),
-      numSmen: new FormControl(numSmen, [Validators.required]),
-      workersTime
-    });
   }
 }

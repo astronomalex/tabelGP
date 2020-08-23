@@ -1,4 +1,20 @@
 <div class="row">
   <h4>Дата: {{report.dateReport}}</h4>
+  <P>Машина: {{report.machine}}</P>
   <p>Номер смены: {{report.numSmenReport}}</p>
+  <p *ngFor="let workerData of selectedWorkers">
+    {{workerData.surname}} {{workerData.name[0]}}. {{workerData.patronymic}}.
+  </p>
+
+  <p>Процент выработки: {{report.percentOfReport}}</p>
+  <button
+    class="btn btn-success"
+    (click)="onEditReport()"
+  >Редактировать рапортичку</button>
+
+  <button
+    class="btn btn-danger"
+    (click)="onDeleteReport()"
+  >Удалить рапортичку
+  </button>
 </div>

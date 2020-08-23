@@ -54,6 +54,14 @@ export function reportReducer(
         selectedReportId: actions.payload
       };
 
+    case ReportActions.DELETE_REPORT:
+      return {
+        ...state,
+        reports: state.reports.filter((report, index) => {
+          return index !== actions.payload;
+        })
+      };
+
     case ReportActions.SET_REPORTS:
       return {
         ...state,

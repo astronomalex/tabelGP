@@ -21,13 +21,13 @@ export class WorkUnitFormModel {
     this.typeWork.setValue(workUnit.typeWork);
     this.typeWork.setValidators([Validators.required]);
 
-    // this.numOrder.setValue(workUnit.numOrder);
+    this.numOrder.setValue(workUnit.numOrder);
     // this.numOrder.setValidators([Validators.required]);
 
-    // this.nameOrder.setValue(workUnit.nameOrder);
+    this.nameOrder.setValue(workUnit.nameOrder);
     // this.nameOrder.setValidators([Validators.required]);
 
-    // this.groupDifficulty.setValue(workUnit.groupDifficulty);
+    this.groupDifficulty.setValue(workUnit.groupDifficulty);
     // this.groupDifficulty.setValidators([Validators.required]);
 
     // this.amountDonePieces.setValidators([Validators.required]);

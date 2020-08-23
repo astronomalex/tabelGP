@@ -36,4 +36,8 @@ export class ReportEditFormService {
 
     currentWorks.removeAt(i);
   }
+
+  resetForm() {
+    this.reportForm = new BehaviorSubject(this.fb.group(new ReportEditForm(new Report())));
+  }
 }

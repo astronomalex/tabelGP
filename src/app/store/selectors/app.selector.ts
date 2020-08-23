@@ -30,6 +30,13 @@ export const getReportsFromState = createSelector(ReportFeature, reportState => 
 export const getTypesOfWorkFromState = createSelector(ReportFeature, reportsState => reportsState.typesOfWork);
 export const getNormsFromState = createSelector(ReportFeature, reportState => reportState.allNorms);
 export const getSelectedReport = createSelector(ReportFeature, reportState => reportState.reports[reportState.selectedReportId]);
+export const getSelectedReportWorkers = createSelector(getSelectedReport, report => report.workerListReport);
+export const getSelectedReportWorkerDatas = createSelector(
+  WorkerDataFeature, getSelectedReportWorkers,
+  (workersState: WorkerState.State, workers) => {
+    return workersState.workers.filter(item => workers.find((tabNum) => tabNum.tbNum === item.tabelNum) !== undefined);
+  }
+);
 export const getSelectedMachine = createSelector(ReportFeature, reportState => reportState.selectedMachine);
 export const getNormsByMachine = createSelector(getNormsFromState, getSelectedMachine, (norms, selectedMachine) => norms[selectedMachine]);
 export const getEditedReport = createSelector(ReportFeature, reportsState => reportsState.editedReport);

@@ -5,8 +5,9 @@ import * as fromApp from '../../store/app.reducer';
 import * as ReportActions from '../store/report.actions';
 import {select, Store} from '@ngrx/store';
 import {map, takeUntil} from 'rxjs/operators';
-import {getSelectedReport} from '../../store/selectors/app.selector';
+import {getSelectedReport, getSelectedReportWorkerDatas, getSelectedReportWorkers} from '../../store/selectors/app.selector';
 import {Subject} from 'rxjs';
+import {WorkerData} from '../../workers/worker-list/worker-data.model';
 
 @Component({
   selector: 'app-report-detail',
@@ -17,6 +18,8 @@ export class ReportDetailComponent implements OnInit, OnDestroy {
   public report: Report;
   private ngUnsubscribe$ = new Subject();
   id: number;
+  workerDataList: WorkerData[] = [];
+  public selectedWorkers: WorkerData[];
 
   constructor(
     private router: Router,
@@ -41,11 +44,25 @@ export class ReportDetailComponent implements OnInit, OnDestroy {
     ).subscribe(
       item => this.report = item
     );
+    this.store.pipe(select(getSelectedReportWorkerDatas)).pipe(
+      takeUntil(this.ngUnsubscribe$)
+    ).subscribe(
+      workers => this.selectedWorkers = workers
+    );
   }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
+  }
+
+  onEditReport() {
+    this.router.navigate(['edit'], {relativeTo: this.route});
+  }
+
+  onDeleteReport() {
+    this.store.dispatch(new ReportActions.DeleteReport(this.id));
+    this.router.navigate(['reports']);
   }
 
 }

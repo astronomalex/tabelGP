@@ -4,6 +4,7 @@ import {Action} from '@ngrx/store';
 export const ADD_REPORT = '[Reports] Add Report';
 export const UPDATE_REPORT = '[Reports] Update Report';
 export const SELECT_REPORT = '[Reports] Select Report';
+export const DELETE_REPORT = '[Reports] Delete Report';
 export const SET_REPORTS = '[Reports] Set Reports';
 export const SELECT_MACHINE = '[Reports] Select Machine';
 export const EDITED_REPORT_UPDATE = '[Reports] Edited Report Update';
@@ -35,6 +36,12 @@ export class SelectReport implements Action {
   constructor(public payload: number) {}
 }
 
+export class DeleteReport implements Action {
+  readonly  type = DELETE_REPORT;
+
+  constructor(public payload: number) {}
+}
+
 export class SelectMachine implements Action {
   readonly type = SELECT_MACHINE;
 
@@ -53,6 +60,7 @@ export type ReportActions =
   | AddReport
   | UpdateReport
   | SelectReport
+  | DeleteReport
   | SetReports
   | SelectMachine
   | EditedReportUpdate;
