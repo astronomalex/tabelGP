@@ -12,7 +12,9 @@ export interface State {
 }
 
 const initialState: State = {
-  reports: [],
+  reports: [
+    // {dateReport: '23.08.2020', machine: 'Media-100', numSmenReport: '2', workerListReport: [], workListReport: [], percentOfReport: 0}
+  ],
   typesOfWork: ['Работа', 'Настройка', 'Простой', 'По среднему', 'ППР'],
   selectedMachine: null,
   selectedReportId: null,

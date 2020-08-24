@@ -27,7 +27,6 @@ export class TabelEffects {
           });
         }),
         map(smens => {
-          // this.store.dispatch(new TabelActions.SetSmens(smens));
           console.log(smens);
           return new TabelActions.SetSmens(smens);
         })
@@ -47,22 +46,7 @@ export class TabelEffects {
       return this.http.put(url, tabelState.smens);
     })
   );
-  // storeSmens() {
-  //
-  //   if (this.locId) {}
-  //   if (this.authService.locId) {
-  //     console.log(this.authService.locId);
-  //     const url: string = 'https://ng-tabelgp.firebaseio.com/' + this.authService.locId + '_smens.json';
-  //     const smens = this.smenListService.getSmens();
-  //     if (smens.length > 0) {
-  //       this.http.put(url, smens)
-  //         // this.http.put('https://ng-tabelgp.firebaseio.com/smens.json', smens)
-  //         .subscribe(response => {
-  //           console.log(response);
-  //         });
-  //     }
-  //   }
-  // }
+
 
   constructor(
     private actions$: Actions,

@@ -53,6 +53,13 @@ import { ReportItemComponent } from './report/report-list/report-item/report-ite
 import {DatePipe} from '@angular/common';
 import { WorkUnitListComponent } from './report/report-edit/work-unit-list/work-unit-list.component';
 import { WorkUnitItemComponent } from './report/report-edit/work-unit-list/work-unit-item/work-unit-item.component';
+import { NormsComponent } from './norms/norms.component';
+import { NormListComponent } from './norms/norm-list/norm-list.component';
+import { NormEditComponent } from './norms/norm-edit/norm-edit.component';
+import { NormDetailComponent } from './norms/norm-detail/norm-detail.component';
+import { NormItemComponent } from './norms/norm-list/norm-item/norm-item.component';
+import {ReportEffects} from './report/store/report.effects';
+import {ReportService} from './report/report.service';
 
 @NgModule({
   declarations: [
@@ -83,7 +90,12 @@ import { WorkUnitItemComponent } from './report/report-edit/work-unit-list/work-
     ReportsStartComponent,
     ReportItemComponent,
     WorkUnitListComponent,
-    WorkUnitItemComponent
+    WorkUnitItemComponent,
+    NormsComponent,
+    NormListComponent,
+    NormEditComponent,
+    NormDetailComponent,
+    NormItemComponent
   ],
   imports: [
     HttpClientModule,
@@ -91,7 +103,7 @@ import { WorkUnitItemComponent } from './report/report-edit/work-unit-list/work-
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    EffectsModule.forRoot([AuthEffects, WorkersEffects, TabelEffects]),
+    EffectsModule.forRoot([AuthEffects, WorkersEffects, TabelEffects, ReportEffects]),
     StoreModule.forRoot(fromApp.appReducer),
     StoreDevtoolsModule.instrument({logOnly: environment.production}),
     BrowserAnimationsModule,
@@ -107,6 +119,7 @@ import { WorkUnitItemComponent } from './report/report-edit/work-unit-list/work-
   ],
   providers: [
     DatePipe,
+    ReportService,
     WorkerListService,
     {provide: MAT_DATE_LOCALE, useValue: 'ru-Ru'},
     {

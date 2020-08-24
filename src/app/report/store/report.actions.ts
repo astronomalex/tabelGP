@@ -8,6 +8,8 @@ export const DELETE_REPORT = '[Reports] Delete Report';
 export const SET_REPORTS = '[Reports] Set Reports';
 export const SELECT_MACHINE = '[Reports] Select Machine';
 export const EDITED_REPORT_UPDATE = '[Reports] Edited Report Update';
+export const FETCH_REPORTS = '[Reports] Fetch Reports';
+export const STORE_REPORTS = '[Reports] Store Reports';
 
 export class AddReport implements Action {
   readonly type = ADD_REPORT;
@@ -56,6 +58,14 @@ export class EditedReportUpdate implements Action {
   }
 }
 
+export class FetchReports implements Action {
+  readonly type = FETCH_REPORTS;
+}
+
+export class StoreReport implements Action {
+  readonly type = STORE_REPORTS;
+}
+
 export type ReportActions =
   | AddReport
   | UpdateReport
@@ -63,4 +73,7 @@ export type ReportActions =
   | DeleteReport
   | SetReports
   | SelectMachine
-  | EditedReportUpdate;
+  | EditedReportUpdate
+  | FetchReports
+  | StoreReport;
+

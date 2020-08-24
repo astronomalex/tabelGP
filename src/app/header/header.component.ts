@@ -7,6 +7,7 @@ import * as fromApp from '../store/app.reducer';
 import * as AuthActions from '../auth/store/auth.actions';
 import * as TabelActions from '../tabel/store/tabel.actions';
 import * as WorkerActions from '../workers/store/workers.actions';
+import * as ReportActions from '../report/store/report.actions';
 import {getSmensFromState, getWorkers} from '../store/selectors/app.selector';
 
 @Component({
@@ -29,6 +30,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onSaveData() {
     this.store.dispatch(new WorkerActions.StoreWorkers());
     this.store.dispatch(new TabelActions.StoreSmens());
+    this.store.dispatch(new ReportActions.StoreReport());
     // this.dataStorageSevice.storeSmens();
     // this.dataStorageSevice.storeWorkers();
   }
@@ -36,6 +38,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onFetchData() {
     this.store.dispatch(new WorkerActions.FetchWorkers());
     this.store.dispatch(new TabelActions.FetchSmens());
+    this.store.dispatch(new ReportActions.FetchReports());
     // this.dataStorageSevice.fetchSmens().subscribe();
     // this.dataStorageSevice.fetchWorkers().subscribe();
   }

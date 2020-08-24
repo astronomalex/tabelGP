@@ -4,6 +4,7 @@ import * as TabelState from '../../tabel/store/tabel.reducer';
 import * as WorkerState from '../../workers/store/workers.reducer';
 import * as ReportState from '../../report/store/report.reducer';
 import {WorkerTime} from '../../workers/worker-list/workers-time.model';
+import {createUrlResolverWithoutPackagePrefix} from '@angular/compiler';
 
 
 export const TabelFeature = createFeatureSelector<AppState, TabelState.State>('tabel');
@@ -29,7 +30,13 @@ export const getReportsFromState = createSelector(ReportFeature, reportState => 
 
 export const getTypesOfWorkFromState = createSelector(ReportFeature, reportsState => reportsState.typesOfWork);
 export const getNormsFromState = createSelector(ReportFeature, reportState => reportState.allNorms);
-export const getSelectedReport = createSelector(ReportFeature, reportState => reportState.reports[reportState.selectedReportId]);
+export const getSelectedReport = createSelector(ReportFeature, reportState => {
+  if (reportState.selectedReportId) {
+    return reportState.reports[reportState.selectedReportId];
+  } else {
+    return null;
+  }
+});
 export const getSelectedReportWorkers = createSelector(getSelectedReport, report => report.workerListReport);
 export const getSelectedReportWorkerDatas = createSelector(
   WorkerDataFeature, getSelectedReportWorkers,

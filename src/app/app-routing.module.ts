@@ -16,6 +16,8 @@ import {ReportsComponent} from './report/reports/reports.component';
 import {ReportsStartComponent} from './report/reports-start/reports-start.component';
 import {ReportEditComponent} from './report/report-edit/report-edit.component';
 import {ReportDetailComponent} from './report/report-detail/report-detail.component';
+import {NormsComponent} from './norms/norms.component';
+import {ReportResolverService} from './report/report-resolver.service';
 
 
 
@@ -30,7 +32,7 @@ const routes: Routes = [
       {path: ':id/edit', component: SmenEditComponent}
     ] },
   {path: 'reports', component: ReportsComponent,
-    resolve: [SmenListResolverService, WorkerListResolverService],
+    resolve: [SmenListResolverService, WorkerListResolverService, ReportResolverService],
     canActivate: [AuthGuard], children: [
       {path: '', component: ReportsStartComponent},
       {path: 'new', component: ReportEditComponent},
@@ -38,6 +40,14 @@ const routes: Routes = [
       {path: ':id/edit', component: ReportEditComponent}
     ] },
   {path: 'worker-list', component: WorkersComponent,
+    resolve: [SmenListResolverService, WorkerListResolverService],
+    canActivate: [AuthGuard], children: [
+      {path: '', component: WorkerListStartComponent},
+      {path: 'new', component: WorkerDataEditComponent},
+      {path: ':id', component: WorkerDetailComponent},
+      {path: ':id/edit', component: WorkerDataEditComponent}
+    ]},
+  {path: 'norm-list', component: NormsComponent,
     resolve: [SmenListResolverService, WorkerListResolverService],
     canActivate: [AuthGuard], children: [
       {path: '', component: WorkerListStartComponent},
