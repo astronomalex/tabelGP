@@ -13,7 +13,7 @@ import {of} from 'rxjs';
 export class ReportResolverService implements Resolve<Report[]> {
   constructor(
     private store: Store<fromApp.AppState>,
-    private actions: Actions
+    private actions$: Actions
   ) {
   }
 
@@ -26,7 +26,7 @@ export class ReportResolverService implements Resolve<Report[]> {
       switchMap(reports => {
         if (reports.length === 0) {
           this.store.dispatch(new ReportActions.FetchReports());
-          return this.actions.pipe(
+          return this.actions$.pipe(
             ofType(ReportActions.SET_REPORTS),
             take(1)
           );

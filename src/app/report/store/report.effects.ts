@@ -29,7 +29,7 @@ export class ReportEffects {
           }),
           map(reports => {
             console.log(reports);
-            return new ReportActions.SetReports(reports);
+            return new ReportActions.SetReports(reports ? reports : []);
           })
         );
       }

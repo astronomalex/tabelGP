@@ -36,6 +36,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   editMode = false;
   reportForm: FormGroup;
   report: Report;
+  reportPercent = 0;
   // reportFormSub: Subscription;
   formInvalid = false;
   persentOfReport: number;
@@ -224,13 +225,15 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    this.reportPercent = this.calculateReportTime().percentOfReport;
     if (this.editMode) {
       this.store.dispatch(new ReportActions.UpdateReport({index: this.id, newReport: {
-        ...this.reportForm.value, percentOfReport: this.calculateReportTime().percentOfReport
+        ...this.reportForm.value, percentOfReport: this.reportPercent
       }}));
     } else {
+
       this.store.dispatch(new ReportActions.AddReport({
-        ...this.reportForm.value, percentOfReport: this.calculateReportTime().percentOfReport
+        ...this.reportForm.value, percentOfReport: this.reportPercent
       }));
     }
     this.onCancel();

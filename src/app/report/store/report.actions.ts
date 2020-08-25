@@ -73,7 +73,5 @@ export type ReportActions =
   | DeleteReport
   | SetReports
   | SelectMachine
-  | EditedReportUpdate
-  | FetchReports
-  | StoreReport;
+  | EditedReportUpdate;
 

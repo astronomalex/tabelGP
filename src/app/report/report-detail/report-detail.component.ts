@@ -5,7 +5,7 @@ import * as fromApp from '../../store/app.reducer';
 import * as ReportActions from '../store/report.actions';
 import {select, Store} from '@ngrx/store';
 import {map, takeUntil} from 'rxjs/operators';
-import {getSelectedReport, getSelectedReportWorkerDatas, getSelectedReportWorkers} from '../../store/selectors/app.selector';
+import {getSelectedReport, getSelectedReportWorkerDatas} from '../../store/selectors/app.selector';
 import {Subject} from 'rxjs';
 import {WorkerData} from '../../workers/worker-list/worker-data.model';
 

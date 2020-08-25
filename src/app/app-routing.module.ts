@@ -24,7 +24,7 @@ import {ReportResolverService} from './report/report-resolver.service';
 const routes: Routes = [
   {path: '', redirectTo: '/smen-list', pathMatch: 'full'},
   {path: 'smen-list', component: TabelComponent,
-    resolve: [SmenListResolverService, WorkerListResolverService],
+    resolve: [SmenListResolverService, WorkerListResolverService, ReportResolverService],
     canActivate: [AuthGuard], children: [
       {path: '', component: SmenListStartComponent},
       {path: 'new', component: SmenEditComponent},
@@ -40,7 +40,7 @@ const routes: Routes = [
       {path: ':id/edit', component: ReportEditComponent}
     ] },
   {path: 'worker-list', component: WorkersComponent,
-    resolve: [SmenListResolverService, WorkerListResolverService],
+    resolve: [SmenListResolverService, WorkerListResolverService, ReportResolverService],
     canActivate: [AuthGuard], children: [
       {path: '', component: WorkerListStartComponent},
       {path: 'new', component: WorkerDataEditComponent},
@@ -48,7 +48,7 @@ const routes: Routes = [
       {path: ':id/edit', component: WorkerDataEditComponent}
     ]},
   {path: 'norm-list', component: NormsComponent,
-    resolve: [SmenListResolverService, WorkerListResolverService],
+    resolve: [SmenListResolverService, WorkerListResolverService,  ReportResolverService],
     canActivate: [AuthGuard], children: [
       {path: '', component: WorkerListStartComponent},
       {path: 'new', component: WorkerDataEditComponent},

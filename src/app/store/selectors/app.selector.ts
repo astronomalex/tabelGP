@@ -31,13 +31,15 @@ export const getReportsFromState = createSelector(ReportFeature, reportState => 
 export const getTypesOfWorkFromState = createSelector(ReportFeature, reportsState => reportsState.typesOfWork);
 export const getNormsFromState = createSelector(ReportFeature, reportState => reportState.allNorms);
 export const getSelectedReport = createSelector(ReportFeature, reportState => {
-  if (reportState.selectedReportId) {
+  if (reportState.selectedReportId !== null) {
     return reportState.reports[reportState.selectedReportId];
   } else {
     return null;
   }
 });
-export const getSelectedReportWorkers = createSelector(getSelectedReport, report => report.workerListReport);
+export const getSelectedReportWorkers = createSelector(getSelectedReport, report => {
+  return report.workerListReport ? report.workerListReport : [];
+});
 export const getSelectedReportWorkerDatas = createSelector(
   WorkerDataFeature, getSelectedReportWorkers,
   (workersState: WorkerState.State, workers) => {
