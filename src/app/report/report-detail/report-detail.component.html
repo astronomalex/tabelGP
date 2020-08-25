@@ -3,8 +3,16 @@
   <P>Машина: {{report.machine}}</P>
   <p>Номер смены: {{report.numSmenReport}}</p>
   <p *ngFor="let workerData of selectedWorkers">
-    {{workerData.surname}} {{workerData.name[0]}}. {{workerData.patronymic}}.
+    {{workerData.surname}} {{workerData.name[0]}}. {{workerData.patronymic[0]}}.
   </p>
+  <p>Список работ:</p>
+  <div
+    *ngFor="let work of report.workListReport; let i = index"
+    class="row">
+    <p>Время: начало {{work.startWorkTime}} конец {{work.endWorkTime}}</p>
+    <p>{{work.typeWork}} №{{work.numOrder}} название {{work.nameOrder}} {{work.groupDifficulty}}</p>
+    <p>{{work.amountDonePieces}}</p>
+  </div>
 
   <p>Процент выработки: {{report.percentOfReport}}</p>
   <button
