@@ -3,7 +3,7 @@ import {Observable} from 'rxjs';
 import {Norma} from '../../report/norma.model';
 import {Store} from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
-import
+
 
 @Component({
   selector: 'app-norm-list',
@@ -14,7 +14,7 @@ export class NormListComponent implements OnInit {
   normsObs: Observable<{ norma: Norma[] }>;
 
   constructor(
-    private: store: Store<any>
+    private store: Store<fromApp.AppState>
   ) { }
 
   ngOnInit() {
