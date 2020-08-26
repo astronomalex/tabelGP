@@ -60,6 +60,7 @@ import { NormDetailComponent } from './norms/norm-detail/norm-detail.component';
 import { NormItemComponent } from './norms/norm-list/norm-item/norm-item.component';
 import {ReportEffects} from './report/store/report.effects';
 import {ReportService} from './report/report.service';
+import { NormsStartComponent } from './norms/norms-start/norms-start.component';
 
 @NgModule({
   declarations: [
@@ -95,7 +96,8 @@ import {ReportService} from './report/report.service';
     NormListComponent,
     NormEditComponent,
     NormDetailComponent,
-    NormItemComponent
+    NormItemComponent,
+    NormsStartComponent
   ],
   imports: [
     HttpClientModule,

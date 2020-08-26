@@ -18,6 +18,9 @@ import {ReportEditComponent} from './report/report-edit/report-edit.component';
 import {ReportDetailComponent} from './report/report-detail/report-detail.component';
 import {NormsComponent} from './norms/norms.component';
 import {ReportResolverService} from './report/report-resolver.service';
+import {NormsStartComponent} from './norms/norms-start/norms-start.component';
+import {NormEditComponent} from './norms/norm-edit/norm-edit.component';
+import {NormDetailComponent} from './norms/norm-detail/norm-detail.component';
 
 
 
@@ -55,6 +58,14 @@ const routes: Routes = [
       {path: ':id', component: WorkerDetailComponent},
       {path: ':id/edit', component: WorkerDataEditComponent}
     ]},
+  {path: 'norms', component: NormsComponent,
+    resolve: [SmenListResolverService, WorkerListResolverService, ReportResolverService],
+    canActivate: [AuthGuard], children: [
+      {path: '', component: NormsStartComponent},
+      {path: 'new', component: NormEditComponent},
+      {path: ':id', component: NormDetailComponent},
+      {path: ':id/edit', component: NormEditComponent}
+    ] },
   {path: 'auth', component: AuthComponent}
   ]
 ;
