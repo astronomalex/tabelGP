@@ -8,7 +8,7 @@
   <p>Список работ:</p>
   <div
     *ngFor="let work of report.workListReport; let i = index"
-    class="row">
+    class="carousel-inner">
     <p>Время: начало {{work.startWorkTime}} конец {{work.endWorkTime}}</p>
     <p>{{work.typeWork}} №{{work.numOrder}} название {{work.nameOrder}} {{work.groupDifficulty}}</p>
     <p>{{work.amountDonePieces}}</p>
