@@ -12,14 +12,14 @@ export const SELECT_NORM = '[Norms] Select Norm';
 export class AddNorm implements Action {
   readonly type = ADD_NORM;
 
-  constructor(public payload: Norma) {
+  constructor(public payload: {machine: string, norma: Norma}) {
   }
 }
 
 export class SetNorms implements Action {
   readonly type = SET_NORMS;
 
-  constructor(public payload: Norma[]) {
+  constructor(public payload: { [machine: string]: Norma[] }) {
   }
 }
 

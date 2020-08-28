@@ -61,6 +61,7 @@ import { NormItemComponent } from './norms/norm-list/norm-item/norm-item.compone
 import {ReportEffects} from './report/store/report.effects';
 import {ReportService} from './report/report.service';
 import { NormsStartComponent } from './norms/norms-start/norms-start.component';
+import {NormsEffects} from './norms/store/norms.effects';
 
 @NgModule({
   declarations: [
@@ -105,7 +106,7 @@ import { NormsStartComponent } from './norms/norms-start/norms-start.component';
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    EffectsModule.forRoot([AuthEffects, WorkersEffects, TabelEffects, ReportEffects]),
+    EffectsModule.forRoot([AuthEffects, WorkersEffects, TabelEffects, ReportEffects, NormsEffects]),
     StoreModule.forRoot(fromApp.appReducer),
     StoreDevtoolsModule.instrument({logOnly: environment.production}),
     BrowserAnimationsModule,

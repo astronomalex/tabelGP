@@ -51,14 +51,6 @@ const routes: Routes = [
       {path: ':id/edit', component: WorkerDataEditComponent}
     ]},
   {path: 'norm-list', component: NormsComponent,
-    resolve: [SmenListResolverService, WorkerListResolverService,  ReportResolverService],
-    canActivate: [AuthGuard], children: [
-      {path: '', component: WorkerListStartComponent},
-      {path: 'new', component: WorkerDataEditComponent},
-      {path: ':id', component: WorkerDetailComponent},
-      {path: ':id/edit', component: WorkerDataEditComponent}
-    ]},
-  {path: 'norms', component: NormsComponent,
     resolve: [SmenListResolverService, WorkerListResolverService, ReportResolverService],
     canActivate: [AuthGuard], children: [
       {path: '', component: NormsStartComponent},

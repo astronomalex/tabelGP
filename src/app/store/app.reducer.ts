@@ -17,6 +17,6 @@ export const appReducer: ActionReducerMap<AppState> = {
   tabel: fromTabel.tabelReducer,
   auth: fromAuth.authReducer,
   workers: fromWorkers.workersReducer,
-  reports: fromReports.reportReducer,
-  norms: fromNorms.normsReducer
+  norms: fromNorms.normsReducer,
+  reports: fromReports.reportReducer
 };

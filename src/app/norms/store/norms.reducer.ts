@@ -2,12 +2,12 @@ import {Norma} from '../../report/norma.model';
 import * as NormsAction from '../store/norms.action';
 
 export interface State {
-  norms: { [machine: string]: Norma[] };
+  allNorms: { [machine: string]: Norma[] };
   selectedNormId: number;
 }
 
 const initialState: State = {
-  norms: {
+  allNorms: {
     'GIETZ-1': [{grpDiff: '5', norma: 144000}, {grpDiff: '4', norma: 160000}],
     'Media-100': [{grpDiff: '11', norma: 202850}, {grpDiff: '15', norma: 263850}]
   },
@@ -18,9 +18,11 @@ export function normsReducer(state: State = initialState, actions: NormsAction.N
   switch (actions.type) {
 
     case NormsAction.ADD_NORM:
+      const updatedNomrs = state.allNorms;
+      updatedNomrs[actions.payload.machine].push(actions.payload.norma);
       return {
         ...state,
-        allNorms: [state.norms, actions.payload]
+        allNorms: [state.allNorms, actions.payload]
       };
 
     case NormsAction.SET_NORMS:
@@ -30,7 +32,7 @@ export function normsReducer(state: State = initialState, actions: NormsAction.N
       };
 
     case NormsAction.UPDATE_NORM:
-      const updAllNorms = state.norms;
+      const updAllNorms = state.allNorms;
       const newNorm = new Norma(actions.payload.norm.grpDiff, actions.payload.norm.norma);
       updAllNorms[actions.payload.machine].push(newNorm);
       return {
@@ -39,7 +41,7 @@ export function normsReducer(state: State = initialState, actions: NormsAction.N
       };
 
     case NormsAction.DELETE_NORM:
-      const allNorms = state.norms;
+      const allNorms = state.allNorms;
       allNorms[actions.payload.machine].filter((value, index) => {
         return value.grpDiff !== actions.payload.groupDiff;
       });
@@ -53,5 +55,7 @@ export function normsReducer(state: State = initialState, actions: NormsAction.N
         ...state,
         selectedNormId: actions.payload
       };
+    default:
+      return state;
   }
 }

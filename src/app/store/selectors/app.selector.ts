@@ -3,13 +3,14 @@ import {AppState} from '../app.reducer';
 import * as TabelState from '../../tabel/store/tabel.reducer';
 import * as WorkerState from '../../workers/store/workers.reducer';
 import * as ReportState from '../../report/store/report.reducer';
+import * as NormsState from '../../norms/store/norms.reducer';
 import {WorkerTime} from '../../workers/worker-list/workers-time.model';
-import {createUrlResolverWithoutPackagePrefix} from '@angular/compiler';
 
 
 export const TabelFeature = createFeatureSelector<AppState, TabelState.State>('tabel');
 export const WorkerDataFeature = createFeatureSelector<AppState, WorkerState.State>('workers');
 export const ReportFeature = createFeatureSelector<AppState, ReportState.State>('reports');
+export const NormFeature = createFeatureSelector<AppState, NormsState.State>('norms');
 
 export const getSelectedSmenaId = createSelector(TabelFeature, (tabelState: TabelState.State) => tabelState.selectedSmenaId);
 export const getSelectedSmena =
@@ -29,7 +30,7 @@ export const getMachineList = createSelector(TabelFeature, state => state.machin
 export const getReportsFromState = createSelector(ReportFeature, reportState => reportState.reports);
 
 export const getTypesOfWorkFromState = createSelector(ReportFeature, reportsState => reportsState.typesOfWork);
-export const getNormsFromState = createSelector(ReportFeature, reportState => reportState.allNorms);
+export const getNormsFromState = createSelector(NormFeature, normsState => normsState.allNorms);
 export const getSelectedReport = createSelector(ReportFeature, reportState => {
   if (reportState.selectedReportId !== null) {
     return reportState.reports[reportState.selectedReportId];

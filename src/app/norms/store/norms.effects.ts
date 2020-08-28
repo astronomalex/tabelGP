@@ -40,7 +40,7 @@ export class NormsEffects {
     withLatestFrom(this.store.select('auth')),
     switchMap(([[actionData, normsState], authState]) => {
       const url = 'https://ng-tabelgp.firebaseio.com/' + authState.locId + '_norms.json';
-      return this.httpClient.put(url, normsState.norms);
+      return this.httpClient.put(url, normsState.allNorms);
     })
   );
 
@@ -49,6 +49,5 @@ export class NormsEffects {
     private actions$: Actions,
     private httpClient: HttpClient,
     private store: Store<fromApp.AppState>
-  ) {
-  }
+  ) {}
 }

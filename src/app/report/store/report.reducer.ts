@@ -7,7 +7,7 @@ export interface State {
   typesOfWork: string[];
   selectedMachine: string;
   selectedReportId: number;
-  allNorms: {[machine: string]: Norma[]};
+  allNorms: { [machine: string]: Norma[] };
   editedReport: Report;
 }
 
@@ -20,9 +20,9 @@ const initialState: State = {
   selectedMachine: null,
   selectedReportId: null,
   allNorms: {
-      'GIETZ-1': [{grpDiff: '5', norma: 144000}, {grpDiff: '4', norma: 160000}],
-      'Media-100': [{grpDiff: '11', norma: 202850}, {grpDiff: '15', norma: 263850}]
-      },
+    'GIETZ-1': [{grpDiff: '5', norma: 144000}, {grpDiff: '4', norma: 160000}],
+    'Media-100': [{grpDiff: '11', norma: 202850}, {grpDiff: '15', norma: 263850}]
+  },
   editedReport: null
 };
 
