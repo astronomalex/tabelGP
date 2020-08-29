@@ -16,17 +16,13 @@ export class NormsEffects {
     withLatestFrom(this.store.select('auth')),
     switchMap(([actionData, authState]) => {
         const url: string = 'https://ng-tabelgp.firebaseio.com/' + authState.locId + '_norms.json';
-        return this.httpClient.get<Norma[]>(url).pipe(
+        return this.httpClient.get<{ [machine: string]: Norma[] }>(url).pipe(
           map(norms => {
-            return norms.map(norma => {
-              return {
-                ...norma
-              };
-            });
+            return norms;
           }),
           map(norms => {
             console.log(norms);
-            return new NormsActions.SetNorms(norms ? norms : []);
+            return new NormsActions.SetNorms(norms ? norms : {});
           })
         );
       }

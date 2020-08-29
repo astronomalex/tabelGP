@@ -3,6 +3,8 @@ import {Observable} from 'rxjs';
 import {Norma} from '../../report/norma.model';
 import {Store} from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
+import {ActivatedRoute, Router} from '@angular/router';
+import {getNormsFromState} from '../../store/selectors/app.selector';
 
 
 @Component({
@@ -11,13 +13,18 @@ import * as fromApp from '../../store/app.reducer';
   styleUrls: ['./norm-list.component.css']
 })
 export class NormListComponent implements OnInit {
-  normsObs: Observable<{ norma: Norma[] }>;
+  normsObs: Observable<{[machine: string]: Norma[] }>;
 
   constructor(
-    private store: Store<fromApp.AppState>
+    private store: Store<fromApp.AppState>,
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
+    this.normsObs = this.store.select(getNormsFromState);
   }
+
+  onNewNorma
 
 }

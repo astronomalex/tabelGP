@@ -8,8 +8,8 @@ export interface State {
 
 const initialState: State = {
   allNorms: {
-    'GIETZ-1': [{grpDiff: '5', norma: 144000}, {grpDiff: '4', norma: 160000}],
-    'Media-100': [{grpDiff: '11', norma: 202850}, {grpDiff: '15', norma: 263850}]
+    // 'GIETZ-1': [{grpDiff: '5', norma: 144000}, {grpDiff: '4', norma: 160000}],
+    // 'Media-100': [{grpDiff: '11', norma: 202850}, {grpDiff: '15', norma: 263850}]
   },
   selectedNormId: null
 };
@@ -22,7 +22,7 @@ export function normsReducer(state: State = initialState, actions: NormsAction.N
       updatedNomrs[actions.payload.machine].push(actions.payload.norma);
       return {
         ...state,
-        allNorms: [state.allNorms, actions.payload]
+        allNorms: updatedNomrs
       };
 
     case NormsAction.SET_NORMS:
