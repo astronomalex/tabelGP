@@ -1,1 +1,12 @@
-<p>тщкь-дшыен</p>
+<div class="row">
+  <div class="col-xs-12">
+    <button class="btn btn-success" (click)="onNewNorma()">Создать Рапортичку</button>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <app-norm-item
+      *ngFor="let normEl of (normsObs | async).allNorms; let i = index"
+      ></app-norm-item>
+  </div>
+</div>

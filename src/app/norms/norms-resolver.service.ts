@@ -23,7 +23,7 @@ export class NormsResolverService implements Resolve<{ [machine: string]: Norma[
         return normsState.allNorms;
       }),
       switchMap( norms => {
-        if (!norms) {
+        if (Object.keys(norms).length === 0) {
           this.store.dispatch(new NormsActions.FetchNorms());
           return this.actions$.pipe(
             ofType(NormsActions.SET_NORMS),
