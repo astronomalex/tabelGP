@@ -56,8 +56,8 @@ const routes: Routes = [
     canActivate: [AuthGuard], children: [
       {path: '', component: NormsStartComponent},
       {path: 'new', component: NormEditComponent},
-      {path: ':id', component: NormDetailComponent},
-      {path: ':id/edit', component: NormEditComponent}
+      {path: ':machine/:id', component: NormDetailComponent},
+      {path: ':machine/:id/edit', component: NormEditComponent}
     ] },
   {path: 'auth', component: AuthComponent}
   ]

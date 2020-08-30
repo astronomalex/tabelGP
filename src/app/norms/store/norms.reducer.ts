@@ -4,6 +4,7 @@ import * as NormsAction from '../store/norms.action';
 export interface State {
   allNorms: { [machine: string]: Norma[] };
   selectedNormId: number;
+  selectedMachine: string;
 }
 
 const initialState: State = {
@@ -11,7 +12,8 @@ const initialState: State = {
     // 'GIETZ-1': [{grpDiff: '5', norma: 144000}, {grpDiff: '4', norma: 160000}],
     // 'Media-100': [{grpDiff: '11', norma: 202850}, {grpDiff: '15', norma: 263850}]
   },
-  selectedNormId: null
+  selectedNormId: null,
+  selectedMachine: ''
 };
 
 export function normsReducer(state: State = initialState, actions: NormsAction.NormsAction) {
@@ -53,7 +55,8 @@ export function normsReducer(state: State = initialState, actions: NormsAction.N
     case NormsAction.SELECT_NORM:
       return {
         ...state,
-        selectedNormId: actions.payload
+        selectedMachine: actions.payload.machine,
+        selectedNormId: actions.payload.id
       };
     default:
       return state;

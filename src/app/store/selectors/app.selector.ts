@@ -49,5 +49,7 @@ export const getSelectedReportWorkerDatas = createSelector(
 );
 export const getSelectedMachine = createSelector(ReportFeature, reportState => reportState.selectedMachine);
 export const getNormsByMachine = createSelector(getNormsFromState, getSelectedMachine, (norms, selectedMachine) => norms[selectedMachine]);
+export const getSelectedNormId = createSelector(NormFeature, normsState => normsState.selectedNormId);
+export const getSelectedNorma = createSelector(getNormsByMachine, getSelectedNormId, (norms, id) => norms[id]);
 export const getEditedReport = createSelector(ReportFeature, reportsState => reportsState.editedReport);
 export const getEditedWorkUnits = createSelector(getEditedReport, editedReport => editedReport.workListReport);
