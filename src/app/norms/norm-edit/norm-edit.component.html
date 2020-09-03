@@ -1,1 +1,37 @@
-<p>norm-edit works!</p>
+<div class="row">
+  <div class="col-xs-12">
+    <form [formGroup]="normForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <mat-form-field>
+              <mat-label>Группа сложности</mat-label>
+              <input
+                matInput
+                required
+                matNativeControl
+                formControlName="groupDiff"
+                type="number">
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Норма</mat-label>
+              <input
+                required
+                matNativeControl
+                type="number"
+                matInput
+                formControlName="norma">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <button
+        [disabled]="!normForm.valid"
+        type="submit"
+        (click)="onSubmit()"
+        class="btn btn-success">
+        Сохранить
+      </button>
+    </form>
+  </div>
+</div>

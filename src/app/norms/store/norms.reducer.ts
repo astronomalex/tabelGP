@@ -3,7 +3,7 @@ import * as NormsAction from '../store/norms.action';
 
 export interface State {
   allNorms: { [machine: string]: Norma[] };
-  selectedNormId: number;
+  selectedNormGrDiff: string;
   selectedMachine: string;
 }
 
@@ -12,7 +12,7 @@ const initialState: State = {
     // 'GIETZ-1': [{grpDiff: '5', norma: 144000}, {grpDiff: '4', norma: 160000}],
     // 'Media-100': [{grpDiff: '11', norma: 202850}, {grpDiff: '15', norma: 263850}]
   },
-  selectedNormId: null,
+  selectedNormGrDiff: '',
   selectedMachine: ''
 };
 
@@ -21,7 +21,9 @@ export function normsReducer(state: State = initialState, actions: NormsAction.N
 
     case NormsAction.ADD_NORM:
       const updatedNomrs = state.allNorms;
-      updatedNomrs[actions.payload.machine].push(actions.payload.norma);
+      if (!updatedNomrs[actions.payload.machine].findIndex((value) => actions.payload.norma.grpDiff === value.grpDiff)) {
+        updatedNomrs[actions.payload.machine].push(actions.payload.norma);
+      }
       return {
         ...state,
         allNorms: updatedNomrs
@@ -56,7 +58,7 @@ export function normsReducer(state: State = initialState, actions: NormsAction.N
       return {
         ...state,
         selectedMachine: actions.payload.machine,
-        selectedNormId: actions.payload.id
+        selectedNormGrDiff: actions.payload.groupDiff
       };
     default:
       return state;

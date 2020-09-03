@@ -6,7 +6,7 @@ import * as fromApp from '../../store/app.reducer';
 import * as ReportActions from '../../report/store/report.actions';
 import {ActivatedRoute, Router} from '@angular/router';
 import {getMachineList, getNormsByMachine, getNormsFromState, getSelectedMachine} from '../../store/selectors/app.selector';
-import {takeUntil} from 'rxjs/operators';
+import {map, takeUntil} from 'rxjs/operators';
 
 
 @Component({
@@ -50,6 +50,13 @@ export class NormListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.route.params.pipe(
+      map(params => {
+        return params.machine;
+      })
+    ).subscribe(machine => {
+      this.store.dispatch(new ReportActions.SelectMachine(machine));
+    });
   }
 
   ngOnDestroy() {
@@ -58,11 +65,12 @@ export class NormListComponent implements OnInit, OnDestroy {
   }
 
   onNewNorma() {
-
+    this.router.navigate(['norm-list', 'new', this.selectedMachine]);
   }
 
-  onMachineChanged(event) {
-    this.store.dispatch(new ReportActions.SelectMachine(event.value));
-
-  }
+  // onMachineChanged(event) {
+  //   this.store.dispatch(new ReportActions.SelectMachine(event.value));
+  //   this.router.navigate(['norm-list', event.value]);
+  //
+  // }
 }

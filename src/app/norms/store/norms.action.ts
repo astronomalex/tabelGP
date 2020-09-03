@@ -48,7 +48,7 @@ export class StoreNorms implements Action {
 export class SelectNorm implements Action {
   readonly type = SELECT_NORM;
 
-  constructor(public payload: {machine: string, id: number}) {
+  constructor(public payload: {machine: string, groupDiff: string}) {
   }
 }
 

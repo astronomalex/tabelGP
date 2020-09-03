@@ -22,13 +22,14 @@ import {NormsStartComponent} from './norms/norms-start/norms-start.component';
 import {NormEditComponent} from './norms/norm-edit/norm-edit.component';
 import {NormDetailComponent} from './norms/norm-detail/norm-detail.component';
 import {NormsResolverService} from './norms/norms-resolver.service';
+import {NormListComponent} from './norms/norm-list/norm-list.component';
 
 
 
 const routes: Routes = [
   {path: '', redirectTo: '/smen-list', pathMatch: 'full'},
   {path: 'smen-list', component: TabelComponent,
-    resolve: [SmenListResolverService, WorkerListResolverService, ReportResolverService],
+    resolve: [NormsResolverService, SmenListResolverService, WorkerListResolverService, ReportResolverService],
     canActivate: [AuthGuard], children: [
       {path: '', component: SmenListStartComponent},
       {path: 'new', component: SmenEditComponent},
@@ -36,7 +37,7 @@ const routes: Routes = [
       {path: ':id/edit', component: SmenEditComponent}
     ] },
   {path: 'reports', component: ReportsComponent,
-    resolve: [SmenListResolverService, WorkerListResolverService, ReportResolverService, NormsResolverService],
+    resolve: [NormsResolverService, SmenListResolverService, WorkerListResolverService, ReportResolverService],
     canActivate: [AuthGuard], children: [
       {path: '', component: ReportsStartComponent},
       {path: 'new', component: ReportEditComponent},
@@ -44,7 +45,7 @@ const routes: Routes = [
       {path: ':id/edit', component: ReportEditComponent}
     ] },
   {path: 'worker-list', component: WorkersComponent,
-    resolve: [SmenListResolverService, WorkerListResolverService, ReportResolverService],
+    resolve: [NormsResolverService, SmenListResolverService, WorkerListResolverService, ReportResolverService],
     canActivate: [AuthGuard], children: [
       {path: '', component: WorkerListStartComponent},
       {path: 'new', component: WorkerDataEditComponent},
@@ -52,12 +53,13 @@ const routes: Routes = [
       {path: ':id/edit', component: WorkerDataEditComponent}
     ]},
   {path: 'norm-list', component: NormsComponent,
-    resolve: [SmenListResolverService, WorkerListResolverService, ReportResolverService, NormsResolverService],
+    resolve: [NormsResolverService, SmenListResolverService, WorkerListResolverService, ReportResolverService],
     canActivate: [AuthGuard], children: [
       {path: '', component: NormsStartComponent},
-      {path: 'new', component: NormEditComponent},
-      {path: ':machine/:id', component: NormDetailComponent},
-      {path: ':machine/:id/edit', component: NormEditComponent}
+      {path: ':machine', component: NormsStartComponent},
+      {path: ':machine/new', component: NormEditComponent},
+      {path: ':machine/:groupDiff', component: NormDetailComponent},
+      {path: ':machine/:groupDiff/edit', component: NormEditComponent}
     ] },
   {path: 'auth', component: AuthComponent}
   ]

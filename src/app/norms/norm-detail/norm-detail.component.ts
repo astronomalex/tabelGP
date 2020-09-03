@@ -14,7 +14,7 @@ import {getSelectedNorma} from '../../store/selectors/app.selector';
   styleUrls: ['./norm-detail.component.css']
 })
 export class NormDetailComponent implements OnInit, OnDestroy {
-  id: number;
+  groupDiff: string;
   machine: string;
   public norma: Norma;
   private ngUnsubscribe$ = new Subject();
@@ -29,12 +29,12 @@ export class NormDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.params.pipe(
       map(params => {
-        return [params.id, params.machine];
+        return [params.groupDiff, params.machine];
       })
-    ).subscribe(([id, machine]) => {
-      this.id = +id;
+    ).subscribe(([groupDiff, machine]) => {
+      this.groupDiff = groupDiff;
       this.machine = machine;
-      this.store.dispatch(new NormsActions.SelectNorm({machine: this.machine, id: this.id}));
+      this.store.dispatch(new NormsActions.SelectNorm({machine: this.machine, groupDiff}));
     });
     this.store.pipe(select(getSelectedNorma)).pipe(
       takeUntil(this.ngUnsubscribe$)
@@ -46,6 +46,10 @@ export class NormDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
+  }
+
+  onEditNorm() {
+    this.router.navigate(['edit'], {relativeTo: this.route});
   }
 
 }

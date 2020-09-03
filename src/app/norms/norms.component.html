@@ -1,8 +1,31 @@
 <div class="row">
+  <div class="col-md-4">
+  <div>
+    <mat-form-field>
+      <mat-label>Машина</mat-label>
+      <mat-select
+        (selectionChange)="onMachineChanged($event)">
+        <mat-option *ngFor="let machine of machineList" [value]="machine">
+          {{machine}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+    <button class="btn btn-success" (click)="onNewNorm()">Создать Норму</button>
+    <div class="row">
+      <div class="col-xs-12">
+        <app-norm-item
+          *ngFor="let normEl of norms; let i = index"
+          [norma]="normEl"
+          [machine]="selectedMachine"
+          [index]="i"
+        ></app-norm-item>
+      </div>
+    </div>
+  <!--    <app-norm-list></app-norm-list>-->
+</div>
   <div class="col-md-8">
     <router-outlet></router-outlet>
   </div>
-  <div class="col-md-4">
-    <app-norm-list></app-norm-list>
-  </div>
+
 </div>
