@@ -5,8 +5,9 @@
         *ngFor="let machine of machineList"
         [routerLink]="machine"
         routerLinkActive="active"
-        class="col-xs-3">
-        <a>{{machine}}</a>
+        style="cursor: pointer"
+        class="list-group-item clearfix">
+        {{machine}}
         </div>
     </div>
   </div>

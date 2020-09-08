@@ -18,7 +18,7 @@ export class NormItemComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.routerLink = this.machine + '/' + this.norma.grpDiff;
+    this.routerLink = this.norma.grpDiff;
   }
 
 }
