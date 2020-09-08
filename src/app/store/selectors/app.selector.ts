@@ -30,7 +30,7 @@ export const getMachineList = createSelector(TabelFeature, state => state.machin
 export const getReportsFromState = createSelector(ReportFeature, reportState => reportState.reports);
 
 export const getTypesOfWorkFromState = createSelector(ReportFeature, reportsState => reportsState.typesOfWork);
-export const getNormsFromState = createSelector(NormFeature, normsState => normsState.allNorms);
+export const getNormsFromState = createSelector(NormFeature, normsState => normsState.allNorms ? normsState.allNorms : {});
 export const getSelectedReport = createSelector(ReportFeature, reportState => {
   if (reportState.selectedReportId !== null) {
     return reportState.reports[reportState.selectedReportId];
@@ -51,10 +51,14 @@ export const getSelectedMachine = createSelector(ReportFeature, reportState => r
 export const getNormsByMachine = createSelector(getNormsFromState, getSelectedMachine, (norms, selectedMachine) => norms[selectedMachine]);
 export const getSelectedNormGroupDiff = createSelector(NormFeature, normsState => normsState.selectedNormGrDiff);
 export const getSelectedNorma = createSelector(getNormsByMachine, getSelectedNormGroupDiff, (norms, groupDiff) => {
-  return norms.find(
-    norma =>
-      norma.grpDiff === groupDiff
-  );
+  if (norms) {
+    return norms.find(
+      norma =>
+        norma.grpDiff === groupDiff
+    );
+  } else {
+    return {grpDiff: '', norma: 0};
+  }
 });
 export const getEditedReport = createSelector(ReportFeature, reportsState => reportsState.editedReport);
 export const getEditedWorkUnits = createSelector(getEditedReport, editedReport => editedReport.workListReport);

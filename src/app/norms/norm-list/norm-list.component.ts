@@ -65,7 +65,7 @@ export class NormListComponent implements OnInit, OnDestroy {
   }
 
   onNewNorma() {
-    this.router.navigate(['norm-list', 'new', this.selectedMachine]);
+    this.router.navigate(['norm-list', this.selectedMachine, 'new']);
   }
 
   // onMachineChanged(event) {

@@ -21,7 +21,7 @@ export function normsReducer(state: State = initialState, actions: NormsAction.N
 
     case NormsAction.ADD_NORM:
       const updatedNomrs = state.allNorms;
-      if (!updatedNomrs[actions.payload.machine].findIndex((value) => actions.payload.norma.grpDiff === value.grpDiff)) {
+      if (updatedNomrs[actions.payload.machine].findIndex((value) => actions.payload.norma.grpDiff === value.grpDiff)) {
         updatedNomrs[actions.payload.machine].push(actions.payload.norma);
       }
       return {

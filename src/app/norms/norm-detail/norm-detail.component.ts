@@ -18,6 +18,12 @@ export class NormDetailComponent implements OnInit, OnDestroy {
   machine: string;
   public norma: Norma;
   private ngUnsubscribe$ = new Subject();
+  selectedNorma$ = this.store.pipe(
+    select(getSelectedNorma)).pipe(
+    takeUntil(this.ngUnsubscribe$)
+  ).subscribe(
+    norma => this.norma = norma
+  );
 
   constructor(
     private router: Router,
@@ -36,11 +42,6 @@ export class NormDetailComponent implements OnInit, OnDestroy {
       this.machine = machine;
       this.store.dispatch(new NormsActions.SelectNorm({machine: this.machine, groupDiff}));
     });
-    this.store.pipe(select(getSelectedNorma)).pipe(
-      takeUntil(this.ngUnsubscribe$)
-    ).subscribe(
-      norma => this.norma = norma
-    );
   }
 
   ngOnDestroy() {
