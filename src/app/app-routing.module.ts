@@ -56,7 +56,7 @@ const routes: Routes = [
     resolve: [NormsResolverService, SmenListResolverService, WorkerListResolverService, ReportResolverService],
     canActivate: [AuthGuard], children: [
       {path: '', component: NormsStartComponent},
-      {path: ':machine', component: NormsStartComponent},
+      {path: ':machine', component: NormListComponent},
       {path: ':machine/new', component: NormEditComponent},
       {path: ':machine/:groupDiff', component: NormDetailComponent},
       {path: ':machine/:groupDiff/edit', component: NormEditComponent}
