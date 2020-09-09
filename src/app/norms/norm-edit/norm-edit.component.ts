@@ -42,12 +42,8 @@ export class NormEditComponent implements OnInit, OnDestroy {
     ).subscribe(([groupDiff, machine]) => {
       this.machine = machine;
       this.store.dispatch(new NormsActions.SelectNorm({machine: this.machine, groupDiff}));
+      this.editMode = groupDiff && machine;
     });
-    this.store.pipe(select(getSelectedNorma)).pipe(
-      takeUntil(this.ngUnsubscribe$)
-    ).subscribe(
-      norma => this.norma = norma
-    );
     this.initForm();
   }
 
@@ -66,12 +62,29 @@ export class NormEditComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.store.dispatch(new NormsActions.AddNorm({machine: this.machine, norma: this.norma}));
+    if (this.editMode) {
+      this.store.dispatch(new NormsActions.UpdateNorm({
+        machine: this.machine,
+        norm: {grpDiff: (this.normForm.controls.groupDiff.value).toString(), norma: this.normForm.controls.norma.value}
+      }));
+    } else {
+      this.store.dispatch(
+        new NormsActions.AddNorm(
+          {machine: this.machine, norma:
+              {grpDiff: (this.normForm.controls.groupDiff.value).toString(), norma: this.normForm.controls.norma.value}
+          }
+        )
+      );
+    }
     this.onCancel();
   }
 
   onCancel() {
-    this.router.navigate(['..', '..'], {relativeTo: this.route});
+    if (this.editMode) {
+      this.router.navigate(['/', 'norm-list']);
+    } else {
+      this.router.navigate(['norm-list', this.machine]);
+    }
   }
 
   ngOnDestroy() {

@@ -21,8 +21,8 @@ export function normsReducer(state: State = initialState, actions: NormsAction.N
 
     case NormsAction.ADD_NORM:
       const updatedNomrs = state.allNorms;
-      if (updatedNomrs[actions.payload.machine].findIndex((value) => actions.payload.norma.grpDiff === value.grpDiff)) {
-        updatedNomrs[actions.payload.machine].push(actions.payload.norma);
+      if (updatedNomrs[actions.payload.machine].findIndex((value) => actions.payload.norma.grpDiff === value.grpDiff) === -1) {
+        updatedNomrs[actions.payload.machine].push({grpDiff: actions.payload.norma.grpDiff, norma: actions.payload.norma.norma});
       }
       return {
         ...state,
@@ -37,6 +37,11 @@ export function normsReducer(state: State = initialState, actions: NormsAction.N
 
     case NormsAction.UPDATE_NORM:
       const updAllNorms = state.allNorms;
+      const ind = updAllNorms[actions.payload.machine].findIndex(norma => norma.grpDiff === actions.payload.norm.grpDiff);
+      if (ind !== -1) {
+        updAllNorms[actions.payload.machine]
+          = updAllNorms[actions.payload.machine].filter((value, index) => value.grpDiff !== actions.payload.norm.grpDiff);
+      }
       const newNorm = new Norma(actions.payload.norm.grpDiff, actions.payload.norm.norma);
       updAllNorms[actions.payload.machine].push(newNorm);
       return {
@@ -46,7 +51,7 @@ export function normsReducer(state: State = initialState, actions: NormsAction.N
 
     case NormsAction.DELETE_NORM:
       const allNorms = state.allNorms;
-      allNorms[actions.payload.machine].filter((value, index) => {
+      allNorms[actions.payload.machine] = allNorms[actions.payload.machine].filter((value, index) => {
         return value.grpDiff !== actions.payload.groupDiff;
       });
       return {

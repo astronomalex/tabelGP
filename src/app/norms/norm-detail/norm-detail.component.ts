@@ -35,7 +35,7 @@ export class NormDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.params.pipe(
       map(params => {
-        return [params.groupDiff, params.machine];
+        return [params.groupDiff.toString(), params.machine];
       })
     ).subscribe(([groupDiff, machine]) => {
       this.groupDiff = groupDiff;
@@ -51,6 +51,11 @@ export class NormDetailComponent implements OnInit, OnDestroy {
 
   onEditNorm() {
     this.router.navigate(['edit'], {relativeTo: this.route});
+  }
+
+  onDeleteNorm() {
+    this.store.dispatch(new NormsActions.DeleteNorm({machine: this.machine, groupDiff: this.groupDiff}));
+    this.router.navigate(['norm-list']);
   }
 
 }

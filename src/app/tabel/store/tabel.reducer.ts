@@ -66,6 +66,11 @@ export function tabelReducer(
         ...state,
         selectedSmenaId: null
       };
+    case TabelActions.DELETE_SMENA:
+      return {
+        ...state,
+        smens: state.smens.slice(actions.payload)
+      };
     default:
       return state;
   }

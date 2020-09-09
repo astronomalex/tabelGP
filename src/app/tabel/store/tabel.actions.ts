@@ -73,4 +73,5 @@ export type TabelActions =
   | SetSmens
   | UpdateSmena
   | SelectSmena
+  | DeleteSmena
   | UnSelectSmena;
