@@ -124,7 +124,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     this.reportForm = new FormGroup({
       dateReport: new FormControl(dateReport, [Validators.required]),
       machine: new FormControl(machine, [Validators.required]),
-      numSmenReport: new FormControl(numSmenReport, [Validators.required, this.reportFormValidator]),
+      numSmenReport: new FormControl(numSmenReport, [Validators.required]),
       workerListReport,
       workListReport
     });
@@ -227,7 +227,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.calculatePercentWorks();
+    this.generateSmenaFromReport();
     this.reportPercent = this.calculateReportTime().percentOfReport;
     if (this.editMode) {
       this.store.dispatch(new ReportActions.UpdateReport({index: this.id, newReport: {
@@ -315,15 +315,15 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  calculatePercentWorks() {
-    const pprTime = this.calculateReportTime('ППР').minutesOfReport;
-    const prostTime = this.calculateReportTime('Простой').minutesOfReport;
-    const workTime = this.calculateReportTime('Работа').minutesOfReport;
-    const nastrTime = this.calculateReportTime('Настройка').minutesOfReport;
-    const srednTime = this.calculateReportTime('По среднему').minutesOfReport;
+  generateSmenaFromReport() {
+    const pprTime = this.calculateReportTime('ППР').minutesOfReport / 60;
+    const prostTime = this.calculateReportTime('Простой').minutesOfReport / 60;
+    const nastrTime = this.calculateReportTime('Настройка').minutesOfReport / 60;
+    const sdelTime = (this.calculateReportTime('Работа').minutesOfReport / 60) + nastrTime;
+    const srednTime = this.calculateReportTime('По среднему').minutesOfReport / 60;
     let nightTime = 0;
     let isNight = false;
-    let workerTimes: WorkerTime[];
+    const workerTimes: WorkerTime[] = [];
     if (this.reportForm.controls.workListReport) {
       for (const work of this.reportForm.controls.workListReport.value) {
         console.log(work.startWorkTime.substr(0, 2));
@@ -337,11 +337,11 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     }
     console.log(isNight);
     if (isNight) {
-      nightTime = this.calculateReportTime().minutesOfReport;
+      nightTime = this.calculateReportTime().minutesOfReport / 60;
     }
     for (const workerTbNum of this.reportForm.controls.workerListReport.value) {
       console.log(workerTbNum.tbNum);
-      const workerTime = new WorkerTime(workerTbNum.tbNum, workerTbNum.grade, workTime, nightTime, prostTime, 0, srednTime, pprTime, 0);
+      const workerTime = new WorkerTime(workerTbNum.tbNum, workerTbNum.grade, sdelTime, nightTime, prostTime, 0, srednTime, pprTime, 0);
       workerTimes.push(workerTime);
     }
     this.store.dispatch(new TabelAction.AddSmena({
@@ -359,14 +359,14 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe$.complete();
   }
 
-  reportFormValidator(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: boolean} | null => {
-      if (!this.reportForm.get('workerListReport')) {
-        return {workerListEmpty: true};
-      } else {
-        return null;
-      }
-    };
-  }
+  // reportFormValidator(): ValidatorFn {
+  //   return (control: AbstractControl): {[key: string]: boolean} | null => {
+  //     if (!this.reportForm.get('workerListReport')) {
+  //       return {workerListEmpty: true};
+  //     } else {
+  //       return null;
+  //     }
+  //   };
+  // }
 
 }

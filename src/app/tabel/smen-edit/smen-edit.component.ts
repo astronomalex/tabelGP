@@ -82,7 +82,7 @@ export class SmenEditComponent implements OnInit, OnDestroy {
               prostTime: new FormControl(worker.prostTime, [Validators.min(0), Validators.max(11.5)]),
               prikTime: new FormControl(worker.prikTime, [Validators.min(0), Validators.max(11.5)]),
               srednTime: new FormControl(worker.srednTime, [Validators.min(0), Validators.max(11.5)]),
-              pprTime: new FormControl(null, [Validators.min(0), Validators.max(11.5)]),
+              pprTime: new FormControl(worker.pprTime, [Validators.min(0), Validators.max(11.5)]),
               doublePayTime: new FormControl(null, [Validators.min(0), Validators.max(11.5)])
             })
           );

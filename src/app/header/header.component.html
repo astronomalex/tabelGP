@@ -24,8 +24,7 @@
           style="cursor: pointer;"
           class="dropdown-toggle" role="button">Управление базой</a>
         <ul class="dropdown-menu">
-          <li><a style="cursor: pointer;" (click)="onSaveData()" *ngIf="(workersLength > 0) &&
-          (smenListLength > 0)">Сохранить</a></li>
+          <li><a style="cursor: pointer;" (click)="onSaveData()" *ngIf="(workersLength > 0)">Сохранить</a></li>
           <li><a style="cursor: pointer;" (click)="onFetchData()">Загрузить</a></li>
 <!--          <li><a style="cursor: pointer;" (click)="onSaveWorkers()" *ngIf="workerListService.getWorkers().length > 0">Сохранить данные работников</a></li>-->
 <!--          <li><a style="cursor: pointer;" (click)="onFetchWorkers()">Загрузить данные работников</a></li>-->

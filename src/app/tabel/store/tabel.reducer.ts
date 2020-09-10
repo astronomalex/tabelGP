@@ -67,9 +67,11 @@ export function tabelReducer(
         selectedSmenaId: null
       };
     case TabelActions.DELETE_SMENA:
+      const allSmens = state.smens;
+      state.smens.splice(actions.payload, 1);
       return {
         ...state,
-        smens: state.smens.slice(actions.payload)
+        smens: allSmens
       };
     default:
       return state;

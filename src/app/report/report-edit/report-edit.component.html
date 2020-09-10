@@ -134,7 +134,7 @@
       <div class="row">
         <div class="col-xs-12">
           <button
-            [disabled]="!reportForm.valid"
+            [disabled]="!reportForm.valid || !reportForm.controls.workerListReport.value.length > 0"
             type="submit"
             (click)="onSubmit()"
             class="btn btn-success">Сохранить

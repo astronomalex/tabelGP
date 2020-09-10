@@ -1,17 +1,17 @@
 <div class="row">
   <h4>Дата: {{report.dateReport}}</h4>
-  <P>Машина: {{report.machine}}</P>
-  <p>Номер смены: {{report.numSmenReport}}</p>
-  <p *ngFor="let workerData of selectedWorkers">
+  <P>Машина: {{report.machine}} Номер смены: {{report.numSmenReport}}</P>
+  <span *ngFor="let workerData of selectedWorkers">
     {{workerData.surname}} {{workerData.name[0]}}. {{workerData.patronymic[0]}}.
-  </p>
+  </span>
+  <br>
   <p>Список работ:</p>
   <div
     *ngFor="let work of report.workListReport; let i = index"
     class="carousel-inner">
-    <p>Время: начало {{work.startWorkTime}} конец {{work.endWorkTime}}</p>
-    <p>{{work.typeWork}} №{{work.numOrder}} название {{work.nameOrder}} {{work.groupDifficulty}}</p>
-    <p>{{work.amountDonePieces}}</p>
+    <p>{{work.typeWork}} начало: {{work.startWorkTime}} конец: {{work.endWorkTime}}</p>
+    <p>№{{work.numOrder}} название: {{work.nameOrder}} группа сложности: {{work.groupDifficulty}}</p>
+    <p>Колличество: {{work.amountDonePieces}}</p>
   </div>
 
   <p>Процент выработки: {{report.percentOfReport}}</p>

@@ -21,7 +21,12 @@ export function normsReducer(state: State = initialState, actions: NormsAction.N
 
     case NormsAction.ADD_NORM:
       const updatedNomrs = state.allNorms;
-      if (updatedNomrs[actions.payload.machine].findIndex((value) => actions.payload.norma.grpDiff === value.grpDiff) === -1) {
+      if (updatedNomrs[actions.payload.machine]) {
+        if (updatedNomrs[actions.payload.machine].findIndex((value) => actions.payload.norma.grpDiff === value.grpDiff) === -1) {
+          updatedNomrs[actions.payload.machine].push({grpDiff: actions.payload.norma.grpDiff, norma: actions.payload.norma.norma});
+        }
+      } else {
+        updatedNomrs[actions.payload.machine] = [];
         updatedNomrs[actions.payload.machine].push({grpDiff: actions.payload.norma.grpDiff, norma: actions.payload.norma.norma});
       }
       return {
