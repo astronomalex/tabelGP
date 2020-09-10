@@ -1,5 +1,5 @@
 import {Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {PlaceholderDirective} from '../../shared/placeholder/placeholder.directive';
 import {WorkerData} from '../../workers/worker-list/worker-data.model';
 import {Subject, Subscription} from 'rxjs';
@@ -40,7 +40,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   report: Report;
   reportPercent = 0;
   // reportFormSub: Subscription;
-  formInvalid = false;
+  formInvalid = true;
   persentOfReport: number;
   workUnitListFormArr: FormArray;
   @ViewChild(PlaceholderDirective, {static: false}) dialogHost: PlaceholderDirective;
@@ -124,7 +124,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     this.reportForm = new FormGroup({
       dateReport: new FormControl(dateReport, [Validators.required]),
       machine: new FormControl(machine, [Validators.required]),
-      numSmenReport: new FormControl(numSmenReport, [Validators.required]),
+      numSmenReport: new FormControl(numSmenReport, [Validators.required, this.reportFormValidator]),
       workerListReport,
       workListReport
     });
@@ -321,27 +321,35 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     const workTime = this.calculateReportTime('Работа').minutesOfReport;
     const nastrTime = this.calculateReportTime('Настройка').minutesOfReport;
     const srednTime = this.calculateReportTime('По среднему').minutesOfReport;
+    let nightTime = 0;
     let isNight = false;
     let workerTimes: WorkerTime[];
     if (this.reportForm.controls.workListReport) {
       for (const work of this.reportForm.controls.workListReport.value) {
         console.log(work.startWorkTime.substr(0, 2));
-        if ((Number(work.startWorkTime.substr(0, 2)) === 19) && Number(work.startWorkTime.substr(3, 2)) >= 30) {
+        if (((Number(work.startWorkTime.substr(0, 2)) === 7 && Number(work.startWorkTime.substr(3, 2)) <= 30))
+          || ((Number(work.startWorkTime.substr(0, 2)) === 19) && Number(work.startWorkTime.substr(3, 2)) >= 30)
+          || ((Number(work.startWorkTime.substr(0, 2)) < 7) && (Number(work.startWorkTime.substr(0, 2)) > 19))
+        ) {
           isNight = true;
         }
       }
-      console.log(isNight);
     }
-    for (let workerTbNum of this.reportForm.controls.workerListReport.value) {
+    console.log(isNight);
+    if (isNight) {
+      nightTime = this.calculateReportTime().minutesOfReport;
+    }
+    for (const workerTbNum of this.reportForm.controls.workerListReport.value) {
       console.log(workerTbNum.tbNum);
-      // let workerTime = new WorkerTime(workerTbNum.tbNum, workerTbNum.grade, workTime, )
+      const workerTime = new WorkerTime(workerTbNum.tbNum, workerTbNum.grade, workTime, nightTime, prostTime, 0, srednTime, pprTime, 0);
+      workerTimes.push(workerTime);
     }
-    // this.store.dispatch(new TabelAction.AddSmena({
-    //   dateSmen: this.dateSmen,
-    //   mashine: this.selectedMachine,
-    //   numSmen: this.reportForm.controls.numSmenReport.value,
-    //   workersTime
-    // }))
+    this.store.dispatch(new TabelAction.AddSmena({
+      dateSmen: this.dateSmen,
+      mashine: this.selectedMachine,
+      numSmen: this.reportForm.controls.numSmenReport.value,
+      workersTime: workerTimes
+    }));
     console.log(pprTime);
   }
 
@@ -351,6 +359,14 @@ export class ReportEditComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe$.complete();
   }
 
-
+  reportFormValidator(): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: boolean} | null => {
+      if (!this.reportForm.get('workerListReport')) {
+        return {workerListEmpty: true};
+      } else {
+        return null;
+      }
+    };
+  }
 
 }
