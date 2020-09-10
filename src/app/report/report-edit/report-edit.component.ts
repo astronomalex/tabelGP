@@ -17,6 +17,7 @@ import {
 import {takeUntil} from 'rxjs/operators';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import * as ReportActions from '../../report/store/report.actions';
+import * as TabelAction from '../../tabel/store/tabel.actions';
 import {WorkerSelectDialogListComponent} from '../../tabel/smen-edit/worker-select-dialog/worker-select-dialog-list-component';
 import {Norma} from '../norma.model';
 import {ReportService} from '../report.service';
@@ -25,6 +26,7 @@ import {WorkUnit} from '../work-unit.model';
 import {ReportEditFormService} from './report-edit-form.service';
 import {Report} from '../report.model';
 import {WorkUnitFormModel} from './work-unit-form.model';
+import {WorkerTime} from '../../workers/worker-list/workers-time.model';
 
 @Component({
   selector: 'app-report-edit',
@@ -225,6 +227,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    this.calculatePercentWorks();
     this.reportPercent = this.calculateReportTime().percentOfReport;
     if (this.editMode) {
       this.store.dispatch(new ReportActions.UpdateReport({index: this.id, newReport: {
@@ -283,10 +286,10 @@ export class ReportEditComponent implements OnInit, OnDestroy {
             (control as FormGroup).controls.amountDonePieces &&
             (control as FormGroup).controls.typeWork.value === 'Работа') {
             const norm = (control as FormGroup).controls.groupDifficulty.value;
-            console.log('selected norm: ' + norm);
+            // console.log('selected norm: ' + norm);
             percentOfWork =
               (((control as FormGroup).controls.amountDonePieces.value / norm) * 690) / minutesOfWork * 100;
-            console.log('Percent of work: ' + percentOfWork);
+            // console.log('Percent of work: ' + percentOfWork);
           }
           if (typeWork) {
             if ( typeWork === (control as FormGroup).controls.typeWork.value) {
@@ -302,8 +305,8 @@ export class ReportEditComponent implements OnInit, OnDestroy {
 
       }
       percentOfReport = Number((percentOfReport / minutesOfReport * 100).toFixed(2));
-      console.log('minutesOfReport: ' + minutesOfReport);
-      console.log('PercentOfReport: ' + percentOfReport);
+      // console.log('minutesOfReport: ' + minutesOfReport);
+      // console.log('PercentOfReport: ' + percentOfReport);
       this.persentOfReport = percentOfReport;
       return { minutesOfReport, percentOfReport };
     } else {
@@ -313,7 +316,33 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   }
 
   calculatePercentWorks() {
-
+    const pprTime = this.calculateReportTime('ППР').minutesOfReport;
+    const prostTime = this.calculateReportTime('Простой').minutesOfReport;
+    const workTime = this.calculateReportTime('Работа').minutesOfReport;
+    const nastrTime = this.calculateReportTime('Настройка').minutesOfReport;
+    const srednTime = this.calculateReportTime('По среднему').minutesOfReport;
+    let isNight = false;
+    let workerTimes: WorkerTime[];
+    if (this.reportForm.controls.workListReport) {
+      for (const work of this.reportForm.controls.workListReport.value) {
+        console.log(work.startWorkTime.substr(0, 2));
+        if ((Number(work.startWorkTime.substr(0, 2)) === 19) && Number(work.startWorkTime.substr(3, 2)) >= 30) {
+          isNight = true;
+        }
+      }
+      console.log(isNight);
+    }
+    for (let workerTbNum of this.reportForm.controls.workerListReport.value) {
+      console.log(workerTbNum.tbNum);
+      // let workerTime = new WorkerTime(workerTbNum.tbNum, workerTbNum.grade, workTime, )
+    }
+    // this.store.dispatch(new TabelAction.AddSmena({
+    //   dateSmen: this.dateSmen,
+    //   mashine: this.selectedMachine,
+    //   numSmen: this.reportForm.controls.numSmenReport.value,
+    //   workersTime
+    // }))
+    console.log(pprTime);
   }
 
   ngOnDestroy() {
