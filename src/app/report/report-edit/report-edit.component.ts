@@ -1,5 +1,5 @@
 import {Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {PlaceholderDirective} from '../../shared/placeholder/placeholder.directive';
 import {WorkerData} from '../../workers/worker-list/worker-data.model';
 import {Subject, Subscription} from 'rxjs';
@@ -9,8 +9,7 @@ import * as fromApp from '../../store/app.reducer';
 import {
   getEditedReport,
   getMachineList,
-  getNormsByMachine,
-  getReportsFromState, getSelectedReport,
+  getNormsByMachine, getSelectedReport,
   getTypesOfWorkFromState,
   getWorkers
 } from '../../store/selectors/app.selector';
@@ -23,7 +22,6 @@ import {Norma} from '../norma.model';
 import {ReportService} from '../report.service';
 import {DatePipe} from '@angular/common';
 import {WorkUnit} from '../work-unit.model';
-import {ReportEditFormService} from './report-edit-form.service';
 import {Report} from '../report.model';
 import {WorkUnitFormModel} from './work-unit-form.model';
 import {WorkerTime} from '../../workers/worker-list/workers-time.model';
@@ -39,8 +37,6 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   reportForm: FormGroup;
   report: Report;
   reportPercent = 0;
-  // reportFormSub: Subscription;
-  formInvalid = true;
   persentOfReport: number;
   workUnitListFormArr: FormArray;
   @ViewChild(PlaceholderDirective, {static: false}) dialogHost: PlaceholderDirective;
@@ -147,7 +143,6 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   }
 
   addWork(typeWork?, numOrder?, nameOrder?, groupDifficulty?, startWorkTime?, endWorkTime?, amountDonePieces?) {
-    // const currentReport = this.reportForm;
     const currentWork = this.reportForm.get('workListReport') as FormArray;
     currentWork.push(
       this.fb.group(
@@ -195,17 +190,6 @@ export class ReportEditComponent implements OnInit, OnDestroy {
       }
     );
   }
-
-  // initWorkUnitGroup() {
-  //   return new FormGroup({
-  //     startTime: new FormControl(null, [Validators.required]),
-  //     endTime: new FormControl(null, [Validators.required]),
-  //     typeWork: new FormControl(null, [Validators.required]),
-  //     numOrder: new FormControl(null, [Validators.required]),
-  //     nameOrder: new FormControl(null, [Validators.required]),
-  //     groupDifficulty: new FormControl(null, [Validators.required])
-  //   });
-  // }
 
   getControlsWorkers() {
     return (this.reportForm.get('workerListReport') as FormArray).controls;
@@ -260,8 +244,6 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   onDateChanged(event) {
     const date = event.value;
     this.dateSmen = this.datePipe.transform(date, 'yyyy-MM-dd');
-    // console.log('dateFormated: ', dateFormated);
-    // console.log('New Date: ' + dateString);
     this.calculateReportTime();
   }
 
@@ -286,10 +268,8 @@ export class ReportEditComponent implements OnInit, OnDestroy {
             (control as FormGroup).controls.amountDonePieces &&
             (control as FormGroup).controls.typeWork.value === 'Работа') {
             const norm = (control as FormGroup).controls.groupDifficulty.value;
-            // console.log('selected norm: ' + norm);
             percentOfWork =
               (((control as FormGroup).controls.amountDonePieces.value / norm) * 690) / minutesOfWork * 100;
-            // console.log('Percent of work: ' + percentOfWork);
           }
           if (typeWork) {
             if ( typeWork === (control as FormGroup).controls.typeWork.value) {
@@ -305,8 +285,6 @@ export class ReportEditComponent implements OnInit, OnDestroy {
 
       }
       percentOfReport = Number((percentOfReport / minutesOfReport * 100).toFixed(2));
-      // console.log('minutesOfReport: ' + minutesOfReport);
-      // console.log('PercentOfReport: ' + percentOfReport);
       this.persentOfReport = percentOfReport;
       return { minutesOfReport, percentOfReport };
     } else {
@@ -354,19 +332,7 @@ export class ReportEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // this.reportFormSub.unsubscribe();
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
   }
-
-  // reportFormValidator(): ValidatorFn {
-  //   return (control: AbstractControl): {[key: string]: boolean} | null => {
-  //     if (!this.reportForm.get('workerListReport')) {
-  //       return {workerListEmpty: true};
-  //     } else {
-  //       return null;
-  //     }
-  //   };
-  // }
-
 }
