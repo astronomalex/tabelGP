@@ -32,7 +32,7 @@ export class WorkUnitItemComponent implements OnInit {
   // workStartTime: time;
 
   constructor(
-    private reportService: ReportService,
+    public reportService: ReportService,
     private store: Store<fromApp.AppState>
   ) {}
 

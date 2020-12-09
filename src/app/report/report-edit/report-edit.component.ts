@@ -1,5 +1,5 @@
 import {Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {PlaceholderDirective} from '../../shared/placeholder/placeholder.directive';
 import {WorkerData} from '../../workers/worker-list/worker-data.model';
 import {Subject, Subscription} from 'rxjs';
