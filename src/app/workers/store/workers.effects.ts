@@ -7,6 +7,7 @@ import {HttpClient} from '@angular/common/http';
 import * as fromApp from '../../store/app.reducer';
 import * as WorkersActions from '../../workers/store/workers.actions';
 import {WorkerData} from '../worker-list/worker-data.model';
+import {environment} from '../../../environments/environment';
 
 @Injectable()
 export class WorkersEffects {
@@ -14,8 +15,10 @@ export class WorkersEffects {
   fetchWorkers = this.actions$.pipe(
     ofType(WorkersActions.FETCH_WORKERS),
     switchMap(() => {
+      const baseUrl = environment.apiUrl;
+      const url = baseUrl + 'employees';
       return this.http.get<WorkerData[]>(
-        'https://ng-tabelgp.firebaseio.com/workers.json'
+        url
       );
     }),
     map(workers => {

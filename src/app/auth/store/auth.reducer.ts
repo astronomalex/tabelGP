@@ -3,14 +3,12 @@ import * as AuthActions from './auth.actions';
 
 export interface State {
   user: User;
-  locId: string;
   authError: string;
   loading: boolean;
 }
 
 const initialState = {
   user: null,
-  locId: null,
   authError: null,
   loading: false
 };
@@ -22,16 +20,14 @@ export function authReducer(
   switch (action.type) {
     case AuthActions.AUTHENTICATE_SUCCESS:
       const user = new User(
-        action.payload.email,
-        action.payload.userId,
+        action.payload.username,
         action.payload.token,
         action.payload.expirationDate
       );
       return {
         ...state,
         authError: null,
-        user: user,
-        locId: action.payload.userId,
+        user,
         loading: false
       };
     case AuthActions.LOGOUT:
@@ -57,7 +53,7 @@ export function authReducer(
       return {
         ...state,
         authError: null
-      }
+      };
     default:
       return state;
   }

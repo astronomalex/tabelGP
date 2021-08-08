@@ -5,8 +5,9 @@ import {Store} from '@ngrx/store';
 
 import * as fromApp from '../../store/app.reducer';
 import * as TabelActions from './tabel.actions';
-import {map, switchMap, tap, withLatestFrom} from 'rxjs/operators';
+import {map, switchMap, withLatestFrom} from 'rxjs/operators';
 import {Smena} from '../smen-list/smena.model';
+import {environment} from '../../../environments/environment';
 
 
 @Injectable()
@@ -16,7 +17,8 @@ export class TabelEffects {
     ofType(TabelActions.FETCH_SMENS),
     withLatestFrom(this.store.select('auth')),
     switchMap(([actionData, authState]) => {
-        const url: string = 'https://ng-tabelgp.firebaseio.com/' + authState.locId + '_smens.json';
+        const baseUrl = environment.apiUrl;
+        const url: string = baseUrl + 'shifts';
         return this.http.get<Smena[]>(url).pipe(
           map(smens => {
             if (smens) {
@@ -46,7 +48,7 @@ export class TabelEffects {
     withLatestFrom(this.store.select('tabel')),
     withLatestFrom(this.store.select('auth')),
     switchMap(([[actionData, tabelState], authState]) => {
-      const url = 'https://ng-tabelgp.firebaseio.com/' + authState.locId + '_smens.json';
+      const url = 'https://ng-tabelgp.firebaseio.com/' + '_smens.json';
       return this.http.put(url, tabelState.smens);
     })
   );

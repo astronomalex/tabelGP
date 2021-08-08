@@ -32,7 +32,7 @@ export class NormsClient implements INormsClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "https://localhost:44333";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "https://localhost:5001";
     }
 
     getNorms(): Observable<Norma[]> {
@@ -899,7 +899,7 @@ export class Norma implements INorma {
         data["machine"] = this.machine;
         data["groupDiff"] = this.groupDiff;
         data["amount"] = this.amount;
-        return data; 
+        return data;
     }
 }
 
@@ -958,7 +958,7 @@ export class Smena implements ISmena {
             for (let item of this.workerTimes)
                 data["workerTimes"].push(item.toJSON());
         }
-        return data; 
+        return data;
     }
 }
 
@@ -1031,7 +1031,7 @@ export class WorkerTime implements IWorkerTime {
         data["doubleTime"] = this.doubleTime;
         data["smena"] = this.smena ? this.smena.toJSON() : <any>undefined;
         data["smenaId"] = this.smenaId;
-        return data; 
+        return data;
     }
 }
 
@@ -1093,7 +1093,7 @@ export class WorkerData implements IWorkerData {
         data["patronymic"] = this.patronymic;
         data["tableNum"] = this.tableNum;
         data["grade"] = this.grade;
-        return data; 
+        return data;
     }
 }
 

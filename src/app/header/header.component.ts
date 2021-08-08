@@ -86,7 +86,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     ).subscribe(user => {
       this.isAuthenticated = !user ? false : true;
       if (this.isAuthenticated) {
-        this.userEmail = user.email;
+        this.userEmail = user.username;
       }
     });
   }

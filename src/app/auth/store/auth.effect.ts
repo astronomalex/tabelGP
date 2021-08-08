@@ -8,28 +8,25 @@ import {of, throwError} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {User} from '../user.model';
+import jwtDecode from 'jwt-decode';
 
 export interface AuthResponseData {
-  kind: string;
-  idToken: string;
-  email: string;
-  refreshToken: string;
-  expiresIn: string;
-  localId: string;
-  registered?: boolean;
+  username: string;
+  token: string;
 }
 
 const handleAuthentication = (
-  expiresIn: number,
-  email, userId, token: string
+  username, token: string
 ) => {
-  const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
-  const user = new User(email, userId, token, expirationDate);
+  const { exp } = jwtDecode(token) as {
+    'exp': number;
+  };
+  const expirationDate = new Date(new Date().getTime() + exp * 1000);
+  const user = new User(username, token, expirationDate);
   localStorage.setItem('userData', JSON.stringify(user));
   return new AuthActions.AuthenticateSuccess(
     {
-      email,
-      userId,
+      username,
       token,
       expirationDate,
       redirect: true
@@ -72,23 +69,24 @@ export class AuthEffects {
     ofType(AuthActions.SIGNUP_START),
     switchMap((signupAction: AuthActions.SignupStart) => {
       return this.http.post<AuthResponseData>(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key='
-        + environment.firebaseAPIKey,
+        'https://localhost:5001/api/account/register',
         {
-          email: signupAction.payload.email,
+          username: signupAction.payload.username,
           password: signupAction.payload.password,
           returnSecureToken: true
         }
       ).pipe(
         tap(resData => {
-          this.authService.setLogoutTimer(+resData.expiresIn * 1000);
+          const { exp } = jwtDecode(resData.token) as {
+            'exp': number;
+          };
+          console.log(exp);
+          this.authService.setLogoutTimer(exp * 1000);
         }),
         map(resData => {
           return handleAuthentication(
-            +resData.expiresIn,
-            resData.email,
-            resData.localId,
-            resData.idToken
+            resData.username,
+            resData.token
           );
         }),
         catchError(errorRes => {
@@ -103,23 +101,22 @@ export class AuthEffects {
     ofType(AuthActions.LOGIN_START),
     switchMap((authData: AuthActions.LoginStart) => {
       return this.http.post<AuthResponseData>(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key='
-        + environment.firebaseAPIKey,
+        'https://localhost:5001/api/account/login',
         {
-          email: authData.payload.email,
-          password: authData.payload.password,
-          returnSecureToken: true
+          username: authData.payload.username,
+          password: authData.payload.password
         }
       ).pipe(
         tap(resData => {
-          this.authService.setLogoutTimer(+resData.expiresIn * 1000);
+          const { exp } = jwtDecode(resData.token) as {
+            'exp': number;
+          };
+          this.authService.setLogoutTimer(exp * 1000);
         }),
         map(resData => {
           return handleAuthentication(
-            +resData.expiresIn,
-            resData.email,
-            resData.localId,
-            resData.idToken
+            resData.username,
+            resData.token
           );
         }),
         catchError(errorRes => {
@@ -143,8 +140,7 @@ export class AuthEffects {
     ofType(AuthActions.AUTO_LOGIN),
     map(() => {
       const userData: {
-        email: string;
-        id: string;
+        username: string;
         _token: string;
         _tokenExpirationDate: string;
       } = JSON.parse(localStorage.getItem('userData'));
@@ -153,8 +149,7 @@ export class AuthEffects {
       }
 
       const loadedUser = new User(
-        userData.email,
-        userData.id,
+        userData.username,
         userData._token,
         new Date(userData._tokenExpirationDate)
       );
@@ -163,8 +158,7 @@ export class AuthEffects {
           new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
         this.authService.setLogoutTimer(expirationDuration);
         return new AuthActions.AuthenticateSuccess( {
-          email: loadedUser.email,
-          userId: loadedUser.id,
+          username: loadedUser.username,
           token: loadedUser.token,
           expirationDate: new Date(userData._tokenExpirationDate),
           redirect: false

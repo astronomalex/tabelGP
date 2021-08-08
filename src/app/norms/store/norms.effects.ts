@@ -7,6 +7,7 @@ import * as NormsActions from '../../norms/store/norms.action';
 import {map, switchMap, withLatestFrom} from 'rxjs/operators';
 import {Report} from '../../report/report.model';
 import {Norma} from '../../report/norma.model';
+import {environment} from '../../../environments/environment';
 
 @Injectable()
 export class NormsEffects {
@@ -15,18 +16,18 @@ export class NormsEffects {
     ofType(NormsActions.FETCH_NORMS),
     withLatestFrom(this.store.select('auth')),
     switchMap(([actionData, authState]) => {
-        const url: string = 'https://ng-tabelgp.firebaseio.com/' + authState.locId + '_norms.json';
-        return this.httpClient.get<{ [machine: string]: Norma[] }>(url).pipe(
-          map(norms => {
-            return norms;
-          }),
-          map(norms => {
-            console.log(norms);
-            return new NormsActions.SetNorms(norms ? norms : {});
-          })
-        );
-      }
-    )
+      const baseUrl = environment.apiUrl;
+      const url: string = baseUrl + 'norms';
+      return this.httpClient.get<{ [machine: string]: Norma[] }>(url).pipe(
+        map(norms => {
+          return norms;
+        }),
+        map(norms => {
+          console.log(norms);
+          return new NormsActions.SetNorms(norms ? norms : {});
+        })
+      );
+    })
   );
 
   @Effect({dispatch: false})
@@ -35,8 +36,9 @@ export class NormsEffects {
     withLatestFrom(this.store.select('norms')),
     withLatestFrom(this.store.select('auth')),
     switchMap(([[actionData, normsState], authState]) => {
-      const url = 'https://ng-tabelgp.firebaseio.com/' + authState.locId + '_norms.json';
-      return this.httpClient.put(url, normsState.allNorms);
+      const baseUrl = environment.apiUrl;
+      const url: string = baseUrl + 'norms/save';
+      return this.httpClient.post(url, normsState.allNorms);
     })
   );
 

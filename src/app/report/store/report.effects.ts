@@ -6,6 +6,7 @@ import {Store} from '@ngrx/store';
 import {map, switchMap, withLatestFrom} from 'rxjs/operators';
 import {Report} from '../report.model';
 import {Injectable} from '@angular/core';
+import {environment} from '../../../environments/environment';
 
 @Injectable()
 export class ReportEffects {
@@ -14,7 +15,8 @@ export class ReportEffects {
     ofType(ReportActions.FETCH_REPORTS),
     withLatestFrom(this.store.select('auth')),
     switchMap(([actionData, authState]) => {
-        const url: string = 'https://ng-tabelgp.firebaseio.com/' + authState.locId + '_reports.json';
+        const baseUrl = environment.apiUrl;
+        const url: string = baseUrl + 'reports';
         return this.httpClient.get<Report[]>(url).pipe(
           map(reports => {
             if (reports) {
@@ -42,7 +44,7 @@ export class ReportEffects {
     withLatestFrom(this.store.select('reports')),
     withLatestFrom(this.store.select('auth')),
     switchMap(([[actionData, reportState], authState]) => {
-      const url = 'https://ng-tabelgp.firebaseio.com/' + authState.locId + '_reports.json';
+      const url = 'https://ng-tabelgp.firebaseio.com/' + '_reports.json';
       return this.httpClient.put(url, reportState.reports);
     })
   );
